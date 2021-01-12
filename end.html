@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head> 
+<style type="text/css">
+body {
+
+background-size: 100%;
+background-repeat:no-repeat;
+/* -background-position: 40% -30%;
+background-position: 50% -5%; */
+}
+
+#endgame {
+  font-size: 85px;
+  font-style: oblique;
+  font-weight: bold;
+  background-image: -webkit-linear-gradient(#eee, #156);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position:relative;
+} 
+ 
+</style> 
+</head>
+	<body bgcolor="#262626" background="./img/end.jpg"  >	
+    <div id="tot_div">		
+		<div id="totdiv"  oncontextmenu="return false" ondragstart="return false" onselectstart="return false" style="position: absolute;left:0%;top:0%;background:#262626;text-align:center;vertical-align:middle;font-size:17pt;color:white;z-index:1000;display:table;height:100%;width:100%;">
+				<p style="display:table-cell; text-align:center; vertical-align:middle;">Loading...</p>
+		</div> 
+		<audio id='endsound' src='./sound/end.ogg' autoplay></audio>
+		<div id="endgame" class="main" style="background:'#5f7a8a';text-align:center; z-index:10; width:96%;">
+		Game End<br><br>
+		<div id="score" style="text-align:center;font-size:40pt;"></div>  
+		</div> 
+	</div>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/Common.js"></script>
+<script type="text/javascript" charset="utf-8"> 
+$(function(){  
+
+	//시작 음악
+	function play_endsound(){
+	
+		var endsound = document.getElementById('endsound');
+ 
+		if (endsound != null){
+
+			endsound.currentTime = 10; //재생위치
+
+			endsound.play();
+
+		} 
+	}
+
+	play_endsound(); 
+ 
+    document.addEventListener('click', function() { 
+    
+        endsound.pause();	       
+
+        $("#endgame").fadeOut( "slow", function() {
+           
+            //window.location = 'end.html';
+        
+            location.replace("index.html");
+        }) 
+
+	})     
+	
+	//가로모드에서만 실행(화면 로드시 시작되는 모드 체크, common.js에 명시)
+	f_search_landmode();        //화면 로딩시 자동 호출
+
+	//마우스 우클릭, 드래그, 선택 방지
+	$(document).on("contextmenu dragstart selectstart",function(e){
+	    return false;
+	});
+
+	//화면 드래그 방지
+	//$('html, body, totdiv').css({'overflow': 'hidden', 'height': '100%'});
+	$('#totdiv').on('scroll touchmove mousewheel', function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			return false;
+	});	
+
+	//점수 보여주기
+	var ls_current_score = localStorage.getItem('current_score');          
+	var ls_best_score = localStorage.getItem('best_score');
+
+	var ls_current_time = localStorage.getItem('current_time');          
+	var ls_best_time = localStorage.getItem('best_time');	
+
+	$("#score").html("현재 점수 : " + ls_current_score + "<br>소요 시간 : " + ls_current_time + "<br><br>최고 점수 : " + ls_best_score + "<br>소요 시간 : " + ls_best_time);
+		
+	
+
+});
+
+</script>		
+</body>
+</html>

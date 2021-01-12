@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Hello NodeJs</title> 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- <script src="//127.0.0.1:9892/socket.io/socket.io.js"></script> -->
+        <script src="/socket.io/socket.io.js"></script>
+        <!-- <script src="nodejs.js"></script>      -->
+
+    </head>
+    <body> 
+        <div id="random"></div><br>
+        노드 소켓 테스트 첫 페이지~ 
+        <div id="text_contents"></div><br>
+        <input type="text" id="text_message" ></text>    
+        <button onClick="fn_send_message()">Send</button>
+        <canvas id="GameCanvas"  width="1280" height="670" style="position:absolute;top:0px;left:0px;border:1"  >        
+            HTML5 Canvas를 지원하지 않습니다.
+        </canvas>
+        <script>
+
+            var random = Math.floor( Math.random() * 10);
+            var theCanvas = document.getElementById("GameCanvas");
+            var Context = theCanvas.getContext("2d");
+            var ls_width = window.innerWidth;
+            var ls_height = window.innerHeight;	        	//터치 드래그시 상단 주소창 숨기기위해 높이값 더줌.
+
+            Context.font = '100px Arial';
+            //Context.fillText("00:00:00",ls_width/2 - 160, ls_height/2 - 140);
+
+            $("#random").html(random);
+
+            //소켓은 emit으로 넘겨서 on으로 받는다
+            //var socket = io.connect("//127.0.0.1:9892"); 
+            var socket = io();
+
+            console.log("socket",socket);
+            //alert(String(socket.id.value))
+       
+            socket.on("get_user_data",function(name){ 
+                //document.write("신규 접속자<br>" + name + "<br>");
+                var ls_html = "신규 접속자<br>" + name + "<br>";
+                $("#text_contents").html(ls_html); 
+
+            });
+
+            function fn_send_message(){ 
+
+                    var ls_send_message = $("#text_message").val();
+
+                    if(ls_send_message == "" || ls_send_message == null){
+                        alert("메세지를 입력해 주세요.");
+                        return;
+                    }
+
+                    socket.emit("get_send_message",ls_send_message);                     
+            }; 
+
+            //사용자 이동 
+            socket.on("get_move_message",function(move){  
+                
+                Context.clearRect(0, 0, theCanvas.width, theCanvas.height);
+                
+                Context.fillText(move,ls_width/2 - 160, ls_height/2 - 140);
+            })
+           
+          
+               
+        </script>        
+    </body>
+
+</html>

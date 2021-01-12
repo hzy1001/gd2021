@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1,  user-scalable=no">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">-->
+  <!--<meta name="viewport" content="width=device-width, user-scalable=no">  -->
+  <meta name="viewport" content="width=device-width,height=device-height, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi" />
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <!--마지막으로 PWA가 Safari에서는 잘 인식하지 않는 경우 가 있습니다. 그것을 대비, 출처: https://uxgjs.tistory.com/225 [UX 공작소] -->
+  <link rel="apple-touch-icon" href="touch-icon-iphone.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad.png"> 
+  <link rel="apple-touch-icon" sizes="167x167" href="touch-icon-ipad-retina.png"> 
+  <link rel="apple-touch-icon" sizes="180x180" href="touch-icon-iphone-retina.png"> 
+  </head>
+  <title> 건닷지 </title>  
+  <body >
+    <div id="tot_hidden">
+	<h2>가로 모드에서 실행 바랍니다.<br>기기에 설치시 좀더 쾌적하게<br>게임을 즐기실수 있습니다.</h2>
+	<img src="./img/rainbow.jpg"  style="overflow:auto;">
+	<!--설치 버튼-->
+	&nbsp;
+	<button id="btnInstall">기기에 설치하기<button>
+	</div>
+	<div id="tot_div" class="tot">
+    <!--캔버스 화면 오버시 드래그 방지-->
+      <div id="can_div" style="position: absolute; top: 0px; left: 0px;overflow:auto; width:1280px; height:670px;" ondrop="drop(event)" ondragover="allowDrop(event)">   
+      <div class="game_div" ondrop="drop(event)" ondragover="allowDrop(event)">
+          <canvas id="GameCanvas"  width="1280" height="670" style="position:absolute;top:0px;left:0px;border:0" onclick="clickCanvas(window.event,1)"  onMouseMove="clickCanvas(window.event,2)" onMouseOver="clickCanvas(window.event,3)" onMouseDown="clickCanvas(window.event,4)">        
+            HTML5 Canvas를 지원하지 않습니다.
+        </canvas>
+      </div>
+     </div> 
+ 
+
+    <div class="startCtl"> 
+      <div onMouseDown="gameStart(13)"></div>&nbsp;
+      <div onMouseDown="gameEnd(27)"></div> 
+  	</div> 
+<!-- 
+    <div class="directCtl">     
+      <div class="directCtl01"> 
+        <div onMouseDown="moveDirection(103)" onMouseUp="moveDirection2(103)"></div>&nbsp;
+        <div onMouseDown="moveDirection(38)" onMouseUp="moveDirection2(38)"></div>&nbsp;
+        <div onMouseDown="moveDirection(105)" onMouseUp="moveDirection2(105)"></div>
+      </div>
+      <div class="directCtl02">
+        <div onMouseDown="moveDirection(37)" onMouseUp="moveDirection2(37)"></div>&nbsp;
+        <div onMouseDown="moveDirection(16)" onMouseUp="moveDirection2(16)"></div>&nbsp;
+        <div onMouseDown="moveDirection(39)" onMouseUp="moveDirection2(39)"></div>
+      </div>
+      <div class="directCtl03">
+        <div onMouseDown="moveDirection(97)" onMouseUp="moveDirection2(97)"></div>&nbsp;
+        <div onMouseDown="moveDirection(40)" onMouseUp="moveDirection2(40)"></div>&nbsp;
+        <div onMouseDown="moveDirection(99)" onMouseUp="moveDirection2(99)"></div>   
+      </div> 
+    </div>   
+-->
+    <div class="attackCtl"> 
+      <div onMouseDown="moveDirection(32)" onMouseUp="moveDirection2(32)">Laser</div>&nbsp;       
+      <div onMouseDown="moveDirection(17)" onMouseUp="moveDirection2(17)">Warp</div>       
+    </div>
+
+<!--
+    <div id="TopCtl" style="position: absolute; top:5px; left:40px; text-align:left; width:300px; ">
+	  <br> 
+      <button onMouseDown="gameStart(13)" style="opacity:0.1;height:50px;width:100px;" ><b>Start</b></button>
+      <button onMouseDown="gameEnd(27)" style="opacity:0.1;height:50px;width:100px;" ><b>&nbsp;End&nbsp;</b></button> 
+  	</div> 
+-->
+    <div id="MainCtl" style="position: absolute; top: calc(100%); left: calc(2%)" style="text-align:center;width:200px;height:200px; z-index:1;">
+	  &nbsp;&nbsp;&nbsp;
+      <button onMouseDown="moveDirection(103)" onMouseUp="moveDirection2(103)"  style="width:60px; height:60px; opacity:0.1" ><b>↖</b></button>
+      <button onMouseDown="moveDirection(38)" onMouseUp="moveDirection2(38)" style="width:100px; height:100px; opacity:0.3" ><b>▲</b></button>
+      <button onMouseDown="moveDirection(105)" onMouseUp="moveDirection2(105)" style="width:60px; height:60px; opacity:0.1" ><b>↗</b></button>
+      <br>
+      <button onMouseDown="moveDirection(37)" onMouseUp="moveDirection2(37)" style="width:100px; height:100px; opacity:0.3" ><b>◀</b></button>
+      <button onMouseDown="moveDirection(16)" onMouseUp="moveDirection2(16)" style="width:60px; height:60px; opacity:0.3" > <h3><b>Break</b></h3></button>
+      <button onMouseDown="moveDirection(39)" onMouseUp="moveDirection2(39)" style="width:100px; height:100px; opacity:0.3" ><b>▶</b></button>
+      <br>
+	  &nbsp;&nbsp;&nbsp;
+      <button onMouseDown="moveDirection(97)" onMouseUp="moveDirection2(97)"  style="width:60px; height:60px; opacity:0.1" ><b>↙</b></button>
+      <button onMouseDown="moveDirection(40)" onMouseUp="moveDirection2(40)" style="width:100px; height:100px; opacity:0.3" ><b>▼</b></button>
+      <button onMouseDown="moveDirection(99)" onMouseUp="moveDirection2(99)"  style="width:60px; height:60px; opacity:0.1" ><b>↘</b></button>   
+	  </div>
+<!--
+    <div id="MainCtl2" style="position: absolute; top: calc(90%); right: calc(-30%)" style="text-align:right;width:300px;height:150px; z-index:1000;"> 
+      <button onMouseDown="moveDirection(32)" onMouseUp="moveDirection2(32)" style="width:150px; height:150px; opacity:0.3" > <h3><b>Laser</b></h3></button>       
+      <button onMouseDown="moveDirection(17)" onMouseUp="moveDirection2(17)" style="width:150px; height:150px; opacity:0.3" > <h3><b>Warp</b></h3></button>       
+    </div>
+-->
+
+    <!--<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.0.min.js" ></script>-->
+    <script type="text/javascript" src="./js/jquery-3.3.1.min.js"></script> 
+    <script type="text/javascript" language="javascript" charset="utf-8">
+
+     $(function() { 
+
+      //모바일에서 더블탭시 화면 확대,축소(spread, pinch) 방지
+      document.documentElement.addEventListener('touchstart', function (event) { 
+
+        if (event.touches.length > 1) {
+		 
+            event.preventDefault(); 
+
+          } 
+        }, false);
+
+      var lastTouchEnd = 0; 
+
+      document.documentElement.addEventListener('touchend', function (event) {
+
+
+        var now = (new Date()).getTime();
+ 
+
+        if (now - lastTouchEnd <= 600) {
+            event.preventDefault(); 
+          } 
+		  
+		  lastTouchEnd = now;
+		  
+        }, false);
+      //모바일에서 더블탭시 화면 확대 방지 끝	
+	 
+
+      var isTouch = false;
+      var simulated_flag = 'handler_simulated';
+      var touch_click_array = {};
+      const clickMoveThreshold = 20; //Pixels
+     
+      //가로모드에서만 실행(화면 로드시 시작되는 모드 체크, common.js에 명시)
+      //f_search_landmode();
+     
+        //화면 드래그 방지
+       //$('html, body, totdiv').css({'overflow': 'hidden', 'height': '100%'});
+       $('#can_div').on('scroll touchmove mousewheel', function(event) {
+           event.preventDefault();
+           event.stopPropagation();
+           return false;
+         });	
+       
+     function mouseHandler(event) {
+      if (isTouch) {
+       if (!event.hasOwnProperty(simulated_flag)) {
+        //Unreliable mouse commands - In my opinion
+        var fixed = new jQuery.Event(event);
+        fixed.preventDefault();
+        fixed.stopPropagation();
+        }
+       } else {
+       //Mouse commands are consistent
+       //TODO: generate corresponding touches
+      }
+     }
+    
+     function mouseFromTouch(type, touch) {
+      var event = document.createEvent("MouseEvent");
+      event.initMouseEvent(type, true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY
+      , false, false, false, false, 0, null);
+      event[simulated_flag] = true;
+    
+      touch.target.dispatchEvent(event);
+     };
+    
+     function touchHandler(event) {
+      var touches = event.changedTouches
+      ,first = touches[0]
+      ,type = ""
+    
+      if (!event.hasOwnProperty(simulated_flag)) {
+       isTouch = true;
+    
+       //Simulate mouse commands
+       switch (event.type) {
+       case "touchstart":
+        for (var i = 0; i < touches.length; i++) {
+         var touch = touches[i];
+         touch_click_array[touch.identifier] = { x: touch.screenX, y: touch.screenY };
+        }
+        mouseFromTouch("mousedown", first);
+        break;
+       case "touchmove":
+        for (var i = 0; i < touches.length; i++) {
+         var touch = touches[i];
+         var id = touch.identifier;
+         var data = touch_click_array[id];
+         if (data !== undefined) {
+          if (Math.abs(data.x - touch.screenX) + Math.abs(data.y - touch.screenY) > clickMoveThreshold) {
+           delete touch_click_array[id];
+          }
+         }
+        }
+        mouseFromTouch("mousemove", first);
+        break;
+       case "touchcancel":
+        //Not sure what should happen here . . .
+        break;
+       case "touchend":
+        mouseFromTouch("mouseup", first);
+        for (var i = 0; i < touches.length; i++) {
+         var touch = touches[i];
+         if (touch_click_array.hasOwnProperty(touch.identifier)) {
+          mouseFromTouch("click", touch);
+          delete touch_click_array[touch.identifier];
+         }
+        }
+        break;
+       }
+      }
+     }  
+    
+     document.addEventListener("mousedown", mouseHandler, true);
+     document.addEventListener("mousemove", mouseHandler, true);
+     document.addEventListener("mouseup", mouseHandler, true);
+     document.addEventListener("click", mouseHandler, true);
+    
+     document.addEventListener("touchstart", touchHandler, true);
+     document.addEventListener("touchmove", touchHandler, true);
+     document.addEventListener("touchcancel", touchHandler, true);
+     document.addEventListener("touchend", touchHandler, true);
+     
+    });
+     
+    window.addEventListener('load', function(){ // on page load
+    
+        document.body.addEventListener('touchstart', function(e){
+     
+        }, false) 
+
+    }, false) 
+     
+ 
+	//가로 세로모드 판별
+    var ls_tmp1 = 0;
+    var ls_tmp2 = 0; 
+
+	if (window.matchMedia('(orientation: portrait)').matches) { 
+		ls_tmp1 = 1;
+        document.getElementById('tot_div').style.visibility = 'hidden'; 
+		document.getElementById('tot_hidden').style.display = 'block';
+		 
+	} else { 
+		ls_tmp2 = 1;
+        document.getElementById('tot_div').style.visibility = 'visible';
+		document.getElementById('tot_hidden').style.display = 'none'; 
+	 
+	}  
+
+    //사이즈 변경시 체크(최초 세로모드에서 가로모드로 전환시 1회만 새로 로드(호출))
+	window.addEventListener('resize', function () { 
+		
+		//if (ls_tmp1 == 1 && ls_tmp2 == 0){   //<= 세로에서 가로로 최초 1회 적용에만 reload하여 resize시 변수 초기화 방지   => 크롬 실행시 가로에서 세로 전환시 주소창 없애기 위해 기존 캠퍼스 사이즈에 + 30 하여 세로 적용.
+			window.location.reload();    
+		//} 
+
+	});
+ 
+    
+    /*캠버스로 버튼 구현시 필요없음.
+    //////////////////////////////hammer.js//////////////////////////////////////
+    //모바일에서 제스쳐이벤트(더블클릭시 자동확대 및 롱탭시 옵션 팝업)를 방지하기 위해 hammer.js 추가 사용
+     $(function() {
+        var mc = new Hammer.Manager($('body')[0]);
+        mc.add( new Hammer.Tap({ event: 'doubletap', taps: 2 }) );
+        mc.add( new Hammer.Tap({ event: 'singletap' }) );
+        mc.add( new Hammer.Press({event: 'press', time : 400}) );;
+         
+        mc.get('doubletap').recognizeWith('singletap'); //doubletap 이벤트 발생시 singletap 이벤트 미발생 처리
+        mc.get('singletap').requireFailure('doubletap');
+         
+        mc.on("singletap doubletap", onTap);
+        mc.on("press", onPress);  
+    
+    
+        function onTap(ev) {
+       
+          var elTarget = $(ev.target).parents("li").find("a");
+          var sLink = (elTarget) ? elTarget[0].href : "";
+          if (sLink) {
+            if(ev.type == "singletap") {
+                alert("sT")
+            location.href = sLink;
+            } else if(ev.type == "doubletap"){
+                alert("wT")
+              window.open(sLink);
+            }
+          }
+        }
+        
+        function onPress(ev) {
+            console.log(ev)
+            var target = $(ev.target).parents("li").find("a");
+            if (target && target[0].href.match(/[0-9]+/)[0]) {
+                var nDealSrl = target[0].href.match(/[0-9]+/)[0];
+                $(ev.target).attr("oncontextmenu", "return false"); //롱탭시 브라우저 contextmenu 팝업 방지
+                //$.post("http://m.ticketmonster.co.kr/wishlist/pushwishlist/" + nDealSrl)
+                //console.log("찜하기 : " + nDealSrl)
+            }
+            
+            ev.preventDefault();
+            return false;
+        }     
+     })
+    /////////////////////////////////////////////////////////////////////////////////
+    */
+	
+
+    //배경음악 사운드 로드
+	var audio = new Audio();
+	audio.src = "./sound/sound01.ogg";
+	window.addEventListener("load",audio, false);
+
+
+    /*추가된 부분: 종료되면 처음부터 다시 재생*/
+    audio.addEventListener('ended', function() { 
+        this.currentTime = 0;
+        this.play();
+    }, false);
+
+
+	//레이져 사운드 로드
+	var laser_sound = new Audio();
+	laser_sound.src = "./sound/laser01.ogg";
+	window.addEventListener("load",laser_sound, false); 
+
+	//와프 사운드 로드
+	var warp_sound = new Audio();
+	warp_sound.src = "./sound/warp01.ogg";
+	window.addEventListener("load",warp_sound, false); 
+
+	//폭발 사운드 로드
+	var explosion_sound = new Audio();
+	explosion_sound.src = "./sound/explosion01.ogg";
+	window.addEventListener("load",explosion_sound, false); 
+     
+	//께짐(부디침) 사운드 로드
+	var crash01_sound = new Audio();
+	crash01_sound.src = "./sound/crash01.ogg";
+  window.addEventListener("load",crash01_sound, false); 
+  
+  var crash02_sound = new Audio();
+	crash02_sound.src = "./sound/crash02.ogg";
+  window.addEventListener("load",crash02_sound, false); 
+  
+
+  //엔진 사운드 로드
+	var engin01_sound = new Audio();
+	engin01_sound.src = "./sound/engin01.ogg";
+  window.addEventListener("load",engin01_sound, false); 
+
+
+	//게임 설치 버튼
+	/*
+	기존에 웹 앱이 설치되어 있지 않아야 합니다.
+	30초 이상 웹사이트를 탐색해야 합니다.
+	start_url, short_name, name이 설정되어 있어야 합니다.
+	192px 크기 이상의 앱 아이콘이 설정되어 있어야 합니다.
+	Service Worker의 fetch 이벤트가 구현되어 있어야 합니다.
+	HTTPS로 보안 서비스 되어야 합니다.  
+	출처: https://uxgjs.tistory.com/225 [UX 공작소]
+	*/
+	var deferredPrompt; 
+	
+	window.addEventListener('beforeinstallprompt', function(e) { 
+		console.log('beforeinstallprompt Event fired'); 
+		e.preventDefault();
+		
+		// Stash the event so it can be triggered later. 
+		deferredPrompt = e; 
+
+		return false; 
+	}); // 특정 버튼 클릭 시 설치 시작 
+	
+	btnInstall.addEventListener('click', function() { 
+
+		if(deferredPrompt !== undefined) { 
+			// The user has had a postive interaction with our app and Chrome 
+			// has tried to prompt previously, so let's show the prompt. 
+			deferredPrompt.prompt();
+			
+			// Follow what the user has done with the prompt. 
+			deferredPrompt.userChoice.then(function(choiceResult) { 
+				console.log(choiceResult.outcome); 
+				
+				if(choiceResult.outcome == 'dismissed') { 
+					console.log('User cancelled home screen install'); 
+				} else { 
+					console.log('User added to home screen'); 
+				}
+				// We no longer need the prompt. Clear it up. 
+				
+				deferredPrompt = null; 
+		    });
+		} 
+	});
+	 
+  </script>
+  <!-- <script type="text/javascript" src="./js/hammer.js"></script>   -->
+  <!--<script type="text/javascript" src="./js/Common.js"></script>  -->
+  <script src="stage01.js"></script> 
+  </div>
+ </body> 
+
+</html>

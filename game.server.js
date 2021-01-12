@@ -15,26 +15,50 @@ var i = 0;
 app.use(express.static(__dirname + '/'));
 
 
-server.listen(8088, function() {
+server.listen(2021, function() {
     console.log('Server On !');
 });
 
+var socketList = [];
+
 io.on('connection', function(socket) {  
       
-    //i = i + 1;
+    socketList.push(socket);
+      
 
-    socket.on('SEND', function(msg) {
-        console.log(msg); 
-        i= msg;
-    }); 
+    //신규접속자
+    console.log("[New Client Connected] id : " + socket.id ); 
+    //socket.emit("get_user_data",ls_names);
+    socketList.forEach(function(item, i) {
+        console.log(item.id);
+        //if (item != socket) {
+            item.emit('get_user_data', item.id);
+        //}
+    });
 
-        
-    socket.emit('getusername', "홍길동" + i); 
 
+    //받은메세지
+    socket.on("multi_start",function(id){  
+       
+        // console.log("socket",socket.id);
+   
+        // var ls_send_message = " -> " + send_message;
+       
+        // console.log("[Send Client Message] message : " + ls_send_message);
 
-    // socket.on('disconnect', function() { 
-    //     console.log("사용자 연결 해제");
-    // }); 
+        // socket.emit("get_user_data",ls_names + ls_send_message);
+        console.log("socket.id:",id);
+        socketList.forEach(function(item, i) {
+            console.log(item.id);
+            //if (item != socket) {
+               // var ls_send_message = ls_names + " -> " + send_message;
+                item.emit('mstart', item.id);
+            //}
+        });
+                
+
+    });    
+ 
 
 });
 

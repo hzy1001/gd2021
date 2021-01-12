@@ -12,6 +12,7 @@
 	<link rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad.png">
 	<link rel="apple-touch-icon" sizes="167x167" href="touch-icon-ipad-retina.png">
 	<link rel="apple-touch-icon" sizes="180x180" href="touch-icon-iphone-retina.png">
+	<script src="/socket.io/socket.io.js"></script>
 </head>
 
 <title> 건닷지 2021</title>
@@ -166,8 +167,41 @@ background-position: 50% -5%; */
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="js/Common.js"></script>
 <script type="text/javascript" charset="utf-8">
+ 
+  
+
+//소켓은 emit으로 넘겨서 on으로 받는다
+//var socket = io.connect("//127.0.0.1:9892"); 
+var socket = io();
+var ls_socketid = "";
+console.log("socket",socket);
+//alert(String(socket.id.value))
+
+socket.on("get_user_data",function(id){ 
+	//document.write("신규 접속자<br>" + name + "<br>");
+	var ls_html = "신규 접속자 id :" + id + ",";
+	//$("#text_contents").html(ls_html); 
+	console.log(ls_html)
 
 
+	ls_socketid = id;
+	
+});
+
+
+
+multi.addEventListener('click', function() {
+	 
+		socket.emit("multi_start",ls_socketid);     
+
+})
+ 
+socket.on("mstart",function(id){ 
+	$("#start").click();
+})
+
+ 
+           
 //로드시 PWA구현을 위해 서비스 워커 등록(로딩시 하단에 설치 메세지)
 window.addEventListener('load', ()=>{
 
@@ -297,6 +331,8 @@ $(function(){
 			intro01.play();
 		}
 	};
+
+
 	//$("#start").bind('touchstart', function(e) {
 	//jquery 3.3.1 버젼부터는 클릭(click)과 터치(touchstart) 이벤트가 통합된듯함.
 		start.addEventListener('click', function() {

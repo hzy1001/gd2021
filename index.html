@@ -152,10 +152,10 @@ background-position: 50% -5%; */
 			<!-- Sorry, your browser does not support inline SVG. -->
 		</svg>
 		</div>
-		<div id="start" class="button"  style="position: absolute; top:45%; left:calc(50% - 110px); width:160px; z-index:200;">
+		<div id="start" class="button"  style="position: absolute; top:42%; left:calc(50% - 110px); width:160px; z-index:200;">
 		Single Play
 		</div>
-		<div id="multi" class="button"  style="position: absolute; top:63%; left:calc(50% - 110px); width:160px; z-index:200;">
+		<div id="multi" class="button"  style="position: absolute; top:62%; left:calc(50% - 110px); width:160px; z-index:200;">
 		Multi Play
 		</div>
 		<!-- <div id="option" class="button"  style="position: absolute; top:87%; left:calc(50% - 100px); width:150px; z-index:200;">
@@ -170,35 +170,41 @@ background-position: 50% -5%; */
 <script type="text/javascript" charset="utf-8"> 
   
 
-//소켓은 emit으로 넘겨서 on으로 받는다
-//var socket = io.connect("//127.0.0.1:9892"); 
-var socket = io();
-var ls_socketid = "";
-console.log("socket",socket);
-//alert(String(socket.id.value))
-
-socket.on("get_user_data",function(id){ 
-	//document.write("신규 접속자<br>" + name + "<br>");
-	var ls_html = "신규 접속자 id :" + id + ",";
-	//$("#text_contents").html(ls_html); 
-	console.log(ls_html)
-
-
-	ls_socketid = id;
-	
-});
-
-
-
+//멀티게임 시작
 multi.addEventListener('click', function() {
 	 
+
+
+
+		//소켓은 emit으로 넘겨서 on으로 받는다
+		//var socket = io.connect("//127.0.0.1:9892"); 
+		var socket = io();
+		var ls_socketid = "";
+		console.log("socket",socket);
+		//alert(String(socket.id.value))
+
+		socket.on("get_user_data",function(id){ 
+			//document.write("신규 접속자<br>" + name + "<br>");
+			var ls_html = "신규 접속자 id :" + id + ",";
+			//$("#text_contents").html(ls_html); 
+			console.log(ls_html)
+
+
+			ls_socketid = id;
+			
+		});
+
+
 		socket.emit("multi_start",ls_socketid);     
+
+		socket.on("mstart",function(id){ 
+	
+		$("#start").click();
+})
 
 })
  
-socket.on("mstart",function(id){ 
-	$("#start").click();
-})
+
 
  
            

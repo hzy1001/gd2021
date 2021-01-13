@@ -12,6 +12,7 @@
 	<link rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad.png">
 	<link rel="apple-touch-icon" sizes="167x167" href="touch-icon-ipad-retina.png">
 	<link rel="apple-touch-icon" sizes="180x180" href="touch-icon-iphone-retina.png">
+	<!--노드소켓을 사용할경우만 -->
 	<script src="/socket.io/socket.io.js"></script>
 </head>
 
@@ -136,7 +137,7 @@ background-position: 50% -5%; */
 		    <button id="TColor" class="circle" style="opacity:0.2" ></button>			
 		</div>
 		<div id="title" class="main" style="background:'#5f7a8a';text-align:center; z-index:10; width:96%;">
-		Gun Dodge 2021
+		GD-2021
 		</div>
 		<div id="mark" style="position: absolute; top:calc(60% - 200px); left:calc(50% - 200px); width:500px;">
 		<svg  width="100%" height="335">
@@ -151,10 +152,10 @@ background-position: 50% -5%; */
 			<!-- Sorry, your browser does not support inline SVG. -->
 		</svg>
 		</div>
-		<div id="start" class="button"  style="position: absolute; top:57%; left:calc(50% - 110px); width:160px; z-index:200;">
+		<div id="start" class="button"  style="position: absolute; top:45%; left:calc(50% - 110px); width:160px; z-index:200;">
 		Single Play
 		</div>
-		<div id="multi" class="button"  style="position: absolute; top:76%; left:calc(50% - 110px); width:160px; z-index:200;">
+		<div id="multi" class="button"  style="position: absolute; top:63%; left:calc(50% - 110px); width:160px; z-index:200;">
 		Multi Play
 		</div>
 		<!-- <div id="option" class="button"  style="position: absolute; top:87%; left:calc(50% - 100px); width:150px; z-index:200;">
@@ -166,8 +167,7 @@ background-position: 50% -5%; */
 	<!-- </div> -->
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="js/Common.js"></script>
-<script type="text/javascript" charset="utf-8">
- 
+<script type="text/javascript" charset="utf-8"> 
   
 
 //소켓은 emit으로 넘겨서 on으로 받는다
@@ -386,7 +386,7 @@ $(function(){
 		function startIntro(){
 
 				//전체화면으로 실행
-				toggleFullScreen();
+				//toggleFullScreen();
 
 				// if (IntroSound() != 1)  {
 				// 	return;

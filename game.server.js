@@ -12,6 +12,7 @@ var i = 0;
 // });  
 
 //정적 페이지로 연결되도록 한다.
+//app.use(express.static('정적으로 서비스할 폴더'));
 app.use(express.static(__dirname + '/'));
 
 

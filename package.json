@@ -1,11 +1,19 @@
 {
   "name": "my-gd-package",
-  "version": "1.0.0",
-  "description": "my first pwa test",
-  "main": "dodge.js",
+  "version": "1.0.0", 
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
   "author": "jiyoung",
-  "license": "mou",
+  "license": "ISC",
   "dependencies": {
-    "serve": "^11.3.3"
-  }
+    "-": "0.0.1",
+    "client": "0.0.1",
+    "express": "^4.17.1",
+    "socket.io": "^3.0.4"
+  },
+  "private": true,
+  "devDependencies": {},
+  "description": ""
 }

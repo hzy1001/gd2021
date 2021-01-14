@@ -15,8 +15,10 @@ var i = 0;
 //app.use(express.static('정적으로 서비스할 폴더'));
 app.use(express.static(__dirname + '/'));
 
+//heroku서버에서 제공되는  포트를 자동으로 설정하려면...
+var port = process.env.PORT || 3000;
 
-server.listen(2021, function() {
+server.listen(port, function() {
     console.log('Server On !');
 });
 

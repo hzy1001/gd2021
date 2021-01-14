@@ -6,7 +6,8 @@
     "npm": "6.14.x"
   },  
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node game.server.js"
   },
   "keywords": [],
   "author": "jiyoung",

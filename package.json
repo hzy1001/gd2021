@@ -1,13 +1,14 @@
 {
   "name": "my-gd-package",
   "version": "1.0.0", 
+  "main": "game.server.js",
   "engines": {
     "node": "14.15.x",
     "npm": "6.14.x"
   },  
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node game.server.js"
+    "start": "node game.server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "jiyoung",

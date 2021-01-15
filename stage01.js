@@ -6,6 +6,26 @@
 // 게임 상태값을 저장하는 변수
 //var GameState = GAME_STATE_READY; // 초깃값은 준비 상태
 
+		//소켓은 emit으로 넘겨서 on으로 받는다
+		//var socket = io.connect("//127.0.0.1:9892"); 
+		var socket = io();
+		var ls_socketid = "";
+		console.log("socket",socket);
+		//alert(String(socket.id.value))
+
+		socket.on("get_user_data",function(id){ 
+			//document.write("신규 접속자<br>" + name + "<br>");
+			var ls_html = "신규 접속자 id2 :" + id + ",";
+			//$("#text_contents").html(ls_html); 
+			alert(ls_html);
+			console.log(ls_html)
+
+
+			ls_socketid = id;
+			
+        });
+        
+        
 //게임 진행시 필요한 이벤트 선언
 window.addEventListener("load",drawScreen, false);
 window.addEventListener("keydown",onkeyDown, false);

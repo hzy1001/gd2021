@@ -2943,6 +2943,8 @@ function player_collision(){
 
 
 ////////////////// 화면 로드(게임 프래임 수 만큼)
+//drawScreen 을 소켓의 프로토 타입으로 해서 서버에서  setInterval(drawScreen, 1000/gameFrame) 을 주기적으로 emimt
+//해주면 되지 않을까???
 function drawScreen(){
 
 

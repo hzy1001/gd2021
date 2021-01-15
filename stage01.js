@@ -1,12 +1,19 @@
-﻿/////////////////////////////게임용 캔버스 관련 설정///////////////////////////////////////////
-// var GAME_STATE_READY = 0; // 준비
-// var GAME_STATE_GAME = 1;  // 게임 중
-// var GAME_STATE_OVER = 2;  // 게임 오버
+﻿function LoadJavaScript(src)
+{
+    var el = document.createElement("script");
+    el.setAttribute("src",src);
+    document.getElementsByTagName("head")[0].appendChild(el);
+}
 
-// 게임 상태값을 저장하는 변수
-//var GameState = GAME_STATE_READY; // 초깃값은 준비 상태
+var src = "/socket.io/socket.io.js";
 
-		//소켓은 emit으로 넘겨서 on으로 받는다
+LoadJavaScript(src);
+
+setTimeout(LoadSocket,3000);
+
+function LoadSocket()
+{
+        //소켓은 emit으로 넘겨서 on으로 받는다
 		//var socket = io.connect("//127.0.0.1:9892"); 
 		var socket = io();
 		var ls_socketid = "";
@@ -24,8 +31,17 @@
 			ls_socketid = id;
 			
         });
+}        
         
-        
+
+
+/////////////////////////////게임용 캔버스 관련 설정///////////////////////////////////////////
+// var GAME_STATE_READY = 0; // 준비
+// var GAME_STATE_GAME = 1;  // 게임 중
+// var GAME_STATE_OVER = 2;  // 게임 오버
+
+// 게임 상태값을 저장하는 변수
+//var GameState = GAME_STATE_READY; // 초깃값은 준비 상태 
 //게임 진행시 필요한 이벤트 선언
 window.addEventListener("load",drawScreen, false);
 window.addEventListener("keydown",onkeyDown, false);

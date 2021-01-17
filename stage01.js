@@ -1,39 +1,41 @@
-﻿function LoadJavaScript(src)
+﻿//소켓 연결
+var src = "/socket.io/socket.io.js";
+
+function LoadJavaScript(src)
 {
     var el = document.createElement("script");
     el.setAttribute("src",src);
     document.getElementsByTagName("head")[0].appendChild(el);
 }
 
-var src = "/socket.io/socket.io.js";
-
 LoadJavaScript(src);
 
-setTimeout(LoadSocket,3000);
+setTimeout(LoadSocket,2000);    //소켓 생성까지 약 2초 예상
+
+
+var fgwSocket;
+var MultidrawScreen;
+var ls_socketid;
 
 function LoadSocket()
 {
         //소켓은 emit으로 넘겨서 on으로 받는다
 		//var socket = io.connect("//127.0.0.1:9892"); 
 		var socket = io();
-		var ls_socketid = "";
-		console.log("socket",socket);
-		//alert(String(socket.id.value))
 
-		socket.on("get_user_data",function(id){ 
-			//document.write("신규 접속자<br>" + name + "<br>");
-			var ls_html = "신규 접속자 id2 :" + id + ",";
-			//$("#text_contents").html(ls_html); 
-			alert(ls_html);
-			console.log(ls_html)
-
-
-			ls_socketid = id;
-			
+ 
+        //서버에서 소켓 id를 받는다.
+		socket.on("get_user_data",function(id){  
+        ls_socketid =  id;  
+        //alert(ls_socketid); 
+   
         });
-}        
-        
 
+
+        fgwSocket = socket;
+      
+}    
+ 
 
 /////////////////////////////게임용 캔버스 관련 설정///////////////////////////////////////////
 // var GAME_STATE_READY = 0; // 준비
@@ -554,9 +556,35 @@ function addJavascript(jsname) {
 
 }
 
+
+
 ////////////////// 게임 시작
 function gameStart(as_keycode) { 
 
+
+    //다시 서버로
+    fgwSocket.emit('multi_want',ls_socketid);
+ 
+    fgwSocket.on("MdrawScreen",function(i){  
+
+        //function MdrawScreen(fgwdrawScreen){
+            //alert(id)
+            //this.fgwdrawScreen;
+    
+            //console.log("client:",fgwdrawScreen);
+        //}
+        //alert("id>>>"+i);
+        console.log("i",i)
+        //return;
+
+        gameStart2(as_keycode);
+    })     
+}    
+    
+
+function gameStart2(as_keycode) {     
+
+    //console.log("fgwSocketfgwSocketfgwSocket",fgwSocket)
     //최초 페이지 로드 여부
     //first_load_yn = "N";
  
@@ -576,7 +604,7 @@ function gameStart(as_keycode) {
     //플레이어 변수 초기화
     player_init();
 
-    //적 생성
+    //적 생성 
     create_enemy();
     
     //진행 상태
@@ -585,9 +613,11 @@ function gameStart(as_keycode) {
     //타이머 초기화
     clearInterval(Timer_Id); 
 
-    Timer_Id = setInterval(drawScreen, 1000/gameFrame);   //게임 프레임(gameFrame은  초기 ini_gameFram 설정값)
+    imer_Id = setInterval(drawScreen, 1000/gameFrame);   //게임 프레임(gameFrame은  초기 ini_gameFram 설정값)
+ 
 
-}
+} 
+
 
 
 ////////////////// 게임 종료
@@ -2942,9 +2972,7 @@ function player_collision(){
 } 
 
 
-////////////////// 화면 로드(게임 프래임 수 만큼)
-//drawScreen 을 소켓의 프로토 타입으로 해서 서버에서  setInterval(drawScreen, 1000/gameFrame) 을 주기적으로 emimt
-//해주면 되지 않을까???
+////////////////// 화면 로드(게임 프래임 수 만큼)  
 function drawScreen(){
 
 
@@ -3016,6 +3044,8 @@ function drawScreen(){
         }
      }
 
+
+    ///*
     //플레이어 이동(플레이어는 맨 마지막에 그려준다. 그래야 다른 적들보다 앞에서 보여진다.)
     player_move();
 
@@ -3025,6 +3055,7 @@ function drawScreen(){
              enemy_array[i].weappon_move();
         }
      }
+    //*/
 
     //5초마다 미사일 더생성
     // if(gameTime % 100 === 0){
@@ -3068,7 +3099,23 @@ function drawScreen(){
         Context2.fillText("Ready", (theCanvas.clientWidth - ini_player_width) / 2 - theCanvas.offsetLeft - 100, theCanvas.clientHeight / 2 - theCanvas.offsetTop);
         Context2.font = '30px Arial';
     }
+
+
 }
+
+function MultidrawScreen(){
+
+    // fgwdrawScreen = this;
+    // //console.log("fgwdrawScreen",fgwdrawScreen) 
+    //  //다시 서버로
+    // fgwSocket.emit("multi_start",gameTime); 
+
+
+    this.Multi_id = fgwSocket.id;
+    this.MultidrawScreen = drawScreen();
+
+}
+
 
 ////////////////// 키 다운 이벤트 처리(데스크 탑 이용시)
 function onkeyDown(e, as_strKeyEventValue){

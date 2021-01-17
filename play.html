@@ -251,12 +251,13 @@
 	 
 	}  
 
-    //사이즈 변경시 체크(최초 세로모드에서 가로모드로 전환시 1회만 새로 로드(호출))
+  //사이즈 변경시 체크(최초 세로모드에서 가로모드로 전환시 1회만 새로 로드(호출))
 	window.addEventListener('resize', function () { 
+    
 
-		//if (ls_tmp1 == 1 && ls_tmp2 == 0){   //<= 세로에서 가로로 최초 1회 적용에만 reload하여 resize시 변수 초기화 방지   => 크롬 실행시 가로에서 세로 전환시 주소창 없애기 위해 기존 캠퍼스 사이즈에 + 30 하여 세로 적용.
+		if (ls_tmp1 == 1 && ls_tmp2 == 0){   //<= 세로에서 가로로 최초 1회 적용에만 reload하여 resize시 변수 초기화 방지   => 크롬 실행시 가로에서 세로 전환시 주소창 없애기 위해 기존 캠퍼스 사이즈에 + 30 하여 세로 적용.
 			window.location.reload();    
-		//} 
+		} 
 
 	});
  
@@ -432,6 +433,7 @@
   </script>
   <!-- <script type="text/javascript" src="./js/hammer.js"></script>   -->
   <script type="text/javascript" src="./js/Common.js"></script>  
+  <!-- <script src="socket.js"></script>   -->
   <script src="stage01.js"></script> 
   </div>
  </body> 

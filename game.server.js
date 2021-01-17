@@ -33,7 +33,7 @@ io.on('connection', function(socket) {
     console.log("[New Client Connected] id : " + socket.id ); 
     //socket.emit("get_user_data",ls_names);
     socketList.forEach(function(item, i) {
-        console.log(item.id);
+        console.log("보낸 id:",item.id);
         //if (item != socket) {
             item.emit('get_user_data', item.id);
         //}
@@ -41,26 +41,43 @@ io.on('connection', function(socket) {
 
 
     //받은메세지
-    socket.on("multi_start",function(id){  
+    socket.on("multi_want",function(id){  
        
         // console.log("socket",socket.id);
    
-        // var ls_send_message = " -> " + send_message;
-       
-        // console.log("[Send Client Message] message : " + ls_send_message);
+        console.log("multi_want:" + id) 
 
         // socket.emit("get_user_data",ls_names + ls_send_message);
-        console.log("socket.id:",id);
-        socketList.forEach(function(item, i) {
-            console.log(item.id);
-            //if (item != socket) {
-               // var ls_send_message = ls_names + " -> " + send_message;
-                item.emit('mstart', item.id);
-            //}
-        });
+        //console.log("받은id:",id);
+
+        //if (socketList.length > 0){
+
+
+            socketList.forEach(function(item, i) {
+                
+
+
+                //if (item.id == id) {
+                                
+                    console.log("multi_start"+i,item.id);
+                    item.emit('MdrawScreen', item.id);
+                    //item.emit("multi_start",item.id);
+                    //io.sockets.sockets[socketList[i].id].emit("multi_start",i; 
+                //}
+            });
+        //}
                 
 
     });    
+
+
+    // //받은메세지
+    // socket.on("server_get",function(id){  
+        
+    //     console.log("받은 id:",id); 
+
+    // });    
+
  
 
 });

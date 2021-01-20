@@ -29,12 +29,15 @@ var socketIdList = [];
 io.on('connection', function(socket) {  
     console.log("connection id : " + socket.id );   
 
+    socketList.push(socket); 
+    socketIdList.push(socket.id);   
+    
     //멀티요청
     socket.on('multi_want', function() {  
         console.log("multi_want id : " + socket.id );    
           
-        socketList.push(socket); 
-        socketIdList.push(socket.id);    
+        //socketList.push(socket); 
+        //socketIdList.push(socket.id);    
 
         //intro시작
         //if (socketList.length > 1){        
@@ -51,7 +54,7 @@ io.on('connection', function(socket) {
 
     //멀티시작
     socket.on('multi_start', function() {   
-        console.log("multi_start");
+        console.log("multi_start 접속인원",socketList.length);
 
         //게임시작(1명이상 접속해야 멀티 가능)
         if (socketList.length <= 1){   
@@ -67,6 +70,21 @@ io.on('connection', function(socket) {
             }); 
         }  
     });    
+
+
+    //게임 플레이
+    socket.on('play_game', function() {   
+        console.log("play_game ",socketList.length);
+
+ 
+            socketList.forEach(function(item, i) {  
+                    //if (item != socket) {
+                        item.emit('play_game2', item.id);
+                        console.log('play_game2 id',item.id);
+                    //} 
+            }); 
+   
+    });        
 
     // //접속해제
     // socket.on('disconnect', function() {

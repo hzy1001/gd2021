@@ -12,11 +12,7 @@ function gfwSocket( server_http )
     {
         gfwSocket.socket = io.connect( server_http );
     }, 1000);
-    
-<<<<<<< HEAD
-=======
      
->>>>>>> c2eed8380159c4d6a72ed0bc0976595efa6e63e3
     gfwSocket = this;
 }
 

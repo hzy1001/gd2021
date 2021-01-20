@@ -32,8 +32,9 @@
 			
 //         });
 // }        
+ 
+var src = "/socket.io/socket.io.js";
 
-/*
 function LoadJavaScript(src)
 {
     var el = document.createElement("script");
@@ -43,8 +44,7 @@ function LoadJavaScript(src)
 
 LoadJavaScript(src);
 
-setTimeout(LoadSocket,2000);    //소켓 생성까지 약 2초 예상
-
+setTimeout(LoadSocket,2000);    //소켓 생성까지 약 2초 예상 
 
 var fgwSocket;
 var MultidrawScreen;
@@ -54,18 +54,78 @@ function LoadSocket()
 {
         //소켓은 emit으로 넘겨서 on으로 받는다
 		//var socket = io.connect("//127.0.0.1:9892"); 
-		var socket = io();
-
- 
-        //서버에서 소켓 id를 받는다.
-		socket.on("get_user_data",function(id){  
-        ls_socketid =  id;  
-        //alert(ls_socketid); 
+        var socket = io(); 
+        
+        // //서버에서 소켓 id를 받는다.
+		// socket.on("get_user_data",function(id){  
+        // ls_socketid =  id;  
+        // //alert(ls_socketid); 
    
-        }); 
+        // }); 
+
+
+        //멀티게임 시작
+        //var socket;
+        //socket = io();   //io()를 호출하는 순간 서버의 접속(connection 호출)된다. 
+        
+        socket.emit("multi_start",function(){ 
+
+            socket.on("ready_game",function(ready_cnt){ 
+
+                alert("멀티게임은 접속 대기중...\n현재 접속인원 : " + ready_cnt); 
+
+            });   
+
+                //접속자가 없으면 계속 서버에 접속했는지 확인
+                if (ready_cnt < 2) {
+                    //다시 접속자 조회
+                    socket.emit("multi_start",function(ready_cnt){ 
+                        return;
+                    });     
+                }else {
+                    as_keycode = 13;
+                    gameStart(as_keycode)                        
+                    // socket.on("start_game",function(id){ 
+
+                    //     if(confirm("접속을 수락하시겠습니까?")){ 
+                    //         as_keycode = 13;
+                    //         gameStart(as_keycode) 
+
+                    //     }else {
+
+                    //         return;
+                    //     }
+                
+                    // });  
+                } 
+                            
+        });   
+
+        socket.on("start_game",function(id){ 
+
+            if(confirm("멀티 접속을 수락하시겠습니까?")){ 
+                //as_keycode = 13;
+                //gameStart(as_keycode)
+
+                socket.emit("play_game",function(){ 
+
+                })
+
+            }else {
+
+                return;
+            }
+    
+        });   
+        
+        socket.on("play_game2",function(id){ 
+            
+                as_keycode = 13;
+                gameStart(as_keycode) 
+        })
 }    
-*/
  
+
 
 /////////////////////////////게임용 캔버스 관련 설정///////////////////////////////////////////
 // var GAME_STATE_READY = 0; // 준비
@@ -591,7 +651,7 @@ function addJavascript(jsname) {
 ////////////////// 게임 시작
 function gameStart(as_keycode) { 
 
-
+    /*
     //다시 서버로
     fgwSocket.emit('multi_want',ls_socketid);
  
@@ -608,11 +668,12 @@ function gameStart(as_keycode) {
         //return;
 
         gameStart2(as_keycode);
-    })     
+    }) 
+    */    
 }    
     
 
-function gameStart2(as_keycode) {     
+function gameStart(as_keycode) {     
 
     //console.log("fgwSocketfgwSocketfgwSocket",fgwSocket)
     //최초 페이지 로드 여부

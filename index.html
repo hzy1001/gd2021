@@ -13,7 +13,7 @@
 	<link rel="apple-touch-icon" sizes="167x167" href="touch-icon-ipad-retina.png">
 	<link rel="apple-touch-icon" sizes="180x180" href="touch-icon-iphone-retina.png">
 	<!--노드소켓을 사용할경우만 -->
-	<script src="/socket.io/socket.io.js"></script>
+	<!-- <script src="/socket.io/socket.io.js"></script> -->
 </head>
 
 <title> 건닷지 2021</title>
@@ -170,6 +170,8 @@ background-position: 50% -5%; */
 <!-- <script src="socket.js"></script> -->
 <script type="text/javascript" charset="utf-8"> 
 
+/******
+ 
 //멀티게임 시작
 var socket;
 socket = io();   //io()를 호출하는 순간 서버의 접속(connection 호출)된다. 
@@ -177,6 +179,8 @@ socket = io();   //io()를 호출하는 순간 서버의 접속(connection 호�
 //new gfwSocket("");
   
 multi.addEventListener('click', function() {  
+
+	//socket = io();   //io()를 호출하는 순간 서버의 접속(connection 호출)된다. 
 
 		//socket = io();  
 		//new gfwSocket("");
@@ -211,10 +215,21 @@ multi.addEventListener('click', function() {
 		//접속자가 없으면 계속 서버에 접속했는지 확인
 		if (ready_cnt < 2) {
 			socket.emit("multi_start",function(ready_cnt){ 
+				event.stopImmediatePropagation();  //부모에게는 어떠한 이벤트도 버블링되지 않으면서 다른 클릭 이벤트도 실행되지 않습니다. 단, 다른 종류의 이벤트(마우스 오버 등)는 막지 못합니다.
 				return;
-			});    
+			});     
+		}else {
+			if(confirm("접속을 수락하시겠습니까?")){
 
-			return;
+				socket.emit("multi_start",function(){
+				return;
+				});    
+
+			}else {
+				event.stopImmediatePropagation();
+				return;
+			}
+
 		}
 
 	});  
@@ -232,6 +247,8 @@ multi.addEventListener('click', function() {
 	});  	
 
 //}
+
+******/
            
 //로드시 PWA구현을 위해 서비스 워커 등록(로딩시 하단에 설치 메세지)
 window.addEventListener('load', ()=>{

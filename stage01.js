@@ -1,37 +1,37 @@
-﻿function LoadJavaScript(src)
-{
-    var el = document.createElement("script");
-    el.setAttribute("src",src);
-    document.getElementsByTagName("head")[0].appendChild(el);
-}
+﻿// function LoadJavaScript(src)
+// {
+//     var el = document.createElement("script");
+//     el.setAttribute("src",src);
+//     document.getElementsByTagName("head")[0].appendChild(el);
+// }
 
-var src = "/socket.io/socket.io.js";
+// var src = "/socket.io/socket.io.js";
 
-LoadJavaScript(src);
+// LoadJavaScript(src);
 
-setTimeout(LoadSocket,3000);
+// setTimeout(LoadSocket,3000);
 
-function LoadSocket()
-{
-        //소켓은 emit으로 넘겨서 on으로 받는다
-		//var socket = io.connect("//127.0.0.1:9892"); 
-		var socket = io();
-		var ls_socketid = "";
-		console.log("socket",socket);
-		//alert(String(socket.id.value))
+// function LoadSocket()
+// {
+//         //소켓은 emit으로 넘겨서 on으로 받는다
+// 		//var socket = io.connect("//127.0.0.1:9892"); 
+// 		var socket = io();
+// 		var ls_socketid = "";
+// 		console.log("socket",socket);
+// 		//alert(String(socket.id.value))
 
-		socket.on("get_user_data",function(id){ 
-			//document.write("신규 접속자<br>" + name + "<br>");
-			var ls_html = "신규 접속자 id2 :" + id + ",";
-			//$("#text_contents").html(ls_html); 
-			alert(ls_html);
-			console.log(ls_html)
+// 		socket.on("get_user_data",function(id){ 
+// 			//document.write("신규 접속자<br>" + name + "<br>");
+// 			var ls_html = "신규 접속자 id2 :" + id + ",";
+// 			//$("#text_contents").html(ls_html); 
+// 			alert(ls_html);
+// 			console.log(ls_html)
 
 
-			ls_socketid = id;
+// 			ls_socketid = id;
 			
-        });
-}        
+//         });
+// }        
         
 
 

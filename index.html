@@ -167,47 +167,71 @@ background-position: 50% -5%; */
 	<!-- </div> -->
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="js/Common.js"></script>
+<!-- <script src="socket.js"></script> -->
 <script type="text/javascript" charset="utf-8"> 
-  
 
 //멀티게임 시작
-multi.addEventListener('click', function() {
-	 
+var socket;
+socket = io();   //io()를 호출하는 순간 서버의 접속(connection 호출)된다. 
+//new gfwSocket("http://127.0.0.1:9892");
+//new gfwSocket("");
+  
+multi.addEventListener('click', function() {  
+
+		//socket = io();  
+		//new gfwSocket("");
+
+		socket.emit("multi_want",function(){
+			return;
+		});   
+
+		socket.on("start_intro",function(id){ 
+			//alert("start_intro:"+id)
+			$("#start").click();  
+		});  	
+		
+		//fn_start_intro();
+		
+})  
+
+//function fn_start_intro(){
+	//$("#totIntro").click(function(){
+	totIntro.addEventListener('click', function() {  
+
+			//alert("multi_start")
+			socket.emit("multi_start",function(){
+				return;
+			});    
+	}); 
+
+	socket.on("ready_game",function(ready_cnt){ 
+
+		alert("멀티게임은 접속 대기중...\n현재 접속인원 : " + ready_cnt);
+
+		//접속자가 없으면 계속 서버에 접속했는지 확인
+		if (ready_cnt < 2) {
+			socket.emit("multi_start",function(ready_cnt){ 
+				return;
+			});    
+
+			return;
+		}
+
+	});  
 
 
+	socket.on("start_game",function(id){ 
 
-		//소켓은 emit으로 넘겨서 on으로 받는다
-		//var socket = io.connect("//127.0.0.1:9892"); 
-		var socket = io();
-		var ls_socketid = "";
-		console.log("socket",socket);
-		//alert(String(socket.id.value))
+		//alert("start_game:"+id);
+		$(".main").fadeOut( "slow", function() { 
 
-		socket.on("get_user_data",function(id){ 
-			//document.write("신규 접속자<br>" + name + "<br>");
-			var ls_html = "신규 접속자 id :" + id + ",";
-			//$("#text_contents").html(ls_html); 
-			alert(ls_html);
-			console.log(ls_html)
+			window.location = 'play.html';
 
+		})
 
-			ls_socketid = id;
-			
-		});
+	});  	
 
-
-		socket.emit("multi_start",ls_socketid);     
-
-		socket.on("mstart",function(id){ 
-	
-		$("#start").click();
-})
-
-})
- 
-
-
- 
+//}
            
 //로드시 PWA구현을 위해 서비스 워커 등록(로딩시 하단에 설치 메세지)
 window.addEventListener('load', ()=>{
@@ -393,7 +417,7 @@ $(function(){
 		function startIntro(){
 
 				//전체화면으로 실행
-				toggleFullScreen();
+				//toggleFullScreen();
 
 				// if (IntroSound() != 1)  {
 				// 	return;
@@ -461,7 +485,7 @@ $(function(){
 				totIntro.addEventListener('click', function() {
 
 					$(".main").fadeOut( "slow", function() {
-
+  
 
 						window.location = 'play.html';
 

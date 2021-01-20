@@ -23,46 +23,56 @@ server.listen(port, function() {
 });
 
 var socketList = [];
+var socketIdList = [];
 
+//신규접속
 io.on('connection', function(socket) {  
-      
-    socketList.push(socket);
-      
+    console.log("connection id : " + socket.id );   
 
-    //신규접속자
-    console.log("[New Client Connected] id : " + socket.id ); 
-    //socket.emit("get_user_data",ls_names);
-    socketList.forEach(function(item, i) {
-        console.log(item.id);
-        //if (item != socket) {
-            item.emit('get_user_data', item.id);
+    //멀티요청
+    socket.on('multi_want', function() {  
+        console.log("multi_want id : " + socket.id );    
+          
+        socketList.push(socket); 
+        socketIdList.push(socket.id);    
+
+        //intro시작
+        //if (socketList.length > 1){        
+        //    socketList.forEach(function(item, i) {  
+                    //if (item != socket) {
+                      
+                        socket.emit('start_intro',{ id: socket.id });    
+                        console.log('start_intro',socket.id);                  
+                    //} 
+        //    }); 
         //}
+            
     });
 
+    //멀티시작
+    socket.on('multi_start', function() {   
+        console.log("multi_start");
 
-    //받은메세지
-    socket.on("multi_start",function(id){  
-       
-        // console.log("socket",socket.id);
-   
-        // var ls_send_message = " -> " + send_message;
-       
-        // console.log("[Send Client Message] message : " + ls_send_message);
-
-        // socket.emit("get_user_data",ls_names + ls_send_message);
-        console.log("socket.id:",id);
-        socketList.forEach(function(item, i) {
-            console.log(item.id);
-            //if (item != socket) {
-               // var ls_send_message = ls_names + " -> " + send_message;
-                item.emit('mstart', item.id);
-            //}
-        });
-                
-
+        //게임시작(1명이상 접속해야 멀티 가능)
+        if (socketList.length <= 1){   
+            console.log('ready_game',socketList.length);
+            socket.emit('ready_game', socketList.length);
+        
+        }else {
+            socketList.forEach(function(item, i) {  
+                    if (item != socket) {
+                        item.emit('start_game', item.id);
+                        console.log('start_game id',item.id);
+                    } 
+            }); 
+        }  
     });    
- 
 
+    // //접속해제
+    // socket.on('disconnect', function() {
+    //     console.log('disconnect id',socket.id);
+    //     socketList.splice(socketList.indexOf(socket), 1);
+    // });     
 });
 
 // function Player(id)

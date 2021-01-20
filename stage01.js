@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ﻿// function LoadJavaScript(src)
 // {
 //     var el = document.createElement("script");
@@ -33,11 +32,8 @@
 			
 //         });
 // }        
-        
-=======
-﻿//소켓 연결
-var src = "/socket.io/socket.io.js";
 
+/*
 function LoadJavaScript(src)
 {
     var el = document.createElement("script");
@@ -66,13 +62,9 @@ function LoadSocket()
         ls_socketid =  id;  
         //alert(ls_socketid); 
    
-        });
->>>>>>> c2eed8380159c4d6a72ed0bc0976595efa6e63e3
-
-
-        fgwSocket = socket;
-      
+        }); 
 }    
+*/
  
 
 /////////////////////////////게임용 캔버스 관련 설정///////////////////////////////////////////

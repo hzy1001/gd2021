@@ -171,7 +171,6 @@ background-position: 50% -5%; */
 <script type="text/javascript" charset="utf-8"> 
 
 //멀티게임 시작
-<<<<<<< HEAD
 var socket;
 socket = io();   //io()를 호출하는 순간 서버의 접속(connection 호출)된다. 
 //new gfwSocket("http://127.0.0.1:9892");
@@ -198,28 +197,6 @@ multi.addEventListener('click', function() {
 //function fn_start_intro(){
 	//$("#totIntro").click(function(){
 	totIntro.addEventListener('click', function() {  
-=======
-multi.addEventListener('click', function() {
-
-	// //소켓은 emit으로 넘겨서 on으로 받는다
-	// //var socket = io.connect("//127.0.0.1:9892"); 
-	// var socket = io();
-	// var ls_socketid = "";
-	// console.log("socket",socket);
-	// //alert(String(socket.id.value))
-
-	// socket.on("get_user_data",function(id){ 
-	// 	//document.write("신규 접속자<br>" + name + "<br>");
-	// 	var ls_html = "신규 접속자 id :" + id + ",";
-	// 	//$("#text_contents").html(ls_html); 
-	// 	//alert(ls_html);
-	// 	console.log(ls_html)
-
-
-	// 	ls_socketid = id;
-		
-	// });
->>>>>>> c2eed8380159c4d6a72ed0bc0976595efa6e63e3
 
 			//alert("multi_start")
 			socket.emit("multi_start",function(){
@@ -227,7 +204,6 @@ multi.addEventListener('click', function() {
 			});    
 	}); 
 
-<<<<<<< HEAD
 	socket.on("ready_game",function(ready_cnt){ 
 
 		alert("멀티게임은 접속 대기중...\n현재 접속인원 : " + ready_cnt);
@@ -240,15 +216,6 @@ multi.addEventListener('click', function() {
 
 			return;
 		}
-=======
-	// socket.emit("multi_start",ls_socketid);     
-
-	// socket.on("mstart",function(id){ 
-
-
-		$("#start").click();
-	//})
->>>>>>> c2eed8380159c4d6a72ed0bc0976595efa6e63e3
 
 	});  
 
@@ -497,7 +464,7 @@ $(function(){
 				setTimeout(function() {
 					$(".main").fadeOut( "slow", function() {
 						$("#imgIntro").attr("src","./img/intro04.jpg");
-						$("#infoText").html("이에 우주 연방군 최고 사령관 코맨더 Moon은 비밀리에 작적 성공의 핵심인 M.A.I의<br>파괴를 명한다.");
+						$("#infoText").html("이에 우주 연방군 최고 에이스인 코맨더 Moon은 비밀리에 작적 성공의 핵심인 M.A.I의<br>파괴를 명받는다.");
 					})
 				}, 15000);
 
@@ -505,7 +472,7 @@ $(function(){
 					$(".main").fadeOut( "slow", function() {
 						$("#imgIntro").attr("src","./img/intro05.jpg");
 						//화이자, 모더나, 아스트라제네카
-						$("#infoText").html("이에 연방군 최고 에이스 Leekey는 전투 병기 화이자를 몰고<br>출격 하지만 이를 가로막는 좀비 드론들의 거센 공격을 받기 시작하는데...");
+						$("#infoText").html("Moon은 즉각 연방군 최신 전투 병기 화이자에 탑승하고 출격을 시작하지만<br>이를 가로막는 드론들의 거센 공격을 받기 시작하는데...");
 					})
 				}, 20000);
 

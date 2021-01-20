@@ -27,7 +27,6 @@ var socketIdList = [];
 
 //신규접속
 io.on('connection', function(socket) {  
-<<<<<<< HEAD
     console.log("connection id : " + socket.id );   
 
     //멀티요청
@@ -46,24 +45,10 @@ io.on('connection', function(socket) {
                         console.log('start_intro',socket.id);                  
                     //} 
         //    }); 
-=======
-      
-    socketList.push(socket);
-      
-
-    //신규접속자
-    console.log("[New Client Connected] id : " + socket.id ); 
-    //socket.emit("get_user_data",ls_names);
-    socketList.forEach(function(item, i) {
-        console.log("보낸 id:",item.id);
-        //if (item != socket) {
-            item.emit('get_user_data', item.id);
->>>>>>> c2eed8380159c4d6a72ed0bc0976595efa6e63e3
         //}
             
     });
 
-<<<<<<< HEAD
     //멀티시작
     socket.on('multi_start', function() {   
         console.log("multi_start");
@@ -82,48 +67,6 @@ io.on('connection', function(socket) {
             }); 
         }  
     });    
-=======
-
-    //받은메세지
-    socket.on("multi_want",function(id){  
-       
-        // console.log("socket",socket.id);
-   
-        console.log("multi_want:" + id) 
-
-        // socket.emit("get_user_data",ls_names + ls_send_message);
-        //console.log("받은id:",id);
-
-        //if (socketList.length > 0){
-
-
-            socketList.forEach(function(item, i) {
-                
-
-
-                //if (item.id == id) {
-                                
-                    console.log("multi_start"+i,item.id);
-                    item.emit('MdrawScreen', item.id);
-                    //item.emit("multi_start",item.id);
-                    //io.sockets.sockets[socketList[i].id].emit("multi_start",i; 
-                //}
-            });
-        //}
-                
-
-    });    
-
-
-    // //받은메세지
-    // socket.on("server_get",function(id){  
-        
-    //     console.log("받은 id:",id); 
-
-    // });    
-
- 
->>>>>>> c2eed8380159c4d6a72ed0bc0976595efa6e63e3
 
     // //접속해제
     // socket.on('disconnect', function() {

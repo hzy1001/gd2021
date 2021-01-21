@@ -7,6 +7,7 @@ var socket = require('socket.io');   //소켓 IO
 var io = socket(server);             //웹서버를 탑제한 소켓 IO
 var i = 0;
 
+
 // app.use('/', function(req, resp) {   //익스프레스 라우팅
 //     resp.sendFile(__dirname + '/index.html');
 // });  
@@ -27,7 +28,8 @@ var socketIdList = [];
 
 //신규접속
 io.on('connection', function(socket) {  
-    console.log("connection id : " + socket.id );   
+    console.log("connection id : " + socket.id );    
+
 
     socketList.push(socket); 
     socketIdList.push(socket.id);   
@@ -74,24 +76,66 @@ io.on('connection', function(socket) {
 
     //게임 플레이
     socket.on('play_game', function() {   
-        console.log("play_game ",socketList.length);
+        console.log("play_game ",socketList.length); 
 
- 
+
             socketList.forEach(function(item, i) {  
                     //if (item != socket) {
                         item.emit('play_game2', item.id);
                         console.log('play_game2 id',item.id);
+                
                     //} 
-            }); 
-   
+            });  
     });        
 
     // //접속해제
     // socket.on('disconnect', function() {
     //     console.log('disconnect id',socket.id);
     //     socketList.splice(socketList.indexOf(socket), 1);
-    // });     
+    // });    
+    
+
+    //이러게 하니깐 부하많이걸림
+    /*
+    setInterval(serverFrame, 1000/60);
+    
+    var server_i = 0;
+
+    function serverFrame(){
+        server_i++;
+        console.log("server_i : ", server_i)
+        //socket.emit('serverFrame', server_i);
+        //socket.emit('serverFrame', function(){
+
+            socketList.forEach(function(item, i) {  
+                //if (item != socket) {
+                    item.emit('serverFrame', server_i);
+            
+                //} 
+            });      
+    }   
+    */
+   
+    // 클라이언트에서 받은다음 보내주면.... ==> 이것도 부하가 많이걸리지만 위보다는 적은거 같음.
+    var server_i = 0; 
+
+    socket.on('clientFrame', function(gameTime) {   
+ 
+            //server_i++; 
+
+            console.log("server_i : ", gameTime)
+
+            socketList.forEach(function(item, i) {  
+                //if (item != socket) {
+                    item.emit('serverFrame', gameTime);
+            
+                //} 
+            });       
+        
+    });    
 });
+
+
 
 // function Player(id)
 // {

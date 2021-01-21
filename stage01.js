@@ -16,26 +16,45 @@ setTimeout(LoadSocket,2000);    //소켓 생성까지 약 2초 예상
 var fgwSocket;
 var MultidrawScreen;
 var ls_socketid;
+var ls_socket_cnt = 0;
 
 function LoadSocket()
 {
         //소켓은 emit으로 넘겨서 on으로 받는다
 		//var socket = io.connect("//127.0.0.1:9892"); 
-		var socket = io();
-
- 
+		var socket = io(); 
         //서버에서 소켓 id를 받는다.
-		socket.on("get_user_data",function(id){  
-        ls_socketid =  id;  
-        //alert(ls_socketid); 
+		socket.on("get_user_data",function(cnt){  
+
+            ls_socket_cnt = cnt;
+            
+
+            //alert(ls_socket_cnt); 
+
+             if (ls_socket_cnt > 1){
+                
+                if(confirm("멀티하시겠습니까?")){
+                    multi_start(socket);
+                }
+            }             
    
         });
-
-
-        fgwSocket = socket;
+ 
+        //fgwSocket = socket; 
       
 }    
  
+function multi_start(socket){
+
+    socket.emit('multi_want',socket.id);            
+
+    socket.on("multi_start",function(){  
+
+        alert("gameStart")
+        gameStart(as_keycode);
+
+    });         
+}
 
 /////////////////////////////게임용 캔버스 관련 설정///////////////////////////////////////////
 // var GAME_STATE_READY = 0; // 준비
@@ -554,36 +573,14 @@ function addJavascript(jsname) {
 	s.setAttribute('src',jsname);
 	th.appendChild(s);
 
-}
+} 
 
-
-
-////////////////// 게임 시작
-function gameStart(as_keycode) { 
-
-
-    //다시 서버로
-    fgwSocket.emit('multi_want',ls_socketid);
  
-    fgwSocket.on("MdrawScreen",function(i){  
-
-        //function MdrawScreen(fgwdrawScreen){
-            //alert(id)
-            //this.fgwdrawScreen;
-    
-            //console.log("client:",fgwdrawScreen);
-        //}
-        //alert("id>>>"+i);
-        console.log("i",i)
-        //return;
-
-        gameStart2(as_keycode);
-    })     
-}    
+function gameStart(as_keycode){ 
     
 
-function gameStart2(as_keycode) {     
-
+//function gameStart2(as_keycode) {     
+ 
     //console.log("fgwSocketfgwSocketfgwSocket",fgwSocket)
     //최초 페이지 로드 여부
     //first_load_yn = "N";
@@ -3103,18 +3100,18 @@ function drawScreen(){
 
 }
 
-function MultidrawScreen(){
+// function MultidrawScreen(){
 
-    // fgwdrawScreen = this;
-    // //console.log("fgwdrawScreen",fgwdrawScreen) 
-    //  //다시 서버로
-    // fgwSocket.emit("multi_start",gameTime); 
+//     // fgwdrawScreen = this;
+//     // //console.log("fgwdrawScreen",fgwdrawScreen) 
+//     //  //다시 서버로
+//     // fgwSocket.emit("multi_start",gameTime); 
 
 
-    this.Multi_id = fgwSocket.id;
-    this.MultidrawScreen = drawScreen();
+//     this.Multi_id = fgwSocket.id;
+//     this.MultidrawScreen = drawScreen();
 
-}
+// }
 
 
 ////////////////// 키 다운 이벤트 처리(데스크 탑 이용시)

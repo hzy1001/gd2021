@@ -12,7 +12,6 @@ function gfwSocket( server_http )
     {
         gfwSocket.socket = io.connect( server_http );
     }, 1000);
-    
      
     gfwSocket = this;
 }

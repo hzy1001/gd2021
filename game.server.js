@@ -7,6 +7,7 @@ var socket = require('socket.io');   //소켓 IO
 var io = socket(server);             //웹서버를 탑제한 소켓 IO
 var i = 0;
 
+
 // app.use('/', function(req, resp) {   //익스프레스 라우팅
 //     resp.sendFile(__dirname + '/index.html');
 // });  
@@ -23,57 +24,118 @@ server.listen(port, function() {
 });
 
 var socketList = [];
+var socketIdList = [];
 
+//신규접속
 io.on('connection', function(socket) {  
-      
+    console.log("connection id : " + socket.id );    
+
+
     socketList.push(socket); 
-  
-    //socketList.forEach(function(item, i) {
-      //  console.log("신규 접속 id:",item.id);
-        //if (item != socket) {
-            socket.emit('get_user_data',socketList.length);
+    socketIdList.push(socket.id);   
+    
+    //멀티요청
+    socket.on('multi_want', function() {  
+        console.log("multi_want id : " + socket.id );    
+          
+        //socketList.push(socket); 
+        //socketIdList.push(socket.id);    
+
+        //intro시작
+        //if (socketList.length > 1){        
+        //    socketList.forEach(function(item, i) {  
+                    //if (item != socket) {
+                      
+                        socket.emit('start_intro',{ id: socket.id });    
+                        console.log('start_intro',socket.id);                  
+                    //} 
+        //    }); 
         //}
-    //});
-
-    console.log("신규 접속자 수:",socketList.length);
-
-
-    socket.on('disconnect', function() {
-        socketList.splice(socketList.indexOf(socket), 1);
+            
     });
 
-    //받은메세지
-    socket.on("multi_want",function(id){   
-   
-        console.log("multi_want:" + id) 
- 
-        //if (socketList.length > 0){ 
+    //멀티시작
+    socket.on('multi_start', function() {   
+        console.log("multi_start 접속인원",socketList.length);
 
-            socketList.forEach(function(item, i) { 
-
-                if (item != socket) {
-                                
-                    console.log("multi_start"+i,item.id);
-                    item.emit('multi_start', item.id);
-                    //item.emit("multi_start",item.id);
-                    //io.sockets.sockets[socketList[i].id].emit("multi_start",i; 
-                }
-            });
-        //} 
-
+        //게임시작(1명이상 접속해야 멀티 가능)
+        if (socketList.length <= 1){   
+            console.log('ready_game',socketList.length);
+            socket.emit('ready_game', socketList.length);
+        
+        }else {
+            socketList.forEach(function(item, i) {  
+                    if (item != socket) {
+                        item.emit('start_game', item.id);
+                        console.log('start_game id',item.id);
+                    } 
+            }); 
+        }  
     });    
 
 
-    // //받은메세지
-    // socket.on("server_get",function(id){  
-        
-    //     console.log("받은 id:",id); 
+    //게임 플레이
+    socket.on('play_game', function() {   
+        console.log("play_game ",socketList.length); 
 
+
+            socketList.forEach(function(item, i) {  
+                    //if (item != socket) {
+                        item.emit('play_game2', item.id);
+                        console.log('play_game2 id',item.id);
+                
+                    //} 
+            });  
+    });        
+
+    // //접속해제
+    // socket.on('disconnect', function() {
+    //     console.log('disconnect id',socket.id);
+    //     socketList.splice(socketList.indexOf(socket), 1);
     // });    
+    
 
+    //이러게 하니깐 부하많이걸림
+    /*
+    setInterval(serverFrame, 1000/60);
+    
+    var server_i = 0;
+
+    function serverFrame(){
+        server_i++;
+        console.log("server_i : ", server_i)
+        //socket.emit('serverFrame', server_i);
+        //socket.emit('serverFrame', function(){
+
+            socketList.forEach(function(item, i) {  
+                //if (item != socket) {
+                    item.emit('serverFrame', server_i);
+            
+                //} 
+            });      
+    }   
+    */
+   
+    // 클라이언트에서 받은다음 보내주면.... ==> 이것도 부하가 많이걸리지만 위보다는 적은거 같음.
+    var server_i = 0; 
+
+    socket.on('clientFrame', function(gameTime) {   
  
+            //server_i++; 
 
+            console.log("server_i : ", gameTime)
+
+            socketList.forEach(function(item, i) {  
+                //if (item != socket) {
+                    item.emit('serverFrame', gameTime);
+            
+                //} 
+            });       
+        
+    });    
 });
+
+
 
 // function Player(id)
 // {

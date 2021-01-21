@@ -126,6 +126,7 @@ io.on('connection', function(socket) {
             console.log("server_i : ", gameTime)
 
             socketList.forEach(function(item, i) {  
+                //모든 클라이언트 공용
                 //if (item != socket) {
                     item.emit('serverFrame', gameTime);
             

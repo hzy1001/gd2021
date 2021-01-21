@@ -14,7 +14,7 @@ setTimeout(LoadSocket,2000);    //소켓 생성까지 약 2초 예상
 var fgwSocket;
 var MultidrawScreen;
 var ls_socketid;
-var serverI;
+var serverTime = 0;
 
 function LoadSocket()
 {
@@ -72,18 +72,17 @@ function LoadSocket()
     
         });   
         
-        socket.on("play_game2",function(server_i){ 
+        socket.on("play_game2",function(id){ 
             
                 as_keycode = 13;
                 gameStart(as_keycode);
-                serverI = server_i; 
         })   
      
 
-        socket.on("serverFrame",function(serverI){ 
+        socket.on("serverFrame",function(time){ 
                 
-
-            console.log("serverI >>>>>>>>>>>>>>>>>>>.", serverI);
+            serverTime = time;
+            console.log("serverTime >>>>>>>>>>>>>>>>>>>.", serverTime);
         })  
 
 
@@ -1737,7 +1736,8 @@ function LoadSocket()
     function game_background(){
 
         //시간이 흐름에 따라 게임 타겟 방향 좌표 이동
-        gameTime++;         //시간 증가
+        //gameTime++;         //시간 증가
+        gameTime = serverTime;
         gameScore++;
         back_distance = back_distance + Pspeed*5;    //백그라운드 라인이 밖으로 나가면 다시 초기화(플레이어 속도만큼 더 빨리 진행)
 
@@ -3024,16 +3024,8 @@ function LoadSocket()
 
 
     ////////////////// 화면 로드(게임 프래임 수 만큼)  
-    var clientI = 100;
-    function drawScreen(){
-
-        clientI++;
-        //서버로 전송
-        // socket.emit("clientFrame",function(m){ 
-        //     console.log("서버로 전송"); 
-        // });   
-        console.log("clientI >>>>>>>>>>>>>>>>>>>.", clientI);
-        socket.emit("clientFrame",clientI);          
+    var clientTime = 0;
+    function drawScreen(){     
 
         //게임 진행 컨텍스트(레이어)
         Context.fillStyle = "#000000";
@@ -3159,6 +3151,13 @@ function LoadSocket()
             Context2.font = '30px Arial';
         }
 
+        clientTime++;
+        //서버로 전송
+        // socket.emit("clientFrame",function(m){ 
+        //     console.log("서버로 전송"); 
+        // });   
+        console.log("clientTime >>>>>>>>>>>>>>>>>>>.", clientTime);
+        socket.emit("clientFrame",clientTime);     
 
     }
     

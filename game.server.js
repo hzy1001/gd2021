@@ -73,11 +73,10 @@ io.on('connection', function(socket) {
         }  
     });    
 
-
+    var serverTime = 0;    
     //게임 플레이
     socket.on('play_game', function() {   
-        console.log("play_game ",socketList.length); 
-
+        console.log("play_game ",socketList.length);  
 
             socketList.forEach(function(item, i) {  
                     //if (item != socket) {
@@ -85,58 +84,74 @@ io.on('connection', function(socket) {
                         console.log('play_game2 id',item.id);
                 
                     //} 
-            });  
-    });        
 
-    // //접속해제
-    // socket.on('disconnect', function() {
-    //     console.log('disconnect id',socket.id);
-    //     socketList.splice(socketList.indexOf(socket), 1);
-    // });    
-    
+                                //이러게 하니깐 부하많이걸림
+                    setInterval(serverFrame, 1000/10);
+                    
+                    //serverTime = 0;  
+            });  
+
+          
+    });      
 
     //이러게 하니깐 부하많이걸림
-    /*
-    setInterval(serverFrame, 1000/60);
+    setInterval(serverFrame, 1000/10);
     
-    var server_i = 0;
+    //var serverTime = 0;
 
     function serverFrame(){
-        server_i++;
-        console.log("server_i : ", server_i)
+
+        serverTime++;
+
+        console.log("serverFrame : ", serverTime)
         //socket.emit('serverFrame', server_i);
         //socket.emit('serverFrame', function(){
-
+            socket.emit('serverFrame', serverTime);
             socketList.forEach(function(item, i) {  
                 //if (item != socket) {
-                    item.emit('serverFrame', server_i);
+                    item.emit('serverFrame', serverTime);
             
                 //} 
             });      
     }   
-    */
-   
-    // 클라이언트에서 받은다음 보내주면.... ==> 이것도 부하가 많이걸리지만 위보다는 적은거 같음.
-    var server_i = 0; 
 
-    socket.on('clientFrame', function(gameTime) {   
+    /*
+    // 클라이언트에서 받은다음 보내주면.... ==> 이것도 부하가 많이걸리지만 위보다는 적은거 같음. 
+    var serverTime = 0;
+    socket.on('clientFrame', function(multiTime) {   
+            //시간은 현재 접속된 첫번째 소켓 기준으로 증가
  
-            //server_i++; 
+            //console.log("serverFrame : ", multiTime)
 
-            console.log("server_i : ", gameTime)
+            serverTime++;
 
-            socketList.forEach(function(item, i) {  
-                //모든 클라이언트 공용
-                //if (item != socket) {
-                    item.emit('serverFrame', gameTime);
-            
-                //} 
-            });       
+            // socketList.forEach(function(item, i) {  
+
+            //     //모든 클라이언트 공용
+            //     item.emit('serverFrame', serverTime);    
+            // });       
+
+      
+            console.log("serverFrame : ", serverTime)
+
+            //socket.emit('serverFrame', serverTime);            
         
     });    
-});
+    */
 
+    //접속해제(브라우저 종료시?)
+    socket.on('disconnect', function() {
+        console.log('disconnect id',socket.id);
+        socketList.splice(socketList.indexOf(socket), 1);
+    });    
 
+     //접속해제(게임 종료시?)
+    socket.on('gameDisconnect', function() {
+        console.log('gameDisconnect id',socket.id);
+        socket.disconnect();
+    })    
+       
+});  
 
 // function Player(id)
 // {

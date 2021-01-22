@@ -19,8 +19,7 @@ var serverTime = 0;
 function LoadSocket()
 {
         //소켓은 emit으로 넘겨서 on으로 받는다 
-        var socket = io(); 
-         
+        var socket = io();  
         
         socket.emit("multi_start",function(){ 
 
@@ -79,10 +78,11 @@ function LoadSocket()
         })   
      
 
-        socket.on("serverFrame",function(time){ 
-                
-            serverTime = time;
-            console.log("serverTime >>>>>>>>>>>>>>>>>>>.", serverTime);
+        socket.on("serverFrame",function(serverTime){ 
+ 
+            
+            //imer_Id = setInterval(drawScreen, 1000/gameFrame);   //게임 프레임(gameFrame은  초기 ini_gameFram 설정값)
+            drawScreen(serverTime); 
         })  
 
 
@@ -607,32 +607,36 @@ function LoadSocket()
 
 
 
-    ////////////////// 게임 시작
-    function gameStart(as_keycode) { 
+    // ////////////////// 게임 시작
+    // function gameStart(as_keycode) { 
 
-        /*
-        //다시 서버로
-        fgwSocket.emit('multi_want',ls_socketid);
+    //     /*
+    //     //다시 서버로
+    //     fgwSocket.emit('multi_want',ls_socketid);
     
-        fgwSocket.on("MdrawScreen",function(i){  
+    //     fgwSocket.on("MdrawScreen",function(i){  
 
-            //function MdrawScreen(fgwdrawScreen){
-                //alert(id)
-                //this.fgwdrawScreen;
+    //         //function MdrawScreen(fgwdrawScreen){
+    //             //alert(id)
+    //             //this.fgwdrawScreen;
         
-                //console.log("client:",fgwdrawScreen);
-            //}
-            //alert("id>>>"+i);
-            console.log("i",i)
-            //return;
+    //             //console.log("client:",fgwdrawScreen);
+    //         //}
+    //         //alert("id>>>"+i);
+    //         console.log("i",i)
+    //         //return;
 
-            gameStart2(as_keycode);
-        }) 
-        */    
-    }    
+    //         gameStart2(as_keycode);
+    //     }) 
+    //     */    
+    // }    
         
 
     function gameStart(as_keycode) {     
+
+        //멀티접속 연결
+        //setTimeout(LoadSocket,2000);    //소켓 생성까지 약 2초 예상 
+
 
         //console.log("fgwSocketfgwSocketfgwSocket",fgwSocket)
         //최초 페이지 로드 여부
@@ -663,7 +667,7 @@ function LoadSocket()
         //타이머 초기화
         clearInterval(Timer_Id); 
 
-        imer_Id = setInterval(drawScreen, 1000/gameFrame);   //게임 프레임(gameFrame은  초기 ini_gameFram 설정값)
+        //Timer_Id = setInterval(drawScreen, 1000/gameFrame);   //게임 프레임(gameFrame은  초기 ini_gameFram 설정값)
     
 
     } 
@@ -673,6 +677,11 @@ function LoadSocket()
     ////////////////// 게임 종료
     function gameEnd(as_keycode) {
 
+        
+            //멀티연결해제
+            console.log("gameDisconnect");
+            socket.emit("gameDisconnect");  
+     
         if (as_keycode == 13){
 
             gameStart(13); 
@@ -681,6 +690,7 @@ function LoadSocket()
 
             audio.pause();
             //onReady();
+ 
 
             $("#GameCanvas").fadeOut( "slow", function() {
 
@@ -892,6 +902,7 @@ function LoadSocket()
         max_weappon_cnt = ini_max_weappon_cnt;
         enemy_collision_yn = "N";
         enemy_index = null;
+ 
 
     }
 
@@ -1732,15 +1743,16 @@ function LoadSocket()
         
             }    
     }
+    
     ////////////////// 게임 배경 화면
-    function game_background(){
+    function game_background(){  
 
         //시간이 흐름에 따라 게임 타겟 방향 좌표 이동
-        //gameTime++;         //시간 증가
-        gameTime = serverTime;
+        gameTime++;               //시간 증가 
         gameScore++;
         back_distance = back_distance + Pspeed*5;    //백그라운드 라인이 밖으로 나가면 다시 초기화(플레이어 속도만큼 더 빨리 진행)
-
+  
+        
         //back_distance = back_distance + 0.1;
 
         if (back_distance >= 800){
@@ -3022,11 +3034,28 @@ function LoadSocket()
         }
     } 
 
+    var multiTime = 0;
+    function send_server(){
+        
+        //서버로 전송
+        // socket.emit("clientFrame",function(m){ 
+        //     console.log("서버로 전송"); 
+        // });   
+        //multiTime ++;
+        console.log("multiTime >>>>>>>>>>>>>>>>>>>.", multiTime);
+        socket.emit("clientFrame",multiTime);      
+
+    }
 
     ////////////////// 화면 로드(게임 프래임 수 만큼)  
-    var clientTime = 0;
-    function drawScreen(){     
+    function drawScreen(aa){     
 
+        multiTime = aa;
+        console.log("serverTime >>>>>>>>>>>>>>>>>>>.", multiTime);
+
+        //send_server();
+        
+        
         //게임 진행 컨텍스트(레이어)
         Context.fillStyle = "#000000";
         Context.fillRect(0,0,theCanvas.clientWidth,theCanvas.clientHeight);
@@ -3144,20 +3173,14 @@ function LoadSocket()
         Context.fillText("Score : " + (parseInt(gameScore - 50)<=0?0:gameScore),10,50);
         Context.fillText("Bonus: " + String((parseInt(player_cnt) - 1<=0?0:parseInt(player_cnt) - 1)),10,100);
         Context.fillText("Time  : " + (parseInt(gameTime - 50)<=0?0:gameTime),10,150);
+        Context.fillText("MTime  : " + (parseInt(multiTime - 50)<=0?0:multiTime),10,200);
+              
 
         if(gameTime<=50){
             Context2.font = '100px Arial';
             Context2.fillText("Ready", (theCanvas.clientWidth - ini_player_width) / 2 - theCanvas.offsetLeft - 100, theCanvas.clientHeight / 2 - theCanvas.offsetTop);
             Context2.font = '30px Arial';
-        }
-
-        clientTime++;
-        //서버로 전송
-        // socket.emit("clientFrame",function(m){ 
-        //     console.log("서버로 전송"); 
-        // });   
-        console.log("clientTime >>>>>>>>>>>>>>>>>>>.", clientTime);
-        socket.emit("clientFrame",clientTime);     
+        } 
 
     }
     
@@ -3194,7 +3217,7 @@ function LoadSocket()
 
                 status = 2;         //진행
 
-                Timer_Id = setInterval(drawScreen, 1000/gameFrame);
+                //Timer_Id = setInterval(drawScreen, 1000/gameFrame);
 
                 audio.play();
                 //audio.pause();
@@ -3205,7 +3228,7 @@ function LoadSocket()
 
                 clearInterval(Timer_Id);
 
-                Timer_Id = setInterval(drawScreen, 1000/gameFrame);
+                //Timer_Id = setInterval(drawScreen, 1000/gameFrame);
 
                 //audio.play();
                 audio.pause();
@@ -3228,7 +3251,7 @@ function LoadSocket()
                 //상태값 : 시작
                 status = 1;
 
-                Timer_Id = setInterval(drawScreen, 1000/gameFrame);
+                //Timer_Id = setInterval(drawScreen, 1000/gameFrame);
 
                 //audio.play();
                 audio.pause();
@@ -3237,7 +3260,7 @@ function LoadSocket()
 
                 status = 2;  //진행
 
-                Timer_Id = setInterval(drawScreen, 1000/gameFrame);
+                //Timer_Id = setInterval(drawScreen, 1000/gameFrame);
 
                 audio.play();
                 //audio.pause();
@@ -3263,7 +3286,7 @@ function LoadSocket()
                     //상태값  : 시작
                     status = 1;
 
-                    Timer_Id = setInterval(drawScreen, 1000/gameFrame);
+                    //Timer_Id = setInterval(drawScreen, 1000/gameFrame);
 
                     audio.play();
                     //audio.pause();
@@ -3271,7 +3294,7 @@ function LoadSocket()
                     //상태값: 그냥 이어서 진행
                     status = 2;
 
-                    Timer_Id = setInterval(drawScreen, 1000/gameFrame);
+                    //Timer_Id = setInterval(drawScreen, 1000/gameFrame);
 
                     audio.play();
                     //audio.pause();

@@ -4,16 +4,34 @@ function LoadJavaScript(src)
     el.setAttribute("src", src);
     document.getElementsByTagName("head")[0].appendChild(el);
 }
+ 
+LoadJavaScript("/socket.io/socket.io.js" );
 
 function gfwSocket( server_http )
 {
-    LoadJavaScript( server_http + "/socket.io/socket.io.js" );
+    //var src = "/socket.io/socket.io.js";
+
+   //LoadJavaScript( server_http + "/socket.io/socket.io.js" );
+
    setTimeout( function()
-    {
-        gfwSocket.socket = io.connect( server_http );
-    }, 1000);
+    { 
+
+        //gfwSocket = this; 
     
-    gfwSocket = this;
+        console.log("gfwSocket2",gfwSocket)
+
+    }, 1000);
+     
+        //this.socket = io.connect( server_http );
+        //gfwSocket.socket = io();  
+        this.socket = io.connect( server_http );
+        //console.log("this.socket",this.socket)
+
+    //gfwSocket = this;
+
+    
+    //console.log("gfwSocket",gfwSocket)
+
 }
 
 gfwSocket.prototype.On = function( event, func )
@@ -21,9 +39,9 @@ gfwSocket.prototype.On = function( event, func )
     this.socket.on( event, func );
 }
 
-gfwSocket.prototype.Emit = function( event, data )
+gfwSocket.prototype.Emit = function( event, func )
 {
-    this.socket.emit( event, data );
+    this.socket.emit(  event, func );
 }
 
 gfwSocket.prototype.Disconnect = function()

@@ -1,12 +1,10 @@
 ﻿// Socket.IO 사용 시 주석 해제
 //var gfwSocket =  new gfwSocket("http://127.0.0.1:3000");
-
-alert(game_mode)
-
-
+var gfwSocket =  new gfwSocket("");
+ 
 if (game_mode == 'M'){
 
-    alert(gfwSocket) 
+    //alert(gfwSocket) 
 
     console.log("gfwSocket",gfwSocket)
 
@@ -34,9 +32,13 @@ if (game_mode == 'M'){
             //as_keycode = 13;
             //gameStart(as_keycode)
 
-            gfwSocket.Emit("play_game",function(){ 
+            //alert("test1")
+            console.log("gfwSocket>>>>>>>>>>>>>>>>",gfwSocket)
+ 
 
-            })
+            gfwSocket.Emit("play_game",function(){ 
+                return;
+            });     
 
         }else {
 
@@ -125,348 +127,6 @@ var button02 = null;
 //컨트롤 색상
 var ls_CColor = localStorage.getItem('control_color'); 
  
-<<<<<<< HEAD
-            
-            //imer_Id = setInterval(drawScreen, 1000/gameFrame);   //게임 프레임(gameFrame은  초기 ini_gameFram 설정값)
-            drawScreen(); 
-        })  
-
-
-    /////////////////////////////게임용 캔버스 관련 설정///////////////////////////////////////////
-    // var GAME_STATE_READY = 0; // 준비
-    // var GAME_STATE_GAME = 1;  // 게임 중
-    // var GAME_STATE_OVER = 2;  // 게임 오버
-
-    // 게임 상태값을 저장하는 변수
-    //var GameState = GAME_STATE_READY; // 초깃값은 준비 상태 
-    //게임 진행시 필요한 이벤트 선언
-    window.addEventListener("load",drawScreen, false);
-    window.addEventListener("keydown",onkeyDown, false);
-    window.addEventListener("keyup",onkeyUp, false);
-
-    //제일 처음 페이지 load 여부
-    var first_load_yn = "Y";
-
-    //필요한 이벤트 객체 선언
-    var strKeyEventType = "None";
-    var strKeyEventValue = "None";
-
-    //게임 캠퍼스
-    var theCanvas = document.getElementById("GameCanvas");
-
-    //전체 화면 크기에 맞추기(화면 가로/세로)
-    var ls_width = window.innerWidth;
-    var ls_height = window.innerHeight;	        	//터치 드래그시 상단 주소창 숨기기위해 높이값 더줌.
-    // var ls_width = document.innerWidth;
-    // var ls_height = document.innerHeight;	        	//터치 드래그시 상단 주소창 숨기기위해 높이값 더줌.
-
-    var docV = document.documentElement;
-
-    //윈도우 리사이징 호출
-    window.addEventListener("resize",  fit_resize);
-
-    //게임 로드시 켐퍼스 리사이징 조정
-    fitToContainer(theCanvas);
-
-    //게임 진행 컨텍스트(게임 오브젝트(플레이어 및 적) 진행  + 컨트롤 + 스코어)
-    var Context = theCanvas.getContext("2d");
-    //게임 상태 컨텍스트(게임 상태 표시 : 시작, 진행, 멈춤, 종료 메세지)
-    var Context2 = theCanvas.getContext("2d");
-    //게임배경 컨텍스트(게임 배경(우주 및 콜로니))
-    var Context3 = theCanvas.getContext("2d");
-
-    //게임 화면 경계
-    var minX = theCanvas.offsetLeft;
-    var maxX = theCanvas.clientWidth - minX;
-    var minY = theCanvas.offsetTop;
-    var maxY = theCanvas.clientHeight - minY;
-    var add_borderX = 0;
-    var add_borderY = 0;
-
-    /////////////////////////////////////////게임 컨트롤 관련 설정//////////////////////////////////////////
-    //캔버스 엘리먼트로 게임 컨트롤 버튼 변경 => 둠객체사용시 화면 확대 축소됨 에 따른 불편 생김(기존 조종 컨트롤 돔객체는 hidden 처리)
-    //키입력 저장 array
-    var isKeyDown = [];
-    var isKeyCode = null;
-
-    var directonUp = null;
-    var directonDown = null;
-    var directonLeft = null;
-    var directonRight = null;
-    var directonUpLeft = null;
-    var directonUpRight = null;
-    var directonDownLeft = null;
-    var directonDownRight = null;
-    var directonMiddle = null;
-
-    var button01 = null;
-    var button02 = null;
-
-    //컨트롤 색상
-    var ls_CColor = localStorage.getItem('control_color'); 
-    
-    //DEV 색상
-    var ls_DColor = localStorage.getItem('dev_color'); 
-
-    // //전체화면
-    // var ls_TColor = localStorage.getItem('total_color'); 
-    // if (ls_TColor == "yellow"){ 	
-    //     toggleFullScreen();
-    // }
-
-    directonUp = new Path2D();
-    directonUp.fillStyle = "rgb(242, 255, 0)";; 
-    directonUp.rect(minX + 120, maxY - 330, 100, 140);
-
-    directonLeft = new Path2D();
-    directonLeft.fillStyle = "rgb(242, 255, 0)";;
-    directonLeft.rect(minX + 10, maxY - 220, 140, 100);
-
-    directonRight = new Path2D();
-    directonRight.fillStyle = "rgb(242, 255, 0)";;
-    directonRight.rect(minX + 190, maxY - 220, 140, 100);
-
-    directonDown = new Path2D();
-    directonDown.fillStyle = "rgb(242, 255, 0)";;
-    directonDown.rect(minX + 120, maxY - 150, 100, 140);
-
-    directonUpLeft = new Path2D();
-    directonUpLeft.fillStyle = "rgb(242, 255, 0)";;
-    directonUpLeft.rect(minX + 40, maxY - 300, 80, 80);
-
-    directonUpRight = new Path2D();
-    directonUpRight.fillStyle = "rgb(242, 255, 0)";;
-    directonUpRight.rect(minX + 220, maxY - 300, 80, 80);
-
-    directonDownLeft = new Path2D();
-    directonDownLeft.fillStyle = "rgb(242, 255, 0)";;
-    directonDownLeft.rect(minX + 40, maxY - 120, 80, 80);
-
-    directonDownRight = new Path2D();
-    directonDownRight.fillStyle = "rgb(242, 255, 0)";;
-    directonDownRight.rect(minX + 220, maxY - 120, 80, 80);
-
-    directonMiddle = new Path2D();
-    directonMiddle.fillStyle = "rgb(242, 255, 0)";;
-    directonMiddle.arc(minX + 170, maxY - 170, 18, 0, 2*Math.PI, true);    //arc(x, y, radius, startAngle, endAngle, anticlockwise)
-
-    button01 = new Path2D();
-    button01.fillStyle = "rgb(242, 255, 0)";;
-    //button01.arc(maxX - 250, maxY - 180, 80, 0, 2*Math.PI, true);    //arc(x, y, radius, startAngle, endAngle, anticlockwise)
-    button01.arc(maxX - 250, maxY - 180, 100, 0, 2*Math.PI, true);    //arc(x, y, radius, startAngle, endAngle, anticlockwise)
-
-    button02 = new Path2D();
-    button02.fillStyle = "rgb(242, 255, 0)";;
-    //button02.arc(maxX - 80, maxY - 180, 80, 0, 2*Math.PI, true);    //arc(x, y, radius, startAngle, endAngle, anticlockwise)
-    button02.arc(maxX - 80, maxY - 180, 70, 0, 2*Math.PI, true);    //arc(x, y, radius, startAngle, endAngle, anticlockwise)
-
-    /////////////////////////////////////////게임 관련 상태 설정 시작////////////////////////////////////////
-    //초기 게임 상태
-    var init_status = 1;  //1:Start,   2:ing,  3:Pause
-    //기본 게임 프래임
-    var ini_gameFrame = 60;  //60프레임
-    //진행시간(=거리)
-    var init_gameTime = 0;
-    var gameTime = 0;
-    var init_gameScore = 0;
-    var gameScore = 0;
-    //화면 타이머 id
-    var init_Timer_Id = 0;  //var Timer_Id = setInterval(drawScreen, 1000/gameFrame); <= 재일 처음 시작시에는 움지기지 않는다.
-    var Timer_Id = 0;
-    //게임 배경의 진행 시점(목적지)
-    var init_cityEnd_size = 100;       //게임 진행 방향 타겟 사이즈
-    var init_cityEnd_x = 0;            //게임 진행 방향 타겟 x좌표
-    var init_cityEnd_y = 0;            //게임 진행 방향 타겟 y좌표
-    var init_Pdistance = 0;            //게임 진행 방향 타겟에서 플레이어까지 거리(플레이어 원근 설정을 위해)
-    var init_Edistance = 0;            //게임 진행 방향 타켓에서 적까지의 거리
-
-    //게임 계속 or 종료 버튼
-    var button_play = null;
-    button_play = new Path2D();
-    button_play.fillStyle = "rgb(242, 255, 0)";
-    button_play.rect(ls_width/2 - 300, ls_height/2 - 250 , 300, 150);
-    var button_end = null;
-    button_end = new Path2D();
-    button_end.fillStyle = "rgb(242, 255, 0)";
-    button_end.rect(ls_width/2 + 10, ls_height/2 - 250 , 300, 150);
-
-    var button_continue = null;
-    button_continue = new Path2D();
-    button_continue.fillStyle = "rgb(242, 255, 0)";
-    button_continue.rect(ls_width/2 - 250, ls_height/2 - 80 , 500, 150);
-
-
-    //초기설정 게임 변수에 저장
-    var gameFrame = ini_gameFrame;
-    var cityEnd_size = init_cityEnd_size;
-    var cityEnd_x = init_cityEnd_x;
-    var cityEnd_y = init_cityEnd_y;
-    var Pdistance = init_Pdistance;
-    var Edistance = init_Edistance;
-
-    //좌우측 상하단선 백그라운드 거리
-    var back_distance = 0;
-    var back_distance2 = 0;
-
-    ///////////////////////////////////배경 초기 설정//////////////////////////////////////////////////////////
-    //무공간(투명)이미지
-    var noneImage = new Image();
-    noneImage.src = "./img/none.png";
-    noneImage.addEventListener("load",drawScreen, false);
-
-    //게임 배경(우주) 이미지
-    var backgroundImage = new Image();
-    backgroundImage.src = "./img/background01.png";
-    backgroundImage.addEventListener("load",drawScreen, false);
-
-    //게임 배경(도로) 이미지
-    var cityImage = new Image();
-    cityImage.src = "./img/city01.png";
-    cityImage.addEventListener("load",drawScreen, false);
-
-    var city01Image = new Image();
-    city01Image.src = "./img/city01.png";
-    city01Image.addEventListener("load",drawScreen, false);
-
-    var city02Image = new Image();
-    city02Image.src = "./img/city02.png";
-    city02Image.addEventListener("load",drawScreen, false);
-
-    var city03Image = new Image();
-    city03Image.src = "./img/city03.png";
-    city03Image.addEventListener("load",drawScreen, false);
-
-    var cityEndImage = new Image();
-    cityEndImage.src = "./img/cityEnd.png";
-    cityEndImage.addEventListener("load",drawScreen, false);
-
-    //땅
-    var groundImage = new Image();
-    groundImage.src = "./img/ground.png";
-    groundImage.addEventListener("load",drawScreen, false);
-
-    //강
-    var riverImage = new Image();
-    riverImage.src = "./img/river.png";
-    riverImage.addEventListener("load",drawScreen, false);
-
-    ///////////////////////////////////플레이어 초기 설정///////////////////////////////////////////////////////
-    var playerImage = new Image();
-    playerImage.src = "./img/player.png";
-    //playerImage.src = "player29.png";
-    playerImage.addEventListener("load",drawScreen, false);
-
-    var player = new Image();
-    player.src = "./img/player.png";
-    //playerImage.src = "player29.png";
-    player.addEventListener("load",drawScreen, false);
-
-    var player_90 = new Image();
-    player_90.src = "./img/player_90.png";
-    player_90.addEventListener("load",drawScreen, false);
-
-    var player_135 = new Image();
-    player_135.src = "./img/player_135.png";
-    player_135.addEventListener("load",drawScreen, false);
-
-    var player_180 = new Image();
-    player_180.src = "./img/player_180.png";
-    player_180.addEventListener("load",drawScreen, false);
-
-    var player_270 = new Image();
-    player_270.src = "./img/player_270.png";
-    player_270.addEventListener("load",drawScreen, false);
-
-    var player_360 = new Image();
-    player_360.src = "./img/player_360.png";
-    player_360.addEventListener("load",drawScreen, false);
-
-    var player_45 = new Image();
-    player_45.src = "./img/player_45.png";
-    player_45.addEventListener("load",drawScreen, false);
-
-    var player_warp = new Image();
-    player_warp.src = "./img/player_warp.png";
-    player_warp.addEventListener("load",drawScreen, false);
-
-    var warp = new Image();
-    warp.src = "./img/player_warp.png";
-    warp.addEventListener("load",drawScreen, false);
-
-
-    //폭파이미지01
-    var explosionImage01 = new Image();
-    explosionImage01.src = "./img/explosion01.png";
-    explosionImage01.addEventListener("load",drawScreen, false);
-
-    //엔진이미지01
-    var enginImage = new Image();
-    enginImage.src = "./img/engin01.png";
-    enginImage.addEventListener("load",drawScreen, false);
-
-    //이전 플레이어 진행방향 키값 => 속도변경시 방향키 새로 안눌러두 이전 방향으로 계속해서 진행되도록 하기위해 필요
-    var wayBefore = 'None;'
-
-    //플레이어 초기값( 크기, 위치 및 기본 이동거리, 스피트)
-    //var ini_player_width = 70;
-    //var ini_player_height = 45;
-    var ini_player_width = 130;
-    var ini_player_height = 200;
-    //var ini_player_width = 160;   //319
-    //var ini_player_height = 250;  //503
-    var ini_playerX = (theCanvas.clientWidth - ini_player_width)/ 2 - theCanvas.offsetLeft; //X좌표
-    var ini_playerY = theCanvas.clientHeight - 100;  //Y좌표
-    var ini_player_size = 100;    //플레이어 초기 크기 배율
-
-    //플레이어크기
-    var playerWidth = ini_player_width;
-    var playerHeight = ini_player_height;
-    var player_size = ini_player_size;
-
-    //플레이어 시작 위치
-    var playerX = ini_playerX;
-    var playerY = ini_playerY;
-
-    //플레이어 이동 거리
-    var pmovex = 0;
-    var pmovey = 0;
-    var ini_Pspeed = 1;         //플레이어 초기 스피드
-    var Pspeed = ini_Pspeed;
-    var before_pspeed = 0;      //이전 스피트(스트드 업버튼 누르면 바로 속도 증가하도록 하기위해)
-    var ini_player_life = 5;    //플레이어 생명
-    var player_life = ini_player_life;
-    var penerge_bar = ini_energe_bar;
-
-    var ini_player_cnt = 0;    //초기 플레이어 갯수(보너스)
-    var player_cnt = ini_player_cnt;
-
-    //플레이어 공간이동(warp) 거리
-    var ini_warp_distance = 15;
-    var warp_distance = ini_warp_distance;
-
-    //플레이어 미사일 충돌 여부
-    var player_collision_yn = 'N';
-
-    //보너스 발생 전후 여부
-    var bonus_cnt = 1; 
-
-    /////////////////////////////////////////플레이어 레이져 초기 설정///////////////////////////////////////////
-    var laserImage = new Image();
-    laserImage.src = "./img/laser01.png";
-    laserImage.addEventListener("load",drawScreen, false);
-
-    var laser = new Image();
-    laser.src = "./img/laser01.png";
-    laser.addEventListener("load",drawScreen, false);
-
-    //레이져 초기 생성 위치
-    var laserX = playerX + playerWidth/2;
-    var laserY = playerY;
-
-    //레이져 초기 이동위치 = 생성위치
-    var lmovex;
-    var lmovey;
-=======
 //DEV 색상
 var ls_DColor = localStorage.getItem('dev_color'); 
 
@@ -872,7 +532,6 @@ var enemy_index = null;
 
 //적 타입
 var enemy_type = 1;
->>>>>>> 6eeea3b1693205dfbd6bd70c9aa46fb0cf6ee10d
 
 //적 폭파중 여부
 var enemy_collision_yn = 'N';
@@ -1030,13 +689,8 @@ ls_height = window.innerHeight + 30;      //터치 드래그시 상단 주소창
 
 window.scrollTo(0,1);
 
-<<<<<<< HEAD
-        Timer_Id = setInterval(drawScreen, 1000/gameFrame);   //게임 프레임(gameFrame은  초기 ini_gameFram 설정값)
-    
-=======
 //세로모드 일경우 가로모드로 전환유도 메세지 보여줌.
 if (window.matchMedia('(orientation: portrait)').matches) {
->>>>>>> 6eeea3b1693205dfbd6bd70c9aa46fb0cf6ee10d
 
     document.getElementById('tot_div').style.visibility = 'hidden';
     document.getElementById('tot_hidden').style.display = 'block';
@@ -3444,24 +3098,7 @@ function drawScreen(){
         enemy_cnt = enemy_cnt + 1;
         create_enemy(enemy_cnt);
 
-<<<<<<< HEAD
-    var multiTime = 0;
-    function send_server(){
-        
-        //서버로 전송
-        // socket.emit("clientFrame",function(m){ 
-        //     console.log("서버로 전송"); 
-        // });   
-         multiTime ++;
-         console.log("multiTime >>>>>>>>>>>>>>>>>>>.", multiTime);
-         socket.emit("clientFrame",multiTime);      
-
-        //multiTime = mTime;
-        //console.log("serverTime >>>>>>>>>>>>>>>>>>>.", mTime);
-
-=======
     }
->>>>>>> 6eeea3b1693205dfbd6bd70c9aa46fb0cf6ee10d
 
     //게임 진행 정보(맨마지막에 그려줘야 게임내 이미지가 덮지않는다.)
     Context.font  = "30px Arial";
@@ -3486,31 +3123,10 @@ function drawScreen(){
         Context2.font = '30px Arial';
     }
 
-<<<<<<< HEAD
-    ////////////////// 화면 로드(게임 프래임 수 만큼)  
-    function drawScreen(){     
-
-        send_server();
-        
-        
-        //게임 진행 컨텍스트(레이어)
-        Context.fillStyle = "#000000";
-        Context.fillRect(0,0,theCanvas.clientWidth,theCanvas.clientHeight);
-        Context.fillStyle = "#ffffff";
-        Context.font = '50px Arial';
-        //Context.textBaseline = "top";
-
-        //게임 상태(시작,중지,종료) 표시용 컨텍스트
-        Context2.fillStyle = "#000000";
-        Context2.fillRect(0,0,theCanvas.clientWidth,theCanvas.clientHeight);
-        Context2.fillStyle = "#ffffff";
-        Context2.font = '100px Arial';
-=======
 
 }
 
 function MultidrawScreen(){
->>>>>>> 6eeea3b1693205dfbd6bd70c9aa46fb0cf6ee10d
 
     // fgwdrawScreen = this;
     // //console.log("fgwdrawScreen",fgwdrawScreen) 
@@ -3587,12 +3203,8 @@ function onkeyDown(e, as_strKeyEventValue){
 
             create_enemy();
 
-<<<<<<< HEAD
-                Timer_Id = setInterval(drawScreen, 1000/gameFrame);
-=======
             //상태값 : 시작
             status = 1;
->>>>>>> 6eeea3b1693205dfbd6bd70c9aa46fb0cf6ee10d
 
             Timer_Id = setInterval(drawScreen, 1000/gameFrame);
 
@@ -3603,11 +3215,7 @@ function onkeyDown(e, as_strKeyEventValue){
 
             status = 2;  //진행
 
-<<<<<<< HEAD
-                Timer_Id = setInterval(drawScreen, 1000/gameFrame);
-=======
             Timer_Id = setInterval(drawScreen, 1000/gameFrame);
->>>>>>> 6eeea3b1693205dfbd6bd70c9aa46fb0cf6ee10d
 
             audio.play();
             //audio.pause();
@@ -3634,51 +3242,6 @@ function onkeyDown(e, as_strKeyEventValue){
                 status = 1;
 
                 Timer_Id = setInterval(drawScreen, 1000/gameFrame);
-<<<<<<< HEAD
-
-                //audio.play();
-                audio.pause();
-
-            }else {          //계속 진행
-
-                status = 2;  //진행
-
-                Timer_Id = setInterval(drawScreen, 1000/gameFrame);
-
-                audio.play();
-                //audio.pause();
-            }
-
-        }else if (strKeyEventValue == "Escape" || isKeyCode == 27){
-                if (confirm("재시작하시겠습니까")){
-
-                    clearInterval(Timer_Id);
-
-                    //게임 변수 초기화
-                    game_init();
-
-                    //플레이어 변수 초기화
-                    player_init();
-
-                    //레이져 변수 초기화
-                    laser_init();
-
-                    //적 생성
-                    create_enemy();
-
-                    //상태값  : 시작
-                    status = 1;
-
-                    Timer_Id = setInterval(drawScreen, 1000/gameFrame);
-
-                    audio.play();
-                    //audio.pause();
-                }else {
-                    //상태값: 그냥 이어서 진행
-                    status = 2;
-
-                    Timer_Id = setInterval(drawScreen, 1000/gameFrame);
-=======
 
                 audio.play();
                 //audio.pause();
@@ -3687,7 +3250,6 @@ function onkeyDown(e, as_strKeyEventValue){
                 status = 2;
 
                 Timer_Id = setInterval(drawScreen, 1000/gameFrame);
->>>>>>> 6eeea3b1693205dfbd6bd70c9aa46fb0cf6ee10d
 
                 audio.play();
                 //audio.pause();

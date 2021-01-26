@@ -60,13 +60,8 @@ io.on('connection', function(socket) {
 
         //게임시작(1명이상 접속해야 멀티 가능)
         if (socketList.length <= 1){   
-<<<<<<< HEAD
-            //console.log('ready_game',socketList.length);
-            //socket.emit('ready_game', socketList.length);
-=======
             console.log('wait_game',socketList.length);
             socket.emit('wait_game', socketList.length);
->>>>>>> 6eeea3b1693205dfbd6bd70c9aa46fb0cf6ee10d
         
         }else {
             socketList.forEach(function(item, i) {  
@@ -81,7 +76,7 @@ io.on('connection', function(socket) {
     var serverTime = 0;    
     //게임 플레이
     socket.on('play_game', function() {   
-        console.log("play_game ",socketList.length);  
+        console.log("play_game",socketList.length);  
 
             socketList.forEach(function(item, i) {  
                     //if (item != socket) {
@@ -90,11 +85,7 @@ io.on('connection', function(socket) {
                 
                     //} 
 
-<<<<<<< HEAD
-                    //이러게 하니깐 부하많이걸림
-=======
                                 //이러게 하니깐 부하많이걸림
->>>>>>> 6eeea3b1693205dfbd6bd70c9aa46fb0cf6ee10d
                     //setInterval(serverFrame, 1000/10);
                     
                     //serverTime = 0;  
@@ -110,21 +101,21 @@ io.on('connection', function(socket) {
 
     function serverFrame(){
 
-        //serverTime++;
+        serverTime++;
 
         console.log("serverFrame : ", serverTime)
         //socket.emit('serverFrame', server_i);
         //socket.emit('serverFrame', function(){
             socket.emit('serverFrame', serverTime);
-            //socketList.forEach(function(item, i) {  
+            socketList.forEach(function(item, i) {  
                 //if (item != socket) {
-                    //item.emit('serverFrame', serverTime);
+                    item.emit('serverFrame', serverTime);
             
                 //} 
-            //});      
+            });      
     }   
 
-    
+    /*
     // 클라이언트에서 받은다음 보내주면.... ==> 이것도 부하가 많이걸리지만 위보다는 적은거 같음. 
     var serverTime = 0;
     socket.on('clientFrame', function(multiTime) {   
@@ -141,12 +132,12 @@ io.on('connection', function(socket) {
             // });       
 
       
-            console.log("clientFrame : ", serverTime)
+            console.log("serverFrame : ", serverTime)
 
             //socket.emit('serverFrame', serverTime);            
         
     });    
-     
+    */
 
     //접속해제(브라우저 종료시?)
     socket.on('disconnect', function() {

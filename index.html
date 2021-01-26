@@ -152,7 +152,7 @@ background-position: 50% -5%; */
 			<!-- Sorry, your browser does not support inline SVG. -->
 		</svg>
 		</div>
-		<div id="start" class="button"  style="position: absolute; top:42%; left:calc(50% - 110px); width:160px; z-index:200;">
+		<div id="single" class="button"  style="position: absolute; top:42%; left:calc(50% - 110px); width:160px; z-index:200;">
 		Single Play
 		</div>
 		<div id="multi" class="button"  style="position: absolute; top:62%; left:calc(50% - 110px); width:160px; z-index:200;">
@@ -170,6 +170,7 @@ background-position: 50% -5%; */
 <!-- <script src="socket.js"></script> -->
 <script type="text/javascript" charset="utf-8"> 
 
+var game_mode = 'S';
 /******
  
 //멀티게임 시작
@@ -307,7 +308,7 @@ $(function(){
 		var a = e.keyCode;	    //a에 해당키의 keycode를 넣고, alert(a);
 
 		if(a == 13 || a == 32){//키가 sparce or enter 이면 실행 (엔터는 13)
-			$("#start").click();
+			$("#single").click();
 		}
 
 	});
@@ -383,7 +384,7 @@ $(function(){
 
 	//$("#start").bind('touchstart', function(e) {
 	//jquery 3.3.1 버젼부터는 클릭(click)과 터치(touchstart) 이벤트가 통합된듯함.
-		start.addEventListener('click', function() {
+		single.addEventListener('click', function() {
 		//$("#start").click(function(){
 
 				//window.location = 'play.html';
@@ -492,10 +493,10 @@ $(function(){
 						$("#infoText").html("즉각 연방군 최신 전투 병기 화이자에 탑승하고 출격을 시작하지만<br>이를 가로막는 드론들의 거센 공격을 받기 시작하는데...");
 					})
 				}, 20000);
-
+ 
 				setTimeout(function() {
 					$(".main").fadeOut( "slow", function() {
-						window.location = 'play.html';
+						window.location = 'play.html?game_mode='+game_mode;
 					})
 				}, 25000);
 
@@ -504,7 +505,7 @@ $(function(){
 					$(".main").fadeOut( "slow", function() {
   
 
-						window.location = 'play.html';
+						window.location = 'play.html?game_mode='+game_mode;
 
 						//var href = 'play.html';
 						//$("#totIntro").load(href);
@@ -516,6 +517,16 @@ $(function(){
 
 
 		}
+
+		multi.addEventListener('click', function() {  
+
+			game_mode = 'M';
+	 
+			$("#single").click();
+			
+		})  
+
+
 
 	//게임 설치 버튼
 	/*

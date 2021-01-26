@@ -96,7 +96,7 @@
     </div>
 -->
 
-    <script type="text/javascript" language="javascript" charset="utf-8">
+    <script type="text/javascript" language="javascript" charset="utf-8"> 
 
      $(function() { 
 
@@ -429,12 +429,49 @@
   //   };   
      
 	// });
-	 
+   
+//게임 스크립트는 소켓이 로드되고 난후 로드.  
+function LoadSrc(src)
+{
+    var el = document.createElement("script");
+    el.setAttribute("src",src);
+    document.getElementsByTagName("head")[0].appendChild(el);
+} 
+  
+//싱글 or 멀티
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+} 
+ 
+//GET으로 넘긴 파라메타 받을때 > 요렇게 쓰면 주소의 파라메타 값이 넘어온다. 
+var game_mode = getParameterByName('game_mode'); 
+//var fgwSocket = 'N';
+var src1 = "socket.js";
+var src2 = "stage01.js";
+
+//멀티일경우 소켓 객체 생성
+if (game_mode == 'M'){    
+
+  LoadSrc(src1);
+ 
+  setTimeout(LoadSrc,2000,src2);    //소켓 생성까지 약 1초 예상, 겜은 그 이후  
+
+}else {
+
+  LoadSrc(src2);   //바로 로드
+
+}
+
   </script>
   <!-- <script type="text/javascript" src="./js/hammer.js"></script>   -->
   <script type="text/javascript" src="./js/Common.js"></script>  
-  <!-- <script src="socket.js"></script>   -->
-  <script src="stage01.js"></script> 
+  <!-- <script src="socket.js"></script> -->
+  <!-- <script src="stage01.js"></script>  -->
+
+  
   </div>
  </body> 
 

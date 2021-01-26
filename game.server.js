@@ -55,13 +55,18 @@ io.on('connection', function(socket) {
     });
 
     //멀티시작
-    socket.on('multi_start', function() {   
-        console.log("multi_start 접속인원",socketList.length);
+    socket.on('multi_ready', function() {   
+        console.log("multi_ready 접속인원",socketList.length);
 
         //게임시작(1명이상 접속해야 멀티 가능)
         if (socketList.length <= 1){   
+<<<<<<< HEAD
             //console.log('ready_game',socketList.length);
             //socket.emit('ready_game', socketList.length);
+=======
+            console.log('wait_game',socketList.length);
+            socket.emit('wait_game', socketList.length);
+>>>>>>> 6eeea3b1693205dfbd6bd70c9aa46fb0cf6ee10d
         
         }else {
             socketList.forEach(function(item, i) {  
@@ -85,7 +90,11 @@ io.on('connection', function(socket) {
                 
                     //} 
 
+<<<<<<< HEAD
                     //이러게 하니깐 부하많이걸림
+=======
+                                //이러게 하니깐 부하많이걸림
+>>>>>>> 6eeea3b1693205dfbd6bd70c9aa46fb0cf6ee10d
                     //setInterval(serverFrame, 1000/10);
                     
                     //serverTime = 0;  

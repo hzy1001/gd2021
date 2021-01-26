@@ -60,8 +60,8 @@ io.on('connection', function(socket) {
 
         //게임시작(1명이상 접속해야 멀티 가능)
         if (socketList.length <= 1){   
-            console.log('ready_game',socketList.length);
-            socket.emit('ready_game', socketList.length);
+            //console.log('ready_game',socketList.length);
+            //socket.emit('ready_game', socketList.length);
         
         }else {
             socketList.forEach(function(item, i) {  
@@ -85,8 +85,8 @@ io.on('connection', function(socket) {
                 
                     //} 
 
-                                //이러게 하니깐 부하많이걸림
-                    setInterval(serverFrame, 1000/10);
+                    //이러게 하니깐 부하많이걸림
+                    //setInterval(serverFrame, 1000/10);
                     
                     //serverTime = 0;  
             });  
@@ -95,27 +95,27 @@ io.on('connection', function(socket) {
     });      
 
     //이러게 하니깐 부하많이걸림
-    setInterval(serverFrame, 1000/10);
+    //setInterval(serverFrame, 1000/10);
     
     //var serverTime = 0;
 
     function serverFrame(){
 
-        serverTime++;
+        //serverTime++;
 
         console.log("serverFrame : ", serverTime)
         //socket.emit('serverFrame', server_i);
         //socket.emit('serverFrame', function(){
             socket.emit('serverFrame', serverTime);
-            socketList.forEach(function(item, i) {  
+            //socketList.forEach(function(item, i) {  
                 //if (item != socket) {
-                    item.emit('serverFrame', serverTime);
+                    //item.emit('serverFrame', serverTime);
             
                 //} 
-            });      
+            //});      
     }   
 
-    /*
+    
     // 클라이언트에서 받은다음 보내주면.... ==> 이것도 부하가 많이걸리지만 위보다는 적은거 같음. 
     var serverTime = 0;
     socket.on('clientFrame', function(multiTime) {   
@@ -132,12 +132,12 @@ io.on('connection', function(socket) {
             // });       
 
       
-            console.log("serverFrame : ", serverTime)
+            console.log("clientFrame : ", serverTime)
 
             //socket.emit('serverFrame', serverTime);            
         
     });    
-    */
+     
 
     //접속해제(브라우저 종료시?)
     socket.on('disconnect', function() {

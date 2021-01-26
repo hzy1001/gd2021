@@ -82,7 +82,7 @@ function LoadSocket()
  
             
             //imer_Id = setInterval(drawScreen, 1000/gameFrame);   //게임 프레임(gameFrame은  초기 ini_gameFram 설정값)
-            drawScreen(serverTime); 
+            drawScreen(); 
         })  
 
 
@@ -667,7 +667,7 @@ function LoadSocket()
         //타이머 초기화
         clearInterval(Timer_Id); 
 
-        //Timer_Id = setInterval(drawScreen, 1000/gameFrame);   //게임 프레임(gameFrame은  초기 ini_gameFram 설정값)
+        Timer_Id = setInterval(drawScreen, 1000/gameFrame);   //게임 프레임(gameFrame은  초기 ini_gameFram 설정값)
     
 
     } 
@@ -3041,19 +3041,20 @@ function LoadSocket()
         // socket.emit("clientFrame",function(m){ 
         //     console.log("서버로 전송"); 
         // });   
-        //multiTime ++;
-        console.log("multiTime >>>>>>>>>>>>>>>>>>>.", multiTime);
-        socket.emit("clientFrame",multiTime);      
+         multiTime ++;
+         console.log("multiTime >>>>>>>>>>>>>>>>>>>.", multiTime);
+         socket.emit("clientFrame",multiTime);      
+
+        //multiTime = mTime;
+        //console.log("serverTime >>>>>>>>>>>>>>>>>>>.", mTime);
+
 
     }
 
     ////////////////// 화면 로드(게임 프래임 수 만큼)  
-    function drawScreen(aa){     
+    function drawScreen(){     
 
-        multiTime = aa;
-        console.log("serverTime >>>>>>>>>>>>>>>>>>>.", multiTime);
-
-        //send_server();
+        send_server();
         
         
         //게임 진행 컨텍스트(레이어)
@@ -3217,7 +3218,7 @@ function LoadSocket()
 
                 status = 2;         //진행
 
-                //Timer_Id = setInterval(drawScreen, 1000/gameFrame);
+                Timer_Id = setInterval(drawScreen, 1000/gameFrame);
 
                 audio.play();
                 //audio.pause();
@@ -3228,7 +3229,7 @@ function LoadSocket()
 
                 clearInterval(Timer_Id);
 
-                //Timer_Id = setInterval(drawScreen, 1000/gameFrame);
+                Timer_Id = setInterval(drawScreen, 1000/gameFrame);
 
                 //audio.play();
                 audio.pause();
@@ -3251,7 +3252,7 @@ function LoadSocket()
                 //상태값 : 시작
                 status = 1;
 
-                //Timer_Id = setInterval(drawScreen, 1000/gameFrame);
+                Timer_Id = setInterval(drawScreen, 1000/gameFrame);
 
                 //audio.play();
                 audio.pause();
@@ -3260,7 +3261,7 @@ function LoadSocket()
 
                 status = 2;  //진행
 
-                //Timer_Id = setInterval(drawScreen, 1000/gameFrame);
+                Timer_Id = setInterval(drawScreen, 1000/gameFrame);
 
                 audio.play();
                 //audio.pause();
@@ -3286,7 +3287,7 @@ function LoadSocket()
                     //상태값  : 시작
                     status = 1;
 
-                    //Timer_Id = setInterval(drawScreen, 1000/gameFrame);
+                    Timer_Id = setInterval(drawScreen, 1000/gameFrame);
 
                     audio.play();
                     //audio.pause();
@@ -3294,7 +3295,7 @@ function LoadSocket()
                     //상태값: 그냥 이어서 진행
                     status = 2;
 
-                    //Timer_Id = setInterval(drawScreen, 1000/gameFrame);
+                    Timer_Id = setInterval(drawScreen, 1000/gameFrame);
 
                     audio.play();
                     //audio.pause();

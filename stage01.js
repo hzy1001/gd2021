@@ -1,9 +1,10 @@
 ﻿// Socket.IO 사용 시 주석 해제
 //var gfwSocket =  new gfwSocket("http://127.0.0.1:3000");
-var gfwSocket =  new gfwSocket("");
+//var gfwSocket =  new gfwSocket("");
  
 if (game_mode == 'M'){
 
+    var gfwSocket =  new gfwSocket("");
     //alert(gfwSocket) 
 
     console.log("gfwSocket",gfwSocket)

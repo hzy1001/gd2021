@@ -85,7 +85,7 @@ io.on('connection', function(socket) {
                 
                     //} 
 
-                                //이러게 하니깐 부하많이걸림
+                    //이러게 하니깐 부하많이걸림
                     //setInterval(serverFrame, 1000/10);
                     
                     //serverTime = 0;  

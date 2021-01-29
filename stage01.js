@@ -1,4 +1,4 @@
-﻿// Socket.IO 사용 시 주석 해제
+﻿//Socket.IO 사용 시 주석 해제
 //var gfwSocket =  new gfwSocket("http://127.0.0.1:3000");
 var gfwSocket =  new gfwSocket("");
  
@@ -34,10 +34,11 @@ if (game_mode == 'M'){
 
             //alert("test1")
             console.log("gfwSocket>>>>>>>>>>>>>>>>",gfwSocket)
- 
 
             gfwSocket.Emit("play_game",function(){ 
+                
                 return;
+                
             });     
 
         }else {

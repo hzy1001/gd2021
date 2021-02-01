@@ -576,29 +576,29 @@ function addJavascript(jsname) {
 
 
 
-////////////////// 게임 시작
-function gameStart(as_keycode) { 
+// ////////////////// 게임 시작
+// function gameStart(as_keycode) { 
 
-    /*
-    //다시 서버로
-    fgwgfwSocket.Emit('multi_want',ls_socketid);
+//     /*
+//     //다시 서버로
+//     fgwgfwSocket.Emit('multi_want',ls_socketid);
  
-    fgwgfwSocket.On("MdrawScreen",function(i){  
+//     fgwgfwSocket.On("MdrawScreen",function(i){  
 
-        //function MdrawScreen(fgwdrawScreen){
-            //alert(id)
-            //this.fgwdrawScreen;
+//         //function MdrawScreen(fgwdrawScreen){
+//             //alert(id)
+//             //this.fgwdrawScreen;
     
-            //console.log("client:",fgwdrawScreen);
-        //}
-        //alert("id>>>"+i);
-        console.log("i",i)
-        //return;
+//             //console.log("client:",fgwdrawScreen);
+//         //}
+//         //alert("id>>>"+i);
+//         console.log("i",i)
+//         //return;
 
-        gameStart2(as_keycode);
-    }) 
-    */    
-}    
+//         gameStart2(as_keycode);
+//     }) 
+//     */    
+// }    
     
 
 function gameStart(as_keycode) {     
@@ -850,8 +850,7 @@ function game_init(){
     weapponY = theCanvas.clientHeight / 5 + cityEnd_size/5;
     //적 미시일 초기 이동위치 = 생성위치
     move_weapponX = weapponX;
-    move_weapponY = weapponY;
-
+    move_weapponY = weapponY; 
 
     weappon_upDown = 1;
     weappon_leftRight = 1;
@@ -918,14 +917,20 @@ function player_didtance(){
     //게임방향타겟(배경 중심점)으로부터의 거리
     Pdistance = Math.sqrt(Math.pow(Math.abs(parseInt(((theCanvas.clientWidth / 2  + cityEnd_x) - playerX))),2) + Math.pow(Math.abs(parseInt(theCanvas.clientHeight / 4 - playerY)),2));
 
-}
+} 
 
-////////////////// 적 거리
-function enemy_didtance(){
+////////////////// 플레이어 에너지 표시
+function player_energe(){
 
-    //게임방향타겟(배경 중심점)으로부터의 거리
-    this.Edistance = Math.sqrt(Math.pow(Math.abs(parseInt(((theCanvas.clientWidth / 2  + cityEnd_x) - this.enemyx))),2) + Math.pow(Math.abs(parseInt(theCanvas.clientHeight / 4 - this.enemyy)),2));
+    Context.font = '10px Arial';
 
+    penerge_bar = '';
+
+    for(var i = 1;i<=player_life;i++){
+        penerge_bar += '■';
+    }
+
+    return penerge_bar;
 }
 
 ////////////////// 플레이어 이동
@@ -1423,7 +1428,15 @@ function enemy_init(index){
 
 }
 
-////////////////// 적 폭파(레이져 충돌)
+////////////////// 적 거리
+function enemy_didtance(){
+
+    //게임방향타겟(배경 중심점)으로부터의 거리
+    this.Edistance = Math.sqrt(Math.pow(Math.abs(parseInt(((theCanvas.clientWidth / 2  + cityEnd_x) - this.enemyx))),2) + Math.pow(Math.abs(parseInt(theCanvas.clientHeight / 4 - this.enemyy)),2));
+
+}
+
+////////////////// 적 폭파(레이져 충돌) 
 function enemy_collision(){
 
     //적 위치
@@ -1519,21 +1532,7 @@ function enemy_collision(){
         }
     }
 
-}
-
-////////////////// 플레이어 에너지 표시
-function player_energe(){
-
-    Context.font = '10px Arial';
-
-    penerge_bar = '';
-
-    for(var i = 1;i<=player_life;i++){
-        penerge_bar += '■';
-    }
-
-    return penerge_bar;
-}
+} 
 
 ////////////////// 적 에너지 표시
 function enemy_energe(){
@@ -1680,8 +1679,7 @@ function enemy_move(){
     //적 충돌 함수 => 충돌함수는 drawScreen()이 아닌 enemy_move 안에서 호출한다.(this가 계속 따라가도록)
     this.enemy_collision();
 
-}
-
+} 
 
 
 ////////////////// 전함01 이동
@@ -2451,7 +2449,7 @@ GameCanvas.addEventListener('mousedown', function(event) {
  }
 ////////////////// 돔(doom)의 이벤트에 매핑(전역 키코드를 변경하여 프래임 진행시 방향 전환)
 function clickCanvas(event, as_gb) {
-alert("C")
+
 	//if (status != 2)
 	//{
 		//gameStart(13);
@@ -2668,100 +2666,100 @@ alert("C")
 
 } 
 
-// ///////////////////////////////////////
-// function clickDblCanvas(event, as_gb) {
+///////////////////////////////////////
+function clickDblCanvas(event, as_gb) {
 
-//     alert("dbl:"+as_gb) 
+    alert("dbl:"+as_gb) 
     
-//     //방향 up
-//     if(Context.isPointInPath(directonUp, x,  y)) {
-//         //wayBefore = 'U';
-//         //pmovey = pmovey - 0.1 * Pspeed/5;
-//         //strKeyEventValue = "ArrowUp";
-//         isKeyCode = 38;
-//         strKeyEventValue = "ArrowUp";
-//         wayBefore = 'U';
-//         Context.stroke(directonUp);    //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
+    // //방향 up
+    // if(Context.isPointInPath(directonUp, x,  y)) {
+    //     //wayBefore = 'U';
+    //     //pmovey = pmovey - 0.1 * Pspeed/5;
+    //     //strKeyEventValue = "ArrowUp";
+    //     isKeyCode = 38;
+    //     strKeyEventValue = "ArrowUp";
+    //     wayBefore = 'U';
+    //     Context.stroke(directonUp);    //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
 
-//         fn_move_warp();
-//     }
+    //     fn_move_warp();
+    // }
 
-//     //방향 down
-//     if(Context.isPointInPath(directonDown, x,  y)) {
-//         //wayBefore = 'D';
-//         //pmovey = pmovey + 0.1 * Pspeed/5;
-//         //strKeyEventValue = "ArrowDown";
-//         isKeyCode = 40;
-//         strKeyEventValue = "ArrowDown";
-//         wayBefore = 'D';
-//         Context.stroke(directonDown); //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
+    // //방향 down
+    // if(Context.isPointInPath(directonDown, x,  y)) {
+    //     //wayBefore = 'D';
+    //     //pmovey = pmovey + 0.1 * Pspeed/5;
+    //     //strKeyEventValue = "ArrowDown";
+    //     isKeyCode = 40;
+    //     strKeyEventValue = "ArrowDown";
+    //     wayBefore = 'D';
+    //     Context.stroke(directonDown); //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
 
-//         fn_move_warp();            
-//     }
+    //     fn_move_warp();            
+    // }
 
-//     //방향 left
-//     if(Context.isPointInPath(directonLeft, x,  y)) {
-//         //wayBefore = 'L';
-//         //pmovex = pmovex - 0.1 * Pspeed/5;
-//         //strKeyEventValue = "ArrowLeft";
-//         isKeyCode = 37;
-//         strKeyEventValue = "ArrowLeft";
-//         wayBefore = 'L';
-//         Context.stroke(directonLeft);  //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
+    // //방향 left
+    // if(Context.isPointInPath(directonLeft, x,  y)) {
+    //     //wayBefore = 'L';
+    //     //pmovex = pmovex - 0.1 * Pspeed/5;
+    //     //strKeyEventValue = "ArrowLeft";
+    //     isKeyCode = 37;
+    //     strKeyEventValue = "ArrowLeft";
+    //     wayBefore = 'L';
+    //     Context.stroke(directonLeft);  //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
 
-//         fn_move_warp();            
-//     }
+    //     fn_move_warp();            
+    // }
 
-//     //방향 right
-//     if(Context.isPointInPath(directonRight, x,  y)) {
-//         //wayBefore = 'R';
-//         //pmovex = pmovex + 0.1 * Pspeed/5;
-//         //strKeyEventValue = "ArrowRight";
-//         isKeyCode = 39;
-//         strKeyEventValue = "ArrowRight";
-//         wayBefore = 'R';
-//         Context.stroke(directonRight);  //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
+    // //방향 right
+    // if(Context.isPointInPath(directonRight, x,  y)) {
+    //     //wayBefore = 'R';
+    //     //pmovex = pmovex + 0.1 * Pspeed/5;
+    //     //strKeyEventValue = "ArrowRight";
+    //     isKeyCode = 39;
+    //     strKeyEventValue = "ArrowRight";
+    //     wayBefore = 'R';
+    //     Context.stroke(directonRight);  //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
 
-//         fn_move_warp();            
-//     }
+    //     fn_move_warp();            
+    // }
 
-//     //방향 upLeft
-//     if(Context.isPointInPath(directonUpLeft, x,  y)) {
-//         isKeyCode = 36;
-//         wayBefore = 'LU';
-//         Context.stroke(directonUpLeft);    //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
+    // //방향 upLeft
+    // if(Context.isPointInPath(directonUpLeft, x,  y)) {
+    //     isKeyCode = 36;
+    //     wayBefore = 'LU';
+    //     Context.stroke(directonUpLeft);    //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
 
-//         fn_move_warp();            
-//     }
+    //     fn_move_warp();            
+    // }
 
-//     //방향 UpRight
-//     if(Context.isPointInPath(directonUpRight, x,  y)) {
-//         isKeyCode = 33;
-//         strKeyEventValue = "RU";
-//         Context.stroke(directonUpRight);  //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
+    // //방향 UpRight
+    // if(Context.isPointInPath(directonUpRight, x,  y)) {
+    //     isKeyCode = 33;
+    //     strKeyEventValue = "RU";
+    //     Context.stroke(directonUpRight);  //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
 
-//         fn_move_warp();            
-//     }
+    //     fn_move_warp();            
+    // }
 
-//     //방향 downLeft
-//     if(Context.isPointInPath(directonDownLeft, x,  y)) {
-//         isKeyCode = 35;
-//         strKeyEventValue = "LD";
-//         Context.stroke(directonDownLeft); //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
+    // //방향 downLeft
+    // if(Context.isPointInPath(directonDownLeft, x,  y)) {
+    //     isKeyCode = 35;
+    //     strKeyEventValue = "LD";
+    //     Context.stroke(directonDownLeft); //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
 
-//         fn_move_warp();            
-//     }
+    //     fn_move_warp();            
+    // }
 
-//     //방향 downRight
-//     if(Context.isPointInPath(directonDownRight, x,  y)) {
-//         isKeyCode = 34;
-//         strKeyEventValue = "RD";
-//         Context.stroke(directonDownRight);  //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
+    // //방향 downRight
+    // if(Context.isPointInPath(directonDownRight, x,  y)) {
+    //     isKeyCode = 34;
+    //     strKeyEventValue = "RD";
+    //     Context.stroke(directonDownRight);  //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
 
-//         fn_move_warp();            
-//     }  
+    //     fn_move_warp();            
+    // }  
    
-// } 
+} 
 
 //warp(공간 이동) 
 function fn_move_warp(){
@@ -3211,6 +3209,11 @@ function drawScreen(){
      for (var i=0;i<=enemy_array.length - 1;i++){
         if (enemy_array[i].enemy_index == i){
              enemy_array[i].enemy_move();
+
+             
+            //이거를 다른플레이어와 공유
+            console.log("enemy_array[i]",enemy_array[i])
+
         }
      }
 

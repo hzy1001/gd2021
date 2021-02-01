@@ -26,7 +26,7 @@ if (game_mode == 'M'){
                         
     });   
 
-    gfwSocket.On("start_game",function(id){ 
+    gfwSocket.On("multi_connect",function(id){ 
 
         if(confirm("멀티 접속을 수락하시겠습니까?")){ 
             //as_keycode = 13;
@@ -35,7 +35,7 @@ if (game_mode == 'M'){
             //alert("test1")
             console.log("gfwSocket>>>>>>>>>>>>>>>>",gfwSocket)
 
-            gfwSocket.Emit("play_game",function(){ 
+            gfwSocket.Emit("multi_allowed",function(){ 
                 
                 return;
 
@@ -48,7 +48,7 @@ if (game_mode == 'M'){
 
     });   
 
-    gfwSocket.On("play_game2",function(id){ 
+    gfwSocket.On("multi_start",function(id){ 
         
             as_keycode = 13;
             gameStart(as_keycode) 
@@ -3141,7 +3141,19 @@ function player_collision(){
 
 
 ////////////////// 화면 로드(게임 프래임 수 만큼)  
-function drawScreen(){
+function drawScreen(){ 
+ 
+
+    if (gameTime % 100 == 0){
+        console.log("send time :" + gameTime);
+        gfwSocket.Emit("multi_play",gameTime);     
+    }
+ 
+    gfwSocket.On("show_time",function(shareTime){ 
+
+       console.log("share time :" + shareTime);
+
+    }) 
 
 
     //게임 진행 컨텍스트(레이어)
@@ -3212,7 +3224,7 @@ function drawScreen(){
 
              
             //이거를 다른플레이어와 공유
-            console.log("enemy_array[i]",enemy_array[i])
+           //console.log("enemy_array[i]",enemy_array[i])
 
         }
      }

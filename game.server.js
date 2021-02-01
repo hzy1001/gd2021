@@ -34,27 +34,27 @@ io.on('connection', function(socket) {
     socketList.push(socket); 
     socketIdList.push(socket.id);   
     
-    //멀티요청
-    socket.on('multi_want', function() {  
-        console.log("multi_want id : " + socket.id );    
+    // //멀티 게임 요청
+    // socket.on('multi_want', function() {  
+    //     console.log("multi_want id : " + socket.id );    
           
-        //socketList.push(socket); 
-        //socketIdList.push(socket.id);    
+    //     //socketList.push(socket); 
+    //     //socketIdList.push(socket.id);    
 
-        //intro시작
-        //if (socketList.length > 1){        
-        //    socketList.forEach(function(item, i) {  
-                    //if (item != socket) {
+    //     //intro시작
+    //     //if (socketList.length > 1){        
+    //     //    socketList.forEach(function(item, i) {  
+    //                 //if (item != socket) {
                       
-                        socket.emit('start_intro',{ id: socket.id });    
-                        console.log('start_intro',socket.id);                  
-                    //} 
-        //    }); 
-        //}
+    //                     socket.emit('start_intro',{ id: socket.id });    
+    //                     console.log('start_intro',socket.id);                  
+    //                 //} 
+    //     //    }); 
+    //     //}
             
-    });
+    // });
 
-    //멀티시작
+    //멀티 요청 및 대기
     socket.on('multi_ready', function() {   
         console.log("multi_ready 접속인원",socketList.length);
 
@@ -66,22 +66,22 @@ io.on('connection', function(socket) {
         }else {
             socketList.forEach(function(item, i) {  
                     if (item != socket) {
-                        item.emit('start_game', item.id);
-                        console.log('start_game id',item.id);
+                        item.emit('multi_connect', item.id);
+                        console.log('multi_connect id',item.id);
                     } 
             }); 
         }  
     });    
 
     var serverTime = 0;    
-    //게임 플레이
-    socket.on('play_game', function() {   
-        console.log("play_game",socketList.length);  
+    //멀티 수락 및 시작
+    socket.on('multi_allowed', function() {   
+        console.log("multi_allowed",socketList.length);  
 
             socketList.forEach(function(item, i) {  
                     //if (item != socket) {
-                        item.emit('play_game2', item.id);
-                        console.log('play_game2 id',item.id);
+                        item.emit('multi_start', item.id);
+                        console.log('multi_start id',item.id);
                 
                     //} 
 
@@ -93,6 +93,21 @@ io.on('connection', function(socket) {
 
           
     });      
+
+
+    //멀티 게임 플레이
+    socket.on('multi_play', function(game_time) {    
+
+            socketList.forEach(function(item, i) {  
+                    if (item != socket) {
+                        item.emit('show_time', game_time);
+                        console.log("share time :"+game_time)
+                
+                    }  
+            });  
+
+          
+    });       
 
     //이러게 하니깐 부하많이걸림
     //setInterval(serverFrame, 1000/10);

@@ -2643,24 +2643,24 @@ function clickCanvas(event, as_gb) {
 
     function clickDblCanvas(event, as_gb) {
 
-    
-        //플레이어(보너스)가 남아있는경우 자동 재시작
-        //게인 진행중이 아닐때 마우스로 화면 클릭시 재시도,종료 버튼 보여줌
-        if (first_load_yn == "Y"){    
-            gameStart(13); 
-        }else { 
-            //alert("touch")
-            gameRetryExitButton(); 
-        }
+    alert("dbl")
+        // //플레이어(보너스)가 남아있는경우 자동 재시작
+        // //게인 진행중이 아닐때 마우스로 화면 클릭시 재시도,종료 버튼 보여줌
+        // if (first_load_yn == "Y"){    
+        //     gameStart(13); 
+        // }else { 
+        //     //alert("touch")
+        //     gameRetryExitButton(); 
+        // }
     
         //as_gb 1: mouseClick, 2: onMouseMove
         var x = event.pageX;
         var y = event.pageY;
     
-        //윈도우의 경우 캔버스 컨트롤을 사용하지 않는다.(게임 진행일때만) => 재시도/종료 버튼클릭 가능하기 위해
-        if (navigator.platform.substr(0,3) == "Win" && status == 2){
-            return;
-        }
+        // //윈도우의 경우 캔버스 컨트롤을 사용하지 않는다.(게임 진행일때만) => 재시도/종료 버튼클릭 가능하기 위해
+        // if (navigator.platform.substr(0,3) == "Win" && status == 2){
+        //     return;
+        // }
     
         //방향 up
         if(Context.isPointInPath(directonUp, x,  y)) {
@@ -2750,14 +2750,14 @@ function clickCanvas(event, as_gb) {
             fn_move_warp();            
         }
     
-        //방향 중앙 정지
-        if(Context.isPointInPath(directonMiddle, x,  y)) {
-            isKeyCode = "16";
-            strKeyEventValue = "";
-            pmovex = 0;
-            pmovey = 0;
-            Context.stroke(directonMiddle);  //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
-        }
+        // //방향 중앙 정지
+        // if(Context.isPointInPath(directonMiddle, x,  y)) {
+        //     isKeyCode = "16";
+        //     strKeyEventValue = "";
+        //     pmovex = 0;
+        //     pmovey = 0;
+        //     Context.stroke(directonMiddle);  //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
+        // }
     
     
         // //레이져 발사
@@ -2842,33 +2842,33 @@ function clickCanvas(event, as_gb) {
         }
             
 
-    if(status != 2){
-        //게임 계속
-        if(Context.isPointInPath(button_play, x,  y)) {
-            isKeyCode = 13;
-            //strKeyEventValue = "LD";
-            Context.stroke(button_play); //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
-            gameEnd(isKeyCode);
-            isKeyDown = [];
-            isKeyCode = null;
-        }
+    // if(status != 2){
+    //     //게임 계속
+    //     if(Context.isPointInPath(button_play, x,  y)) {
+    //         isKeyCode = 13;
+    //         //strKeyEventValue = "LD";
+    //         Context.stroke(button_play); //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
+    //         gameEnd(isKeyCode);
+    //         isKeyDown = [];
+    //         isKeyCode = null;
+    //     }
 
-        //게임 종료
-        if(Context.isPointInPath(button_end, x,  y)) {
-            isKeyCode = 27;
-            //strKeyEventValue = "RD";
-            Context.stroke(button_end);  //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
-            gameEnd(isKeyCode);
-            isKeyDown = [];
-            isKeyCode = null;
-        }
+    //     //게임 종료
+    //     if(Context.isPointInPath(button_end, x,  y)) {
+    //         isKeyCode = 27;
+    //         //strKeyEventValue = "RD";
+    //         Context.stroke(button_end);  //키 입력 반을체감을 위해 눌렀을때 잠깐 객체 세로 그려준다.(투명도 0으로하여)
+    //         gameEnd(isKeyCode);
+    //         isKeyDown = [];
+    //         isKeyCode = null;
+    //     }
 
-        //게임 계속
-        if(Context.isPointInPath(button_continue, x,  y)) {
-            player_cnt = 1;
-            gameStart(13);  
-        }        
-    }
+    //     //게임 계속
+    //     if(Context.isPointInPath(button_continue, x,  y)) {
+    //         player_cnt = 1;
+    //         gameStart(13);  
+    //     }        
+    // }
 
 }
 

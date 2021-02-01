@@ -32,7 +32,8 @@
     <!--캔버스 화면 오버시 드래그 방지-->
       <div id="can_div" style="position: absolute; top: 0px; left: 0px;overflow:auto; width:1280px; height:670px;" ondrop="drop(event)" ondragover="allowDrop(event)">   
       <div class="game_div" ondrop="drop(event)" ondragover="allowDrop(event)">
-          <canvas id="GameCanvas"  width="1280" height="670" style="position:absolute;top:0px;left:0px;border:0" onclick="clickCanvas(window.event,1)"  onMouseMove="clickCanvas(window.event,2)" onMouseOver="clickCanvas(window.event,3)" onMouseDown="clickCanvas(window.event,4)">        
+          <!-- <canvas id="GameCanvas"  width="1280" height="670" style="position:absolute;top:0px;left:0px;border:0" onclick="clickCanvas(window.event,1)"  onMouseMove="clickCanvas(window.event,2)" onMouseOver="clickCanvas(window.event,3)" onMouseDown="clickCanvas(window.event,4)">         -->
+            <canvas id="GameCanvas"  width="1280" height="670" style="position:absolute;top:0px;left:0px;border:0" onDblclick="clickDblCanvas(window.event,1)" onclick="clickCanvas(window.event,1)"  onMouseMove="clickCanvas(window.event,2)" onMouseOver="clickCanvas(window.event,3)" onMouseDown="clickCanvas(window.event,4)"> 
             HTML5 Canvas를 지원하지 않습니다.
         </canvas>
       </div>

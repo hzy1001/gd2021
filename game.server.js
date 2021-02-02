@@ -89,7 +89,8 @@ io.on('connection', function(socket) {
 
             socketList.forEach(function(item, i) {  
                     if (item != socket) {
-                        item.emit('multi_start', game_time);
+                        //서버 전송시간 감안 10초 더해준다.
+                        item.emit('multi_start', game_time + 10);
                         console.log('multi_start id', item.id);
                 
                     } 

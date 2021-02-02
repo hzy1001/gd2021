@@ -307,6 +307,7 @@ if (game_mode == 'M'){
         
             as_keycode = 13;
             gameStart(as_keycode);
+       
             gameTime = shareTime;
 
     }) 

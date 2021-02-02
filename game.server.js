@@ -55,13 +55,13 @@ io.on('connection', function(socket) {
     // });
 
     //멀티 요청 및 대기
-    socket.on('multi_ready', function() {   
-        console.log("multi_ready 접속인원",socketList.length);
+    socket.on('multi_request', function() {   
+        console.log("multi_request 접속인원",socketList.length);
 
         //게임시작(1명이상 접속해야 멀티 가능)
         if (socketList.length <= 1){   
-            console.log('wait_game',socketList.length);
-            socket.emit('wait_game', socketList.length);
+            console.log('multi_ready',socketList.length);
+            socket.emit('multi_ready', socketList.length);
         
         }else {
             socketList.forEach(function(item, i) {  

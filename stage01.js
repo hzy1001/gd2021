@@ -8,9 +8,9 @@ if (game_mode == 'M'){
 
     console.log("gfwSocket",gfwSocket)
 
-    gfwSocket.Emit("multi_ready",function(){ 
+    gfwSocket.Emit("multi_request",function(){ 
 
-        gfwSocket.On("wait_game",function(ready_cnt){ 
+        gfwSocket.On("multi_wait",function(ready_cnt){ 
 
             alert("멀티게임은 접속 대기중...\n현재 접속인원 : " + ready_cnt); 
 
@@ -19,7 +19,7 @@ if (game_mode == 'M'){
             //접속자가 없으면 계속 서버에 접속했는지 확인
             if (ready_cnt < 2) {
                 //다시 접속자 조회
-                gfwSocket.Emit("multi_ready",function(ready_cnt){ 
+                gfwSocket.Emit("multi_request",function(ready_cnt){ 
                     return;
                 });     
             } 
@@ -3293,7 +3293,7 @@ function MultidrawScreen(){
     // fgwdrawScreen = this;
     // //console.log("fgwdrawScreen",fgwdrawScreen) 
     //  //다시 서버로
-    // fgwgfwSocket.Emit("multi_ready",gameTime); 
+    // fgwgfwSocket.Emit("multi_request",gameTime); 
 
 
     this.Multi_id = fgwSocket.id;

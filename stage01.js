@@ -49,18 +49,17 @@ var maxY = theCanvas.clientHeight - minY;
 var add_borderX = 0;
 var add_borderY = 0;
 
-
 //게임 랜덤값
 //나중에 소켓에서 양쪽 서로 공유한다.
-var sRandom01 = Math.floor(Math.random() * 1);   //0부터1까지의 난수 발생
-var sRandom02 = sRandom02;   //0부터2까지의 난수 발생
-var sRandom03 = sRandom03;   //0부터3까지의 난수 발생
-var sRandom04 = sRandom04;   //0부터4까지의 난수 발생
-var sRandom05 = sRandom05;   //0부터5까지의 난수 발생
-var sRandom06 = sRandom06;   //0부터6까지의 난수 발생
-var sRandom07 = Math.floor(Math.random() * 7);   //0부터7까지의 난수 발생
-var sRandom08 = Math.floor(Math.random() * 8);   //0부터8까지의 난수 발생
-var sRandom09 = Math.floor(Math.random() * 9);   //0부터9까지의 난수 발생
+var sRandom01 = Math.floor(Math.random() * 1);;   //0부터1까지의 난수 발생
+var sRandom02 = Math.floor(Math.random() * 2);;   //0부터2까지의 난수 발생
+var sRandom03 = Math.floor(Math.random() * 3);;   //0부터3까지의 난수 발생
+var sRandom04 = Math.floor(Math.random() * 4);;   //0부터4까지의 난수 발생
+var sRandom05 = Math.floor(Math.random() * 5);;   //0부터5까지의 난수 발생
+var sRandom06 = Math.floor(Math.random() * 6);;   //0부터6까지의 난수 발생
+var sRandom07 = Math.floor(Math.random() * 7);    //0부터7까지의 난수 발생
+var sRandom08 = Math.floor(Math.random() * 8);    //0부터8까지의 난수 발생
+var sRandom09 = Math.floor(Math.random() * 9);    //0부터9까지의 난수 발생
 var sRandom10 = Math.floor(Math.random() * 10);  //0부터10까지의 난수 발생 
 
 //임시로...
@@ -270,6 +269,7 @@ if (game_mode == 'M'){
                         
     });   
 
+    //화면 로드시
     gfwSocket.On("multi_connect",function(id){ 
 
         if(confirm("멀티 접속을 수락하시겠습니까?" + gameTime)){ 
@@ -295,10 +295,12 @@ if (game_mode == 'M'){
 
         }else {
 
-            //그냥시작
+            //싱글모드로 시작
+            alert("싱글모드로 시작합니다.");
+            gfwSocket.Emit("gameDisconnect");  
             gameStart(13); 
-
-            //return;
+            
+            return;
         }
 
     });   
@@ -724,16 +726,28 @@ function gameStart(as_keycode) {
 ////////////////// 게임 종료
 function gameEnd(as_keycode) {
 
-    //멀티연결해제
-    console.log("gameDisconnect");
-    gfwSocket.Emit("gameDisconnect");  
+
     
 
-    if (as_keycode == 13){
+    //새로 시작
+    if (as_keycode == 13){ 
 
+        //새로 접속 요청
+        if (game_mode == 'M'){
+ 
+            gfwSocket.Emit("multi_allowed",gameTime);     
+        }
+        
         gameStart(13); 
 
     }else {
+
+        if (game_mode == 'M'){
+            //멀티연결해제
+            console.log("gameDisconnect");
+            gfwSocket.Emit("gameDisconnect");  
+     
+        }
 
         audio.pause();
         //onReady();
@@ -1447,7 +1461,7 @@ function enemy_init(index){
     this.enemy_dealy_time = enemy_dealy_time;
 
     //적 초기 위치
-    //this.enemyx = parseInt(theCanvas.clientWidth / 2  + cityEnd_x) + (Math.floor(Math.random() * 10))  + (Math.floor(Math.random() * 30)) - (Math.floor(Math.random() * 300)); //시작  x
+    //this.enemyx = parseInt(theCanvas.clientWidth / 2  + cityEnd_x) + (sRandom10)  + (Math.floor(Math.random() * 30)) - (Math.floor(Math.random() * 300)); //시작  x
     //this.enemyy = parseInt(theCanvas.clientHeight / 4) + (sRandom10 * 100) - (sRandom10 * 100); //시작 y
     this.enemyx = ini_enemyx  + (sRandom10 * 100) - (sRandom10 * 100);
     this.enemyy = ini_enemyy  + (sRandom10 * 100) - (sRandom10 * 100);
@@ -1573,9 +1587,9 @@ function enemy_collision(){
                 for (var i=0;i<=ini_enemy_life*10*(this.enemyh/20);i++){
 
                     Context.drawImage(this.explosionImage01,this.enemyx-sRandom30,this.enemyy+sRandom40,100 - i,100 - i);
-                    Context.drawImage(this.explosionImage01,this.enemyx+Math.floor(Math.random()*60),this.enemyy+sRandom50,20 - i,20 - i);
+                    Context.drawImage(this.explosionImage01,this.enemyx+sRandom60,this.enemyy+sRandom50,20 - i,20 - i);
                     Context.drawImage(this.explosionImage01,this.enemyx-sRandom30,this.enemyy+sRandom40,100 - i,100 - i);
-                    Context.drawImage(this.explosionImage01,this.enemyx+Math.floor(Math.random()*60),this.enemyy+sRandom50,20 + i,20 + i);
+                    Context.drawImage(this.explosionImage01,this.enemyx+sRandom60,this.enemyy+sRandom50,20 + i,20 + i);
 
                     //Context.fillText("Score : " + gameTime,theCanvas.clientWidth - 250,50);
 
@@ -1588,7 +1602,7 @@ function enemy_collision(){
                 gameScore = parseInt(gameScore) + ini_enemy_life*10;
 
                 //타겟 새로 출현 시간.
-                this.enemy_dealy_time = parseInt((Math.floor(Math.random()*3) + 2)) * 1000;
+                this.enemy_dealy_time = parseInt(sRandom03 + 2) * 1000;
 
                 Context.restore();
 
@@ -1636,6 +1650,16 @@ function enemy_move(){
 //alert(parseInt(String(gameTime*100).substr(0,2)) % 5)
 
 //console.log(String(gameTime).substr(String(gameTime).length-3,1)) 
+
+
+    //주기적으로 양쪽의 시간 씽크가 맞지않을 경우를 대비하여 느린쪽 시간에 싱크를 맞춘다.
+    if (game_mode == 'M'){    
+        if (gameTime % 200 === 0){
+     
+            console.log("sinc_time :",gameTime);
+            gfwSocket.Emit("sinc_time",gameTime)  
+        }  
+    } 
 
     //적(enemy) 왔다같다 이동
     if (String(gameTime).substr(String(gameTime).length-3,1) == 1){
@@ -1960,7 +1984,7 @@ function game_background(){
     // //좌중앙
     // Context3.beginPath();
     // Context3.moveTo(theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x - 15 , theCanvas.clientHeight / 4 + cityEnd_y);
-    // Context3.lineTo(0, theCanvas.clientHeight/6   +  Math.floor(Math.random() * 10));
+    // Context3.lineTo(0, theCanvas.clientHeight/6   +  sRandom10);
     // //Context3.strokeStyle = "#f0f0f0";; //선 색상
     // Context3.strokeStyle = "grey";; //선 색상
     // Context3.stroke();
@@ -2003,7 +2027,7 @@ function game_background(){
     // //우중앙
     // Context3.beginPath();
     // Context3.moveTo(theCanvas.clientWidth / 2  + cityEnd_x + 15, theCanvas.clientHeight / 4 + cityEnd_y);
-    // Context3.lineTo(theCanvas.clientWidth,  theCanvas.clientHeight / 4 - 50 +  Math.floor(Math.random() * 10));
+    // Context3.lineTo(theCanvas.clientWidth,  theCanvas.clientHeight / 4 - 50 +  sRandom10);
     // Context3.strokeStyle = "grey";; //선 색상
     // Context3.stroke();
 
@@ -2064,6 +2088,8 @@ function game_background(){
             // Context3.lineWidth = 2;
             // Context3.stroke();  
                     
+
+            /* 기둥
             //중앙 기둥 시작 마디
             Context3.beginPath();
             Context3.arc(theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x + ((theCanvas.clientWidth / 2  + cityEnd_x + 30) - (theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x - 30))/2 + back_distance/10, theCanvas.clientHeight / 4 - 50  - back_distance, i*3, 0,Math.PI * 2);
@@ -2117,7 +2143,8 @@ function game_background(){
             Context3.lineTo(theCanvas.clientWidth / 2  + cityEnd_x + cityEnd_size/2 + 2*i , theCanvas.clientHeight + i  + cityEnd_y + i);
             Context3.strokeStyle = "grey";; //선 색상
             Context3.lineWidth = i/10;
-            Context3.stroke();            
+            Context3.stroke(); 
+            */        
 
 
         }
@@ -2131,7 +2158,7 @@ function game_background(){
         }
 
         // Context3.beginPath();
-        // Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 + Math.floor(Math.random() * 1) + 1 ,85 + back_distance2 + cityEnd_y, 0, Math.PI * 2);
+        // Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 + sRandom01 + 1 ,85 + back_distance2 + cityEnd_y, 0, Math.PI * 2);
         // Context3.stroke();
     //}
 
@@ -2247,7 +2274,7 @@ function game_background(){
 
             // var random01 = sRandom02 + 1;
             // var random02 = sRandom05 + 1;
-            // var random03 = Math.floor(Math.random() * 10) + 1;
+            // var random03 = sRandom10 + 1;
             // var random04 = Math.floor(Math.random() * 15) + 1;
             // var random05 = Math.floor(Math.random() * 20) + 1;
             // var random06 = Math.floor(Math.random() * 30) + 1;
@@ -2318,12 +2345,14 @@ function game_background(){
 			// Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 + 2 - random05 + cityEnd_y , 100 - sRandom05 , 0, Math.PI * 2);
 			// Context3.stroke();
 
+            /*
             //콜로니 끝 근처 원
 			Context3.beginPath();
 			Context3.globalAlpha = 0.08 * sRandom03;
             Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 - sRandom05 + cityEnd_y + 20 , 60 - sRandom10 , 0, Math.PI * 2);
             Context3.lineWidth = 1;
 			Context3.stroke();
+            */
 
             //k = k + 50;  //조명 간격
             //우측중단선 조명
@@ -2489,7 +2518,7 @@ GameCanvas.addEventListener('mousedown', function(event) {
          player_warp =  noneImage;
          Context.drawImage(explosionImage01,playerX-sRandom40,playerY+sRandom40,35,25);
          Context.drawImage(explosionImage01,playerX-10,playerY - 15,60*(Pdistance/500)*playerHeight/50,30*(Pdistance/500)*playerWidth/10);
-         Context.drawImage(explosionImage01,playerX+sRandom10,playerY-Math.floor(Math.random()*60),120,115);
+         Context.drawImage(explosionImage01,playerX+sRandom10,playerY-sRandom60,120,115);
 
          playerImage = explosionImage01;
          player_warp = explosionImage01;
@@ -2948,9 +2977,9 @@ function weappon_init(){
         this.weapponArray[i].bspeed  = this.weappon_speed;
 
         if (sRandom02 == 0){
-            this.weapponArray[i].bdirection =   Math.floor(Math.random() * 10) * 1;   //미사일의 방향은 랜덤하게 생성 => 미사일 방향 오른쪽 으로
+            this.weapponArray[i].bdirection =   sRandom10 * 1;   //미사일의 방향은 랜덤하게 생성 => 미사일 방향 오른쪽 으로
         }else if (sRandom02 == 1){
-            this.weapponArray[i].bdirection =   Math.floor(Math.random() * 10) * -1;   //미사일의 방향은 랜덤하게 생성 => 미사일 방향 왼쪽 으로
+            this.weapponArray[i].bdirection =   sRandom10 * -1;   //미사일의 방향은 랜덤하게 생성 => 미사일 방향 왼쪽 으로
         }
 
     }
@@ -2986,7 +3015,7 @@ function weappon_move(){
             
             //2.좌우로 흔들린다.
             this.weapponArray[i].bmx = this.weapponArray[i].bmx + sRandom10 - sRandom10;
-            this.weapponArray[i].bmy = this.weapponArray[i].bmy + Math.floor(Math.random()*2) - Math.floor(Math.random()*3);
+            this.weapponArray[i].bmy = this.weapponArray[i].bmy + sRandom02 - sRandom03;
             //3.속도가 느리다.
             this.weappon_speed = 1;
 
@@ -3026,22 +3055,22 @@ function weappon_move(){
             //총알 반은 위로 반은 아래로향한다.
             if (this.weappon_index%4 == 0){
                 this.weappon_upDown = 1;
-                this.weappon_leftRight =  1 * (Math.floor(Math.random() * 1)==0?1:-1);
+                this.weappon_leftRight =  1 * (sRandom01==0?1:-1);
             }else if (this.weappon_index%4 == 1){
                 this.weappon_upDown = -1;
-                this.weappon_leftRight =  1 * (Math.floor(Math.random() * 1)==0?1:-1);
+                this.weappon_leftRight =  1 * (sRandom01==0?1:-1);
             }else if (this.weappon_index%4 == 2){
-                this.weappon_leftRight = -1 - (Math.floor(Math.random() * 1) + 1);
-                this.weappon_upDown = this.weappon_tmp_random * (Math.floor(Math.random() * 1)==0?1:-1);
+                this.weappon_leftRight = -1 - (sRandom01 + 1);
+                this.weappon_upDown = this.weappon_tmp_random * (sRandom01==0?1:-1);
             }else {
-                this.weappon_leftRight = 1 + (Math.floor(Math.random() * 1) + 1);
-                this.weappon_upDown = this.weappon_tmp_random * (Math.floor(Math.random() * 1)==0?1:-1);
+                this.weappon_leftRight = 1 + (sRandom01 + 1);
+                this.weappon_upDown = this.weappon_tmp_random * (sRandom01==0?1:-1);
             }
         }
 
         this.weapponArray[i].bmx =  this.weapponArray[i].bmx + this.weapponArray[i].bdirection * this.weappon_leftRight;
         this.weapponArray[i].bsize = this.weappon_size;
-        this.weapponArray[i].bmy = this.weapponArray[i].bmy + this.weapponArray[i].bsize * this.weappon_upDown / (Math.floor(Math.random()*1) + 2); //<= 총알 속도의 핵심(his.weappon_upDown / 4).
+        this.weapponArray[i].bmy = this.weapponArray[i].bmy + this.weapponArray[i].bsize * this.weappon_upDown / (sRandom01 + 2); //<= 총알 속도의 핵심(his.weappon_upDown / 4).
         this.weapponArray[i].bmy  = this.weapponArray[i].bmy  * this.weapponArray[i].bspeed;
 
         Context.drawImage(this.weapponImage,this.weapponArray[i].bmx,this.weapponArray[i].bmy,this.weapponArray[i].bsize,this.weapponArray[i].bsize);
@@ -3056,7 +3085,7 @@ function weappon_move(){
         if ( this.weapponArray[i].bmy >= theCanvas.clientHeight + add_borderX || this.weapponArray[i].bmy + add_borderX <= 0){
 
             //최대 max_weappon_cnt 개까지만 생성
-            if (1 == Math.floor(Math.random()*2)){
+            if (1 == sRandom02){
 
                 //this.weappon_cnt = Math.floor(Math.random()*5) + 1;
 
@@ -3110,7 +3139,7 @@ function player_collision(){
 
                 Context.drawImage(explosionImage01,playerX-sRandom40,playerY+sRandom40,35,25);
                 Context.drawImage(explosionImage01,playerX-10,playerY - 15,60*(Pdistance/500)*playerHeight/50,30*(Pdistance/500)*playerWidth/10);
-                Context.drawImage(explosionImage01,playerX+sRandom10,playerY-Math.floor(Math.random()*60),120,115);
+                Context.drawImage(explosionImage01,playerX+sRandom10,playerY-sRandom60,120,115);
 
                 playerImage = explosionImage01;
                 player_warp = explosionImage01;
@@ -3222,23 +3251,7 @@ function player_collision(){
 
 
 ////////////////// 화면 로드(게임 프래임 수 만큼)  
-function drawScreen(){ 
- 
-
-    // //주기적으로 양쪽의 씽크가 맞지않을 경우 현재 플레이 진행중인 쪽(접속을 수락하는 쪽)으로 맞춰준다.
-    // if (gameTime % 1000 == 0){
-
-    //     console.log("send time :" + gameTime);
-    //     gfwSocket.Emit("multi_play",gameTime);     
-
-    // }
- 
-    // gfwSocket.On("show_time",function(shareTime){ 
-
-    //    console.log("share time :" + shareTime);
-
-    // })  
-
+function drawScreen(){  
     //console.log("gameTime :" + gameTime);
 
     //게임 진행 컨텍스트(레이어)
@@ -3366,7 +3379,20 @@ function drawScreen(){
         Context2.font = '30px Arial';
     }
 
+
+    
+    //주기적으로 양쪽의 시간 씽크가 맞지않을 경우를 대비하여 느린쪽 시간에 싱크를 맞춘다.
+    if (game_mode == 'M'){    
+        if (gameTime % 1000 === 0){
+     
+            console.log("sinc_time :",gameTime);
+            gfwSocket.Emit("sinc_time",gameTime)  
+        }  
+    } 
+
 }
+
+
 
 function MultidrawScreen(){
 

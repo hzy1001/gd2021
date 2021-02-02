@@ -62,7 +62,8 @@ io.on('connection', function(socket) {
     //     //}
             
     // });
-
+    var serverTime = 0;    
+    
     //멀티 요청 및 대기
     socket.on('multi_request', function() {   
         console.log("multi_request 접속인원",socketList.length);
@@ -82,17 +83,15 @@ io.on('connection', function(socket) {
         }  
     });    
 
-    var serverTime = 0;    
+
     //멀티 수락 및 시작(수락하면 수락한의 gameTime 공유)
     socket.on('multi_allowed', function(game_time) {   
         console.log("game_time",game_time);  
-
+        //serverTime = game_time;
             socketList.forEach(function(item, i) {  
-                    if (item != socket) {
-                        //서버 전송시간 감안 10초 더해준다.
-                        item.emit('multi_start', game_time + 10);
+                    if (item != socket) { 
+                        item.emit('multi_start', game_time);
                         console.log('multi_start id', item.id);
-                
                     } 
 
                     //이러게 하니깐 부하많이걸림
@@ -103,13 +102,13 @@ io.on('connection', function(socket) {
     });      
 
 
-    //멀티 게임 플레이
-    socket.on('multi_play', function(game_time) {    
+    //시간 맞추기
+    socket.on('sinc_time', function(pgame_time) {    
 
             socketList.forEach(function(item, i) {  
                     if (item != socket) {
-                        item.emit('show_time', game_time);
-                        console.log("share time :"+game_time);
+                        item.emit('sinc_time2', pgame_time);
+                        console.log("pgame_time time :", pgame_time);
                     }  
             });  
 
@@ -119,21 +118,21 @@ io.on('connection', function(socket) {
     //setInterval(serverFrame, 1000/10);
     //var serverTime = 0;
 
-    function serverFrame(){
+    // function serverFrame(){
 
-        serverTime++;
+    //     serverTime++;
 
-        console.log("serverFrame : ", serverTime)
-        //socket.emit('serverFrame', server_i);
-        //socket.emit('serverFrame', function(){
-            socket.emit('serverFrame', serverTime);
-            socketList.forEach(function(item, i) {  
-                //if (item != socket) {
-                    item.emit('serverFrame', serverTime);
+    //     console.log("serverFrame : ", serverTime)
+    //     //socket.emit('serverFrame', server_i);
+    //     //socket.emit('serverFrame', function(){
+    //         socket.emit('serverFrame', serverTime);
+    //         socketList.forEach(function(item, i) {  
+    //             //if (item != socket) {
+    //                 item.emit('serverFrame', serverTime);
             
-                //} 
-            });      
-    }   
+    //             //} 
+    //         });      
+    // }   
 
     /*
     // 클라이언트에서 받은다음 보내주면.... ==> 이것도 부하가 많이걸리지만 위보다는 적은거 같음. 

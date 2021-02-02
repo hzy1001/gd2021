@@ -17,8 +17,8 @@ function gfwSocket( server_http )
     { 
 
         //gfwSocket = this; 
-    
-        console.log("gfwSocket2",gfwSocket)
+
+        console.log("gfwSocket",gfwSocket)
 
     }, 1000);
      

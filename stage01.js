@@ -3222,7 +3222,7 @@ function drawScreen(){
     //플레이어 이동(플레이어는 맨 마지막에 그려준다. 그래야 다른 적들보다 앞에서 보여진다.)
     player_move();
 
-    //적 미사일 이동(적미사일과 충돌시 폭파이미지는 플레이더 뒤에서 그려준다.)
+    //적 미사일 이동(적미사일과 충돌시 폭파이미지는 플레이어 뒤에 나타나도록 한다.)
     for (var i=0;i<=enemy_array.length - 1;i++){
         if (enemy_array[i].enemy_index == i){
              enemy_array[i].weappon_move();

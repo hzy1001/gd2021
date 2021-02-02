@@ -7,7 +7,6 @@ var socket = require('socket.io');   //소켓 IO
 var io = socket(server);             //웹서버를 탑제한 소켓 IO
 var i = 0;
 
-
 // app.use('/', function(req, resp) {   //익스프레스 라우팅
 //     resp.sendFile(__dirname + '/index.html');
 // });  
@@ -29,10 +28,20 @@ var socketIdList = [];
 //신규접속
 io.on('connection', function(socket) {  
     console.log("connection id : " + socket.id );    
-
-
     socketList.push(socket); 
     socketIdList.push(socket.id);   
+
+    //접속해제(브라우저 종료시?)
+    socket.on('disconnect', function() {
+        console.log('Disconnect id',socket.id);
+        socketList.splice(socketList.indexOf(socket), 1);
+    });    
+
+     //접속해제(게임 종료시?)
+    socket.on('gameDisconnect', function() {
+        console.log('gameDisconnect id',socket.id);
+        socket.disconnect();
+    })       
     
     // //멀티 게임 요청
     // socket.on('multi_want', function() {  
@@ -60,12 +69,12 @@ io.on('connection', function(socket) {
 
         //게임시작(1명이상 접속해야 멀티 가능)
         if (socketList.length <= 1){   
-            console.log('multi_ready',socketList.length);
-            socket.emit('multi_ready', socketList.length);
-        
+            console.log('multi_wait',socketList.length);
+            socket.emit('multi_wait', socketList.length); 
         }else {
             socketList.forEach(function(item, i) {  
-                    if (item != socket) {
+                    //먼저 접속되어 있는쪽으로 수락 요청
+                    if (item != socket) { 
                         item.emit('multi_connect', item.id);
                         console.log('multi_connect id',item.id);
                     } 
@@ -74,24 +83,22 @@ io.on('connection', function(socket) {
     });    
 
     var serverTime = 0;    
-    //멀티 수락 및 시작
-    socket.on('multi_allowed', function() {   
-        console.log("multi_allowed",socketList.length);  
+    //멀티 수락 및 시작(수락하면 수락한의 gameTime 공유)
+    socket.on('multi_allowed', function(game_time) {   
+        console.log("game_time",game_time);  
 
             socketList.forEach(function(item, i) {  
-                    //if (item != socket) {
-                        item.emit('multi_start', item.id);
-                        console.log('multi_start id',item.id);
+                    if (item != socket) {
+                        item.emit('multi_start', game_time);
+                        console.log('multi_start id', item.id);
                 
-                    //} 
+                    } 
 
                     //이러게 하니깐 부하많이걸림
                     //setInterval(serverFrame, 1000/10);
                     
                     //serverTime = 0;  
-            });  
-
-          
+            });   
     });      
 
 
@@ -101,17 +108,14 @@ io.on('connection', function(socket) {
             socketList.forEach(function(item, i) {  
                     if (item != socket) {
                         item.emit('show_time', game_time);
-                        console.log("share time :"+game_time)
-                
+                        console.log("share time :"+game_time);
                     }  
             });  
 
-          
     });       
 
     //이러게 하니깐 부하많이걸림
     //setInterval(serverFrame, 1000/10);
-    
     //var serverTime = 0;
 
     function serverFrame(){
@@ -152,19 +156,7 @@ io.on('connection', function(socket) {
             //socket.emit('serverFrame', serverTime);            
         
     });    
-    */
-
-    //접속해제(브라우저 종료시?)
-    socket.on('disconnect', function() {
-        console.log('disconnect id',socket.id);
-        socketList.splice(socketList.indexOf(socket), 1);
-    });    
-
-     //접속해제(게임 종료시?)
-    socket.on('gameDisconnect', function() {
-        console.log('gameDisconnect id',socket.id);
-        socket.disconnect();
-    })    
+    */ 
        
 });  
 

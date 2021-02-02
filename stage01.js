@@ -1644,22 +1644,29 @@ function enemy_energe(){
     return this.energe_bar;
 } 
 
+    
+
+    gfwSocket.On("sinc_time2",function(serverTime){ 
+        console.log("sinc_time2 :" + serverTime);
+        gameTime = serverTime;
+    
+    })  
+
 ////////////////// 적 이동 
 function enemy_move(){
 //alert(String(gameTime*100).substr(0,2));
 //alert(parseInt(String(gameTime*100).substr(0,2)) % 5)
-
 //console.log(String(gameTime).substr(String(gameTime).length-3,1)) 
-
 
     //주기적으로 양쪽의 시간 씽크가 맞지않을 경우를 대비하여 느린쪽 시간에 싱크를 맞춘다.
     if (game_mode == 'M'){    
-        if (gameTime % 200 === 0){
+        if (gameTime % 100 === 0){
      
             console.log("sinc_time :",gameTime);
             gfwSocket.Emit("sinc_time",gameTime)  
         }  
-    } 
+    }  
+  
 
     //적(enemy) 왔다같다 이동
     if (String(gameTime).substr(String(gameTime).length-3,1) == 1){
@@ -3377,20 +3384,11 @@ function drawScreen(){
         Context2.font = '100px Arial';
         Context2.fillText("Ready", (theCanvas.clientWidth - ini_player_width) / 2 - theCanvas.offsetLeft - 100, theCanvas.clientHeight / 2 - theCanvas.offsetTop);
         Context2.font = '30px Arial';
-    }
-
-
-    
-    //주기적으로 양쪽의 시간 씽크가 맞지않을 경우를 대비하여 느린쪽 시간에 싱크를 맞춘다.
-    if (game_mode == 'M'){    
-        if (gameTime % 1000 === 0){
-     
-            console.log("sinc_time :",gameTime);
-            gfwSocket.Emit("sinc_time",gameTime)  
-        }  
     } 
 
+
 }
+
 
 
 

@@ -583,7 +583,7 @@ var enemy_collision_yn = 'N';
 //적 초기 출현 갯수
 var enemy_cnt = 1;
 var enemy_array = [];
-var penemy_array = [];
+
 
 create_enemy();
 
@@ -3192,11 +3192,12 @@ function player_collision(){
 } 
 
 //주기적 타임 싱크 맞추기;
-gfwSocket.On("sincDrawScreen2",function(serverTime,penemy_array){ 
-    console.log("sincDrawScreen2 :" + serverTime);
+gfwSocket.On("sincDrawScreen2",function(serverTime,Jenemy_array){ 
+    //console.log("sincDrawScreen2 :" + serverTime);
+    console.log("receive Jenemy_array :",Jenemy_array); 
     gameTime = serverTime;
-    enemy_array = penemy_array;
-
+    enemy_array = JSON.parse(Jenemy_array)
+    
     // for(var i=0; i < sRandoms.length; i++){
     //     //console.log(i,sRandoms[i]);
     //     Randoms[i] = sRandoms[i]
@@ -3204,6 +3205,8 @@ gfwSocket.On("sincDrawScreen2",function(serverTime,penemy_array){
 
 })  
 
+var Jenemy_array = new Object();
+var penemy_array = new Array();
 
 ////////////////// 화면 로드(게임 프래임 수 만큼)  
 function drawScreen(){  
@@ -3217,13 +3220,16 @@ function drawScreen(){
     if (game_mode == 'M'){    
         if (gameTime % 100 === 0){
      
-            penemy_array = enemy_array;
+            penemy_array = enemy_array.slice();
+            console.log("send penemy_array :",penemy_array); 
 
+            Jenemy_array = JSON.stringify(penemy_array);
+            console.log("send Jenemy_array :",Jenemy_array); 
+      
+            // JSON.stringify(
 
-            console.log("sincDrawScreen :",penemy_array); 
-
-
-            gfwSocket.Emit("sincDrawScreen",gameTime,penemy_array)  
+            gfwSocket.Emit("sincDrawScreen",gameTime,Jenemy_array)  
+            //gfwSocket.Emit("sincDrawScreen",penemy_array)  
         }  
     }  
 

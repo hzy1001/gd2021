@@ -31,9 +31,9 @@ var time2 = 0;
 
 //멀티 화면 싱크 맞추기 
 var sRandoms = new Array; //서버랜덤값
-var enemy_array1 = new Array; //적오브젝트 배열
-var enemy_array2 = new Array; //적오브젝트 배열
-var penemy_array = new Array;
+var Jenemy_array1 = "";
+var Jenemy_array2 = "";
+var Jenemy_array = ""; 
 
 function f_sRandoms(){
 
@@ -124,42 +124,48 @@ io.on('connection', function(socket) {
     });   
 
     //클라이언트에서 시간과 적(배열)을 받아서 다시 상대편으로 넘겨줘서 싱크를 맞춘다.
-    socket.on('sincDrawScreen', function(pgame_time,penemy_array) {    
-
+    socket.on('sincDrawScreen', function(pgame_time,Jenemy_array) {    
+        //socket.on('sincDrawScreen', function(Jenemy_array) {    
+          
+            console.log("receive pgame_time :", pgame_time);
+            console.log("receive Jenemy_array :", Jenemy_array);
             socketList.forEach(function(item, i) {  
                     // if (item != socket) {
                     //     item.emit('sincDrawScreen2', pgame_time);
-                         console.log("receive penemy_array :", pgame_time);
+                    //     console.log("receive Jenemy_array :", Jenemy_array);
                     // }  
 
-                    console.log("i",i);
+                    //console.log("i",i);
                     if (i == 0){
                         time1 = pgame_time;
-                        //enemy_array1 = penemy_array;
+                        Jenemy_array1 = Jenemy_array;
                     }else {
                         time2 = pgame_time;         
-                        //enemy_array2 = penemy_array;          
+                        Jenemy_array2 = Jenemy_array;       
                     }    
 
             });  
 
-            console.log(time1,time2);
+
 
             if(time1  > time2){
                 pgame_time = time1;
-                //penemy_array = enemy_array1;
+                Jenemy_array = Jenemy_array1;
             }else {
                 pgame_time = time2;
-                //penemy_array = enemy_array2;
+                Jenemy_array = Jenemy_array2;
             }
 
+                        //console.log(time1,time2);
+        
+
             
-            f_sRandoms();
+            //f_sRandoms();
 
             socketList.forEach(function(item, i) {  
                 if (item != socket) {
-                     item.emit('sincDrawScreen2', pgame_time, penemy_array);
-                     console.log("send penemy_array :", penemy_array);
+                     item.emit('sincDrawScreen2', pgame_time, Jenemy_array);
+                     console.log("send Jenemy_array :", Jenemy_array);
                 }   
             });  
 

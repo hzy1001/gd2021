@@ -106,6 +106,19 @@ io.on('connection', function(socket) {
     var time1 = 0;
     var time2 = 0; 
 
+    //서버랜덤값
+    var sRandoms = new Array;
+
+    function f_sRandoms(){
+
+        for (var i=0;i<10;i++){
+            sRandoms[i] = Math.floor(Math.random() * (i+1)); 
+            //console.log(i,sRandoms[i])
+        } 
+
+    }
+
+
     socket.on('sinc_time', function(pgame_time) {    
 
             socketList.forEach(function(item, i) {  
@@ -131,10 +144,12 @@ io.on('connection', function(socket) {
                 pgame_time = time2;
             }
 
+            
+            f_sRandoms();
 
             socketList.forEach(function(item, i) {  
                 if (item != socket) {
-                     item.emit('sinc_time2', pgame_time);
+                     item.emit('sinc_time2', pgame_time, sRandoms);
                      console.log("pgame_time time :", pgame_time);
                 }   
             });  

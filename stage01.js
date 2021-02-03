@@ -62,6 +62,8 @@ if (game_mode == 'M'){
         Randoms[i] = Math.floor(Math.random() * (i + 1));
     }    
 }
+
+console.log("Randoms",Randoms)
   
 
 /////////////////////////////////////////게임 컨트롤 관련 설정//////////////////////////////////////////
@@ -255,12 +257,18 @@ if (game_mode == 'M'){
 
     });   
 
-    gfwSocket.On("multi_start",function(shareTime){ 
+    //멀티의 경우 시작시 서버로부터 랜던값을 받아온다.
+    gfwSocket.On("multi_start",function(shareTime,sRandoms){  
         
             as_keycode = 13;
             gameStart(as_keycode);
        
             gameTime = shareTime;
+
+            for(var i=0; i < sRandoms.length; i++){
+                //console.log(i,sRandoms[i]);
+                Randoms[i] = sRandoms[i]
+            }            
 
     }) 
 }
@@ -2104,6 +2112,7 @@ function game_background(){
         // Context3.lineTo(360  , 0);
         // Context3.lineTo( theCanvas.clientWidth - 360 , 0); 
          
+        //좌측벽
         if (parseInt(gameTime/1000) % 5 == 0){
             // cityImage = city01Image;
  
@@ -2157,7 +2166,7 @@ function game_background(){
 
 
         //console.log("t",parseInt(gameTime/200) % 3); 
-         
+        //우측벽
         if (parseInt(gameTime/1000) % 5 == 0){
            // cityImage = city01Image;
 
@@ -2298,11 +2307,11 @@ function game_background(){
 
             //j의 크기를 줄여주면 속도감이 더 빠르고 늘려주면 느려진다.
             if (parseInt(gameTime/(600-Pspeed*500)) % 3 == 0){
-                 j = j + (12*Randoms[2]);     //건물 상하 조밀도
+                 j = j + (12*(Randoms[1] + 1));     //건물 상하 조밀도
             }else if (parseInt(gameTime/(600-Pspeed*500)) % 3 == 1){
-                j = j + (11*Randoms[3]);     //건물 상하 조밀도
+                j = j + (11*(Randoms[2] + 1));     //건물 상하 조밀도
             }else {
-                j = j + (10*Randoms[4]);     //건물 상하 조밀도
+                j = j + (10*(Randoms[1] + 1));     //건물 상하 조밀도
             }
         }
     //} 
@@ -3186,10 +3195,10 @@ gfwSocket.On("sinc_time2",function(serverTime,sRandoms){
     console.log("sinc_time2 :" + serverTime);
     gameTime = serverTime;
 
-    for(var i=0; i < sRandoms.length; i++){
-        //console.log(i,sRandoms[i]);
-        Randoms[i] = sRandoms[i]
-	}
+    // for(var i=0; i < sRandoms.length; i++){
+    //     //console.log(i,sRandoms[i]);
+    //     Randoms[i] = sRandoms[i]
+	// }
 
 })  
 

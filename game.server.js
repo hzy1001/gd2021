@@ -24,6 +24,22 @@ server.listen(port, function() {
 
 var socketList = [];
 var socketIdList = [];
+//시간 맞추기
+var time1 = 0;
+var time2 = 0; 
+
+//서버랜덤값
+var sRandoms = new Array;
+
+function f_sRandoms(){
+
+    for (var i=0;i<10;i++){
+        sRandoms[i] = Math.floor(Math.random() * (i+1)); 
+        //console.log(i,sRandoms[i])
+    } 
+
+}
+
 
 //신규접속
 io.on('connection', function(socket) {  
@@ -62,7 +78,7 @@ io.on('connection', function(socket) {
     //     //}
             
     // });
-    var serverTime = 0;    
+    //var serverTime = 0;    
     
     //멀티 요청 및 대기
     socket.on('multi_request', function() {   
@@ -88,36 +104,20 @@ io.on('connection', function(socket) {
     socket.on('multi_allowed', function(game_time) {   
         console.log("game_time",game_time);  
         //serverTime = game_time;
+            f_sRandoms();
+
             socketList.forEach(function(item, i) {  
-                    if (item != socket) { 
-                        item.emit('multi_start', game_time);
+                    //if (item != socket) { 
+                        item.emit('multi_start', game_time, sRandoms);
                         console.log('multi_start id', item.id);
-                    } 
+                    //} 
 
                     //이러게 하니깐 부하많이걸림
                     //setInterval(serverFrame, 1000/10);
                     
                     //serverTime = 0;  
             });   
-    });      
-
-
-    //시간 맞추기
-    var time1 = 0;
-    var time2 = 0; 
-
-    //서버랜덤값
-    var sRandoms = new Array;
-
-    function f_sRandoms(){
-
-        for (var i=0;i<10;i++){
-            sRandoms[i] = Math.floor(Math.random() * (i+1)); 
-            //console.log(i,sRandoms[i])
-        } 
-
-    }
-
+    });   
 
     socket.on('sinc_time', function(pgame_time) {    
 

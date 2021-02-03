@@ -52,14 +52,14 @@ var add_borderY = 0;
 //게임 랜덤값 
 var Randoms = new Array;
 
-//멀티일경우 초기에만 값을 임의로 주고 이후부터는 소켓서버에서 가져와 양쪽 서로 공유한다.
+//멀티일경우 소켓서버에서 랜덤값을 가져온다.(소켓서버에서 가져와 양쪽 서로 공유해야 화면 싱크가 맞음.)
 if (game_mode == 'M'){
     for(var i=0;i<10;i++){
-        Randoms[i] = (i + 1); 
+        Randoms[i] = (i + 1);   //초기에는 임의로 1부터 10까지
     }
 }else { 
     for(var i=0;i<10;i++){
-        Randoms[i] = Math.floor(Math.random() * (i + 1));
+        Randoms[i] = Math.floor(Math.random() * (i + 1));  //싱글일경우 로드시 랜덤하게
     }    
 }
 
@@ -583,6 +583,7 @@ var enemy_collision_yn = 'N';
 //적 초기 출현 갯수
 var enemy_cnt = 1;
 var enemy_array = [];
+var penemy_array = [];
 
 create_enemy();
 
@@ -3191,9 +3192,10 @@ function player_collision(){
 } 
 
 //주기적 타임 싱크 맞추기;
-gfwSocket.On("sinc_time2",function(serverTime,sRandoms){ 
-    console.log("sinc_time2 :" + serverTime);
+gfwSocket.On("sincDrawScreen2",function(serverTime,penemy_array){ 
+    console.log("sincDrawScreen2 :" + serverTime);
     gameTime = serverTime;
+    enemy_array = penemy_array;
 
     // for(var i=0; i < sRandoms.length; i++){
     //     //console.log(i,sRandoms[i]);
@@ -3210,13 +3212,18 @@ function drawScreen(){
     gameScore++;        //스코어 증가    
     //console.log("gameTime :" + gameTime);
 
-
-    //주기적으로 양쪽의 시간 씽크가 맞지않을 경우를 대비하여 느린쪽 시간에 싱크를 맞춘다.
+    //멀티 게임일경우 주기적으로 양쪽의 시간 씽크가 맞지않을 경우를 대비하여 서버로부터 시간 싱크를 맞춘다.
+    //적배열객체도 넘겨준다.
     if (game_mode == 'M'){    
         if (gameTime % 100 === 0){
      
-            console.log("sinc_time :",gameTime);
-            gfwSocket.Emit("sinc_time",gameTime)  
+            penemy_array = enemy_array;
+
+
+            console.log("sincDrawScreen :",penemy_array); 
+
+
+            gfwSocket.Emit("sincDrawScreen",gameTime,penemy_array)  
         }  
     }  
 

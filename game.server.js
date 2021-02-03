@@ -103,14 +103,43 @@ io.on('connection', function(socket) {
 
 
     //시간 맞추기
+    var time1 = 0;
+    var time2 = 0; 
+
     socket.on('sinc_time', function(pgame_time) {    
 
             socketList.forEach(function(item, i) {  
-                    if (item != socket) {
-                        item.emit('sinc_time2', pgame_time);
-                        console.log("pgame_time time :", pgame_time);
-                    }  
+                    // if (item != socket) {
+                    //     item.emit('sinc_time2', pgame_time);
+                    //     console.log("pgame_time time :", pgame_time);
+                    // }  
+
+                    console.log("i",i);
+                    if (i == 0){
+                        time1 = pgame_time;
+                    }else {
+                        time2 = pgame_time;                   
+                    }    
+
             });  
+
+            console.log(time1,time2);
+
+            if(time1  > time2){
+                pgame_time = time1;
+            }else {
+                pgame_time = time2;
+            }
+
+
+            socketList.forEach(function(item, i) {  
+                if (item != socket) {
+                     item.emit('sinc_time2', pgame_time);
+                     console.log("pgame_time time :", pgame_time);
+                }   
+            });  
+
+
 
     });       
 

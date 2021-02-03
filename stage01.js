@@ -49,33 +49,18 @@ var maxY = theCanvas.clientHeight - minY;
 var add_borderX = 0;
 var add_borderY = 0;
 
-//게임 랜덤값
-
+//게임 랜덤값 
 var Randoms = new Array;
 
-//나중에 소켓에서 양쪽 서로 공유한다.
+//멀티일경우 초기에만 값을 임의로 주고 이후부터는 소켓서버에서 가져와 양쪽 서로 공유한다.
 if (game_mode == 'M'){
-    Randoms[0] = 1;
-    Randoms[1] = 2;
-    Randoms[2] = 3;
-    Randoms[3] = 4;
-    Randoms[4] = 5;
-    Randoms[5] = 6;
-    Randoms[6] = 7;
-    Randoms[7] = 8;
-    Randoms[8] = 9;
-    Randoms[9] = 10;
+    for(var i=0;i<10;i++){
+        Randoms[i] = (i + 1); 
+    }
 }else { 
-    Randoms[0] = Math.floor(Math.random() * 1);   //0부터1까지의 난수 발생
-    Randoms[1] = Math.floor(Math.random() * 2);   //0부터2까지의 난수 발생
-    Randoms[2] = Math.floor(Math.random() * 3);   //0부터3까지의 난수 발생
-    Randoms[3] = Math.floor(Math.random() * 4);   //0부터4까지의 난수 발생
-    Randoms[4] = Math.floor(Math.random() * 5);   //0부터5까지의 난수 발생
-    Randoms[5] = Math.floor(Math.random() * 6);   //0부터6까지의 난수 발생
-    Randoms[6] = Math.floor(Math.random() * 7);    //0부터7까지의 난수 발생
-    Randoms[7] = Math.floor(Math.random() * 8);    //0부터8까지의 난수 발생
-    Randoms[8] = Math.floor(Math.random() * 9);    //0부터9까지의 난수 발생
-    Randoms[9] = Math.floor(Math.random() * 10);  //0부터10까지의 난수 발생 
+    for(var i=0;i<10;i++){
+        Randoms[i] = Math.floor(Math.random() * (i + 1));
+    }    
 }
   
 
@@ -525,7 +510,7 @@ var enemy_speed = 1;
 
 //적 초기 위치
 var ini_enemyx = parseInt(theCanvas.clientWidth / 2  + cityEnd_x) + Randoms[9] * 100 - Randoms[9] * 100; //시작  x
-var ini_enemyy = parseInt(theCanvas.clientHeight / 4 + cityEnd_y) + Randoms[9] * 50 - Randoms[9]; //시작 y
+var ini_enemyy = parseInt(theCanvas.clientHeight / 4 + cityEnd_y) + Randoms[9] * 50 - Randoms[9] * 50; //시작 y
 
 //적 이동위치
 var enemyxx = 0;
@@ -681,18 +666,12 @@ function gameStart(as_keycode) {
     //타이머 초기화
     clearInterval(Timer_Id); 
 
-    imer_Id = setInterval(drawScreen, 1000/gameFrame);   //게임 프레임(gameFrame은  초기 ini_gameFram 설정값)
- 
+    imer_Id = setInterval(drawScreen, 1000/gameFrame);   //게임 프레임(gameFrame은  초기 ini_gameFram 설정값) 
 
-} 
-
-
+}  
 
 ////////////////// 게임 종료
-function gameEnd(as_keycode) {
-
-
-    
+function gameEnd(as_keycode) {  
 
     //새로 시작
     if (as_keycode == 13){ 
@@ -856,8 +835,7 @@ function game_init(){
     //적 새로 출몰 간격
     enemy_dealy_time = 1000;
 
-    //화면에 나타나는 적 미시일수(배열)
-
+    //화면에 나타나는 적 미시일수(배열) 
     enemy_type = 1;
     enemy_cnt = 1;
     enemy_array = [];
@@ -2101,13 +2079,15 @@ function game_background(){
 
         }
 
-        //메인원2
+        /*
+        //메인원2 => 속도를 높일때만 나타내주는게 좋을듯.
         if (String(gameTime).substr(String(gameTime).length-3,1) <= 5){
             Context3.beginPath();
             Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 + 5 , 80 +  back_distance2 + cityEnd_y + Randoms[1] + 1, 0, Math.PI * 2);
             Context3.lineWidth = i - 2;
             Context3.stroke();
         }
+        */
 
         // Context3.beginPath();
         // Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 + Randoms[0] + 1 ,85 + back_distance2 + cityEnd_y, 0, Math.PI * 2);
@@ -2250,11 +2230,11 @@ function game_background(){
 
             //지면 건물
             if (parseInt(gameTime/(800-Pspeed*100)) % 3 == 0){
-                Context3.drawImage(cityImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*1.5 - 10,  20 + theCanvas.clientHeight / 4  + j + Randoms[4] + cityEnd_y , 1 * Randoms[0] + j*3 - (cityEnd_x/200*j) ,20 * Randoms[2])
+                Context3.drawImage(cityImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*1.5 - 10,  20 + theCanvas.clientHeight / 4  + j + Randoms[2] + cityEnd_y , 1 * Randoms[1] + j*3 - (cityEnd_x/200*j) ,20 * Randoms[2])
             }else if(parseInt(gameTime/(800-Pspeed*100)) % 2 == 0){
-                Context3.drawImage(cityImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*2 - 10,  20 + theCanvas.clientHeight / 3  + j + Randoms[4] + cityEnd_y , 1 * Randoms[0] + j*4 - (cityEnd_x/200*j) ,20 * Randoms[2])
+                Context3.drawImage(cityImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*2 - 10,  20 + theCanvas.clientHeight / 3  + j + Randoms[2] + cityEnd_y , 1 * Randoms[1] + j*4 - (cityEnd_x/200*j) ,20 * Randoms[2])
             }else {
-                Context3.drawImage(cityImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*1.2 - 10,  20 + theCanvas.clientHeight / 3  + j + Randoms[0] + cityEnd_y , 1 * Randoms[0] + j*3 - (cityEnd_x/200*j) ,20 * Randoms[2])
+                Context3.drawImage(cityImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*1.2 - 10,  20 + theCanvas.clientHeight / 3  + j + Randoms[2] + cityEnd_y , 1 * Randoms[1] + j*3 - (cityEnd_x/200*j) ,20 * Randoms[2])
             }
 
             //지붕 건물 반사
@@ -2320,9 +2300,9 @@ function game_background(){
             if (parseInt(gameTime/(600-Pspeed*500)) % 3 == 0){
                  j = j + (12*Randoms[2]);     //건물 상하 조밀도
             }else if (parseInt(gameTime/(600-Pspeed*500)) % 3 == 1){
-                j = j + (11*Randoms[2]);     //건물 상하 조밀도
+                j = j + (11*Randoms[3]);     //건물 상하 조밀도
             }else {
-                j = j + (10*Randoms[2]);     //건물 상하 조밀도
+                j = j + (10*Randoms[4]);     //건물 상하 조밀도
             }
         }
     //} 

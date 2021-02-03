@@ -51,76 +51,33 @@ var add_borderY = 0;
 
 //게임 랜덤값
 
-var severRandoms = new Array;
+var Randoms = new Array;
 
 //나중에 소켓에서 양쪽 서로 공유한다.
-severRandoms[0] = Math.floor(Math.random() * 1);   //0부터1까지의 난수 발생
-severRandoms[1] = Math.floor(Math.random() * 2);   //0부터2까지의 난수 발생
-severRandoms[2] = Math.floor(Math.random() * 3);   //0부터3까지의 난수 발생
-severRandoms[3] = Math.floor(Math.random() * 4);   //0부터4까지의 난수 발생
-severRandoms[4] = Math.floor(Math.random() * 5);   //0부터5까지의 난수 발생
-severRandoms[5] = Math.floor(Math.random() * 6);   //0부터6까지의 난수 발생
-severRandoms[6] = Math.floor(Math.random() * 7);    //0부터7까지의 난수 발생
-severRandoms[7] = Math.floor(Math.random() * 8);    //0부터8까지의 난수 발생
-severRandoms[8] = Math.floor(Math.random() * 9);    //0부터9까지의 난수 발생
-severRandoms[9] = Math.floor(Math.random() * 10);  //0부터10까지의 난수 발생 
-
-//임시로...
-// var severRandoms[0] = 1;    
-// var severRandoms[1] = 2;   
-// var severRandoms[2] = 3;    
-// var severRandoms[3] = 4;    
-// var severRandoms[4] = 5;    
-// var severRandoms[5] = 6;   
-// var severRandoms[6] = 7;    
-// var severRandoms[7] = 8;   
-// var severRandoms[8] = 9;    
-// var severRandoms[9] = 10;   
-var sRandom11 = 11;    
-var sRandom12 = 12;   
-var sRandom13 = 13;    
-var sRandom14 = 14;    
-var sRandom15 = 15;    
-var sRandom16 = 16;   
-var sRandom17 = 17;    
-var sRandom18 = 18;   
-var sRandom19 = 19;    
-var sRandom20 = 20;   
-var sRandom21 = 21;    
-var sRandom22 = 22;   
-var sRandom23 = 23;    
-var sRandom24 = 24;    
-var sRandom25 = 25;    
-var sRandom26 = 26;   
-var sRandom27 = 27;    
-var sRandom28 = 28;   
-var sRandom29 = 29;    
-var sRandom30 = 30;   
-var sRandom31 = 31;    
-var sRandom32 = 32;   
-var sRandom33 = 33;    
-var sRandom34 = 34;    
-var sRandom35 = 35;    
-var sRandom36 = 36;   
-var sRandom37 = 37;    
-var sRandom38 = 38;   
-var sRandom39 = 39;    
-var sRandom40 = 40;   
-var sRandom41 = 41;    
-var sRandom42 = 42;   
-var sRandom43 = 43;    
-var sRandom44 = 44;    
-var sRandom45 = 45;    
-var sRandom46 = 46;   
-var sRandom47 = 47;    
-var sRandom48 = 48;   
-var sRandom49 = 49;    
-var sRandom50 = 50;   
-var sRandom60 = 60;   
-var sRandom70 = 70;   
-var sRandom80 = 80;   
-var sRandom90 = 90;   
-var sRandom100 = 100;   
+if (game_mode == 'M'){
+    Randoms[0] = 1;
+    Randoms[1] = 2;
+    Randoms[2] = 3;
+    Randoms[3] = 4;
+    Randoms[4] = 5;
+    Randoms[5] = 6;
+    Randoms[6] = 7;
+    Randoms[7] = 8;
+    Randoms[8] = 9;
+    Randoms[9] = 10;
+}else { 
+    Randoms[0] = Math.floor(Math.random() * 1);   //0부터1까지의 난수 발생
+    Randoms[1] = Math.floor(Math.random() * 2);   //0부터2까지의 난수 발생
+    Randoms[2] = Math.floor(Math.random() * 3);   //0부터3까지의 난수 발생
+    Randoms[3] = Math.floor(Math.random() * 4);   //0부터4까지의 난수 발생
+    Randoms[4] = Math.floor(Math.random() * 5);   //0부터5까지의 난수 발생
+    Randoms[5] = Math.floor(Math.random() * 6);   //0부터6까지의 난수 발생
+    Randoms[6] = Math.floor(Math.random() * 7);    //0부터7까지의 난수 발생
+    Randoms[7] = Math.floor(Math.random() * 8);    //0부터8까지의 난수 발생
+    Randoms[8] = Math.floor(Math.random() * 9);    //0부터9까지의 난수 발생
+    Randoms[9] = Math.floor(Math.random() * 10);  //0부터10까지의 난수 발생 
+}
+  
 
 /////////////////////////////////////////게임 컨트롤 관련 설정//////////////////////////////////////////
 //캔버스 엘리먼트로 게임 컨트롤 버튼 변경 => 둠객체사용시 화면 확대 축소됨 에 따른 불편 생김(기존 조종 컨트롤 돔객체는 hidden 처리)
@@ -567,8 +524,8 @@ var enemy_size = 1;
 var enemy_speed = 1;
 
 //적 초기 위치
-var ini_enemyx = parseInt(theCanvas.clientWidth / 2  + cityEnd_x) + severRandoms[9] * 100 - severRandoms[9] * 100; //시작  x
-var ini_enemyy = parseInt(theCanvas.clientHeight / 4 + cityEnd_y) + severRandoms[9] * 50 - severRandoms[9]; //시작 y
+var ini_enemyx = parseInt(theCanvas.clientWidth / 2  + cityEnd_x) + Randoms[9] * 100 - Randoms[9] * 100; //시작  x
+var ini_enemyy = parseInt(theCanvas.clientHeight / 4 + cityEnd_y) + Randoms[9] * 50 - Randoms[9]; //시작 y
 
 //적 이동위치
 var enemyxx = 0;
@@ -639,7 +596,7 @@ create_enemy();
 //적 미사일 방향 설정 초기 변수
 var weappon_upDown = 1;
 var weappon_leftRight = 1;
-var weappon_tmp_random = severRandoms[6]/10;    //플레이어 위치에 따른 미사일 Y축 이동 좌표
+var weappon_tmp_random = Randoms[6]/10;    //플레이어 위치에 따른 미사일 Y축 이동 좌표
 
 // ////////////////// 윈도우 os의 경우 둠 터치버튼 숨기기
 // if (navigator.platform.substr(0,3) != "Win" ){
@@ -940,7 +897,7 @@ function game_init(){
     enemyh = ini_enemyw;
 
     //적 초기 위치
-    //enemyx = parseInt(theCanvas.clientWidth / 2  + cityEnd_x) + (severRandoms[9] * 100)  + (Math.floor(Math.random() * 300)) - (Math.floor(Math.random() * 300)); //시작  x
+    //enemyx = parseInt(theCanvas.clientWidth / 2  + cityEnd_x) + (Randoms[9] * 100)  + (Math.floor(Math.random() * 300)) - (Math.floor(Math.random() * 300)); //시작  x
     //enemyy = parseInt(theCanvas.clientHeight / 4) + (Math.floor(Math.random() * 300)) - (Math.floor(Math.random() * 300)); //시작 y
 
     //적 생명
@@ -958,7 +915,7 @@ function game_init(){
 
     weappon_upDown = 1;
     weappon_leftRight = 1;
-    weappon_tmp_random = severRandoms[4]/10;    //플레이어 위치에 따른 미사일 Y축 좌표
+    weappon_tmp_random = Randoms[4]/10;    //플레이어 위치에 따른 미사일 Y축 좌표
 
     enemy_dealy_time = 1000;
 
@@ -1117,7 +1074,7 @@ function player_move(){
         for (var i=0;i<=warp_distance;i++){
 
             //공간이동 이미지
-            Context.drawImage(player_warp,playerX,playerY,playerWidth + severRandoms[1],playerHeight + severRandoms[2])
+            Context.drawImage(player_warp,playerX,playerY,playerWidth + Randoms[1],playerHeight + Randoms[2])
 
             //warp_sound.play();   //공간이동시 사운드
 
@@ -1197,35 +1154,35 @@ function player_move(){
         playerHeight = parseInt(ini_player_height/3);
     }
 
-    Context.drawImage(playerImage,playerX,playerY,playerWidth + severRandoms[1],playerHeight + severRandoms[2]);
+    Context.drawImage(playerImage,playerX,playerY,playerWidth + Randoms[1],playerHeight + Randoms[2]);
 
     //엔진 부스터 방향
     //전진,좌상,우상
     if (strKeyEventValue == "ArrowUp" || isKeyCode == 38 || isKeyDown[103] || isKeyCode == 36 || isKeyDown[105] || isKeyCode == 33){
         engin01_sound.currentTime  = 2;
         engin01_sound.play();   //엔진 점화 사운드
-        Context.drawImage(enginImage,playerX + playerWidth/2,playerY + playerHeight/30,playerWidth/5 + severRandoms[2],playerHeight/4 + severRandoms[3]);
-        Context.drawImage(enginImage,playerX + playerWidth/3,playerY + playerHeight/30,playerWidth/5 + severRandoms[2],playerHeight/4 + severRandoms[3]);
-        Context.drawImage(enginImage,playerX + playerWidth/2,playerY + playerHeight/15,playerWidth/5 + severRandoms[4],playerHeight/4 + severRandoms[2]);
-        Context.drawImage(enginImage,playerX + playerWidth/3,playerY + playerHeight/15,playerWidth/5 + severRandoms[5],playerHeight/4 + severRandoms[4]);
+        Context.drawImage(enginImage,playerX + playerWidth/2,playerY + playerHeight/30,playerWidth/5 + Randoms[2],playerHeight/4 + Randoms[3]);
+        Context.drawImage(enginImage,playerX + playerWidth/3,playerY + playerHeight/30,playerWidth/5 + Randoms[2],playerHeight/4 + Randoms[3]);
+        Context.drawImage(enginImage,playerX + playerWidth/2,playerY + playerHeight/15,playerWidth/5 + Randoms[4],playerHeight/4 + Randoms[2]);
+        Context.drawImage(enginImage,playerX + playerWidth/3,playerY + playerHeight/15,playerWidth/5 + Randoms[5],playerHeight/4 + Randoms[4]);
     }
     //좌
     if (strKeyEventValue == "ArrowLeft"  || isKeyCode == 37){
         //engin01_sound.currentTime  = 1;
         //engin01_sound.play();
-        Context.drawImage(enginImage,playerX  + playerWidth/9,playerY + playerHeight/8,playerWidth/3 + severRandoms[2],playerHeight/7 + severRandoms[1]);
-        Context.drawImage(enginImage,playerX + playerWidth/5,playerY + playerHeight/10,playerWidth/2 + severRandoms[3],playerHeight/8 + severRandoms[2]);
-        Context.drawImage(enginImage,playerX  + playerWidth/8,playerY + playerHeight/6,playerWidth/3 + severRandoms[2],playerHeight/7 + severRandoms[1]);
-        Context.drawImage(enginImage,playerX + playerWidth/4,playerY + playerHeight/6,playerWidth/2 + severRandoms[3],playerHeight/8 + severRandoms[2]);
+        Context.drawImage(enginImage,playerX  + playerWidth/9,playerY + playerHeight/8,playerWidth/3 + Randoms[2],playerHeight/7 + Randoms[1]);
+        Context.drawImage(enginImage,playerX + playerWidth/5,playerY + playerHeight/10,playerWidth/2 + Randoms[3],playerHeight/8 + Randoms[2]);
+        Context.drawImage(enginImage,playerX  + playerWidth/8,playerY + playerHeight/6,playerWidth/3 + Randoms[2],playerHeight/7 + Randoms[1]);
+        Context.drawImage(enginImage,playerX + playerWidth/4,playerY + playerHeight/6,playerWidth/2 + Randoms[3],playerHeight/8 + Randoms[2]);
     }
 	//우
     if (strKeyEventValue == "ArrowRight"  || isKeyCode == 39){
         //engin01_sound.currentTime  = 1;
         //engin01_sound.play();
-        Context.drawImage(enginImage,playerX  + playerWidth/1.9,playerY + playerHeight/8,playerWidth/3 + severRandoms[2],playerHeight/7 + severRandoms[1]);
-        Context.drawImage(enginImage,playerX + playerWidth/4,playerY + playerHeight/10,playerWidth/2 + severRandoms[3],playerHeight/8 + severRandoms[2]);
-        Context.drawImage(enginImage,playerX  + playerWidth/2,playerY + playerHeight/6,playerWidth/3 + severRandoms[2],playerHeight/7 + severRandoms[1]);
-        Context.drawImage(enginImage,playerX + playerWidth/4,playerY + playerHeight/6,playerWidth/2 + severRandoms[3],playerHeight/8 + severRandoms[2]);
+        Context.drawImage(enginImage,playerX  + playerWidth/1.9,playerY + playerHeight/8,playerWidth/3 + Randoms[2],playerHeight/7 + Randoms[1]);
+        Context.drawImage(enginImage,playerX + playerWidth/4,playerY + playerHeight/10,playerWidth/2 + Randoms[3],playerHeight/8 + Randoms[2]);
+        Context.drawImage(enginImage,playerX  + playerWidth/2,playerY + playerHeight/6,playerWidth/3 + Randoms[2],playerHeight/7 + Randoms[1]);
+        Context.drawImage(enginImage,playerX + playerWidth/4,playerY + playerHeight/6,playerWidth/2 + Randoms[3],playerHeight/8 + Randoms[2]);
 
     }
 	// //하
@@ -1397,8 +1354,8 @@ function enemy_init(index){
         this.weapponImage.src = weappon01Image.src;
 
         //적 초기 크기
-        this.enemyw = ini_enemyw + severRandoms[2];
-        this.enemyh = ini_enemyh + severRandoms[3];
+        this.enemyw = ini_enemyw + Randoms[2];
+        this.enemyh = ini_enemyh + Randoms[3];
 
         //적 미사일 크기
         this.weappon_size = weappon_size;
@@ -1407,7 +1364,7 @@ function enemy_init(index){
         this.weappon_speed = weappon_speed;
 
         //적 동시  발사수는 랜덤하게
-        this.weappon_cnt = severRandoms[3] + 4;
+        this.weappon_cnt = Randoms[3] + 4;
         this.max_weappon_cnt = 8;
 
 
@@ -1430,8 +1387,8 @@ function enemy_init(index){
         this.weapponImage.src = weappon02Image.src;
 
         //적 초기 크기
-        this.enemyw = ini_enemyw + severRandoms[2];
-        this.enemyh = ini_enemyh + severRandoms[3];
+        this.enemyw = ini_enemyw + Randoms[2];
+        this.enemyh = ini_enemyh + Randoms[3];
 
         //적 미사일 크기
         this.weappon_size = weappon_size;
@@ -1440,7 +1397,7 @@ function enemy_init(index){
         this.weappon_speed = weappon_speed;
 
         //적 동시 미사일 발사수는 랜덤하게
-        this.weappon_cnt = severRandoms[3] + 2;
+        this.weappon_cnt = Randoms[3] + 2;
         this.max_weappon_cnt = 6;
 
     }
@@ -1469,22 +1426,22 @@ function enemy_init(index){
     this.enemy_dealy_time = enemy_dealy_time;
 
     //적 초기 위치
-    //this.enemyx = parseInt(theCanvas.clientWidth / 2  + cityEnd_x) + (severRandoms[9])  + (Math.floor(Math.random() * 30)) - (Math.floor(Math.random() * 300)); //시작  x
-    //this.enemyy = parseInt(theCanvas.clientHeight / 4) + (severRandoms[9] * 100) - (severRandoms[9] * 100); //시작 y
-    this.enemyx = ini_enemyx  + (severRandoms[9] * 100) - (severRandoms[9] * 100);
-    this.enemyy = ini_enemyy  + (severRandoms[9] * 100) - (severRandoms[9] * 100);
+    //this.enemyx = parseInt(theCanvas.clientWidth / 2  + cityEnd_x) + (Randoms[9])  + (Math.floor(Math.random() * 30)) - (Math.floor(Math.random() * 300)); //시작  x
+    //this.enemyy = parseInt(theCanvas.clientHeight / 4) + (Randoms[9] * 100) - (Randoms[9] * 100); //시작 y
+    this.enemyx = ini_enemyx  + (Randoms[9] * 100) - (Randoms[9] * 100);
+    this.enemyy = ini_enemyy  + (Randoms[9] * 100) - (Randoms[9] * 100);
 
 
     //ld = 0;
 
     //적 크기(배율)
-    this.enemy_size =  severRandoms[2];
+    this.enemy_size =  Randoms[2];
     //적 스피드
-    this.enemy_speed =  severRandoms[1];
+    this.enemy_speed =  Randoms[1];
     //적 x축 이동 위치
-    this.enemyxx = severRandoms[1];
+    this.enemyxx = Randoms[1];
     //적 x축 이동 위치
-    this.enemyyy = severRandoms[1];
+    this.enemyyy = Randoms[1];
 
     //적 생명
     this.enemy_life = ini_enemy_life;
@@ -1565,9 +1522,9 @@ function enemy_collision(){
         if ((parseInt(lmovey) <= (parseInt(this.enemyy)  + parseInt(this.enemyh)) ) && ((parseInt(lmovey)  + parseInt(l_size)) >= parseInt(this.enemyy)   )){
 
              //충돌시 carsh 효과 이미지로
-             Context.drawImage(this.explosionImage01,this.enemyx-sRandom20,this.enemyy+sRandom20,20,10);
-             Context.drawImage(this.explosionImage01,this.enemyx+sRandom20,this.enemyy+severRandoms[9],10,10);
-             Context.drawImage(this.explosionImage01,this.enemyx+sRandom20,this.enemyy-sRandom30,20,10);
+             Context.drawImage(this.explosionImage01,this.enemyx-Randoms[9]*2,this.enemyy+Randoms[9]*2,20,10);
+             Context.drawImage(this.explosionImage01,this.enemyx+Randoms[9]*2,this.enemyy+Randoms[9],10,10);
+             Context.drawImage(this.explosionImage01,this.enemyx+Randoms[9]*2,this.enemyy-Randoms[9]*3,20,10);
 
              //적 총알 충돌 사운드는 좀 짧게
              crash01_sound.currentTime = 0;
@@ -1590,14 +1547,14 @@ function enemy_collision(){
 
                 Context.globalAlpha = 0.8;
 
-                Context.drawImage(backgroundImage,0, 0 ,theCanvas.clientWidth + severRandoms[2] ,theCanvas.clientHeight);
+                Context.drawImage(backgroundImage,0, 0 ,theCanvas.clientWidth + Randoms[2] ,theCanvas.clientHeight);
                 //적이 강할수록 i를 높게한다.(i = 점수)
                 for (var i=0;i<=ini_enemy_life*10*(this.enemyh/20);i++){
 
-                    Context.drawImage(this.explosionImage01,this.enemyx-sRandom30,this.enemyy+sRandom40,100 - i,100 - i);
-                    Context.drawImage(this.explosionImage01,this.enemyx+sRandom60,this.enemyy+sRandom50,20 - i,20 - i);
-                    Context.drawImage(this.explosionImage01,this.enemyx-sRandom30,this.enemyy+sRandom40,100 - i,100 - i);
-                    Context.drawImage(this.explosionImage01,this.enemyx+sRandom60,this.enemyy+sRandom50,20 + i,20 + i);
+                    Context.drawImage(this.explosionImage01,this.enemyx-Randoms[9]*3,this.enemyy+Randoms[9]*4,100 - i,100 - i);
+                    Context.drawImage(this.explosionImage01,this.enemyx+Randoms[9]*6,this.enemyy+Randoms[9]*5,20 - i,20 - i);
+                    Context.drawImage(this.explosionImage01,this.enemyx-Randoms[9]*3,this.enemyy+Randoms[9]*4,100 - i,100 - i);
+                    Context.drawImage(this.explosionImage01,this.enemyx+Randoms[9]*6,this.enemyy+Randoms[9]*5,20 + i,20 + i);
 
                     //Context.fillText("Score : " + gameTime,theCanvas.clientWidth - 250,50);
 
@@ -1610,7 +1567,7 @@ function enemy_collision(){
                 gameScore = parseInt(gameScore) + ini_enemy_life*10;
 
                 //타겟 새로 출현 시간.
-                this.enemy_dealy_time = parseInt(severRandoms[2] + 2) * 1000;
+                this.enemy_dealy_time = parseInt(Randoms[2] + 2) * 1000;
 
                 Context.restore();
 
@@ -1672,8 +1629,8 @@ function enemy_move(){
         this.enemyx = this.enemyx - this.enemyxx * this.enemy_speed;
         this.enemyy = this.enemyy - this.enemyyy;
     }else if (String(gameTime).substr(String(gameTime).length-3,1) == 5){
-        this.enemyx = this.enemyx + this.enemyxx * (severRandoms[0]==0?1:-1);    
-        this.enemyy = this.enemyy - this.enemyyy * (severRandoms[0]==0?1:-1);
+        this.enemyx = this.enemyx + this.enemyxx * (Randoms[0]==0?1:-1);    
+        this.enemyy = this.enemyy - this.enemyyy * (Randoms[0]==0?1:-1);
     }else if (String(gameTime).substr(String(gameTime).length-3,1) == 6){
         this.enemyx = this.enemyx - this.enemyxx;
         this.enemyy = this.enemyy + this.enemyyy;
@@ -1712,22 +1669,22 @@ function enemy_move(){
     //적이 게임 경게 밖으로 나가지 못하다록 한다.
     if (this.enemyx > maxX - 30){
         this.enemyxx = 0;
-        this.enemyx = this.enemyx - severRandoms[1];
+        this.enemyx = this.enemyx - Randoms[1];
     }
 
     if (this.enemyx < minX + 30){
         this.enemyxx = 0;
-        this.enemyx = this.enemyx + severRandoms[1];
+        this.enemyx = this.enemyx + Randoms[1];
     }
 
     if (this.enemyy > maxY - 30){
         this.enemyyy = 0;
-        this.enemyy = this.enemyy - severRandoms[1];
+        this.enemyy = this.enemyy - Randoms[1];
     }
 
     if (this.enemyy < minY + 30){
         this.enemyyy = 0;
-        this.enemyy = this.enemyy + severRandoms[1];
+        this.enemyy = this.enemyy + Randoms[1];
     }
 
 
@@ -1758,26 +1715,26 @@ function enemy_move(){
 
     //적이 너무 작은경우(멀리있는경우) 오른쪽 엔진은 그려주지 않는다.(엔지하나가 몸체박으로 삐져나와 이상함.)
     if ( this.enemyw >= ini_enemyw*0.8){
-        Context.drawImage(this.enginImage,this.enemyx - this.enemyw/4 + severRandoms[5],this.enemyy + this.enemyh/8,severRandoms[2] +  this.enemyw/3,severRandoms[3] +  this.enemyh/3);
+        Context.drawImage(this.enginImage,this.enemyx - this.enemyw/4 + Randoms[5],this.enemyy + this.enemyh/8,Randoms[2] +  this.enemyw/3,Randoms[3] +  this.enemyh/3);
     }
     if ( this.enemyw >= ini_enemyw*0.5){
-        Context.drawImage(this.enginImage,this.enemyx - 10 - this.enemyw/4 - severRandoms[7],this.enemyy + this.enemyh/8,severRandoms[3] +  this.enemyw/3,severRandoms[3] +  this.enemyh/3);
+        Context.drawImage(this.enginImage,this.enemyx - 10 - this.enemyw/4 - Randoms[7],this.enemyy + this.enemyh/8,Randoms[3] +  this.enemyw/3,Randoms[3] +  this.enemyh/3);
     }
     Context.drawImage(this.enemyImage,this.enemyx - 40, this.enemyy ,this.enemyw,this.enemyh);
     //적이 너무 작은경우(멀리있는경우) 총은 그려주지 않는다.(총이 몸체박으로 삐져나와 이상함.)
     if ( this.enemyw >= ini_enemyw*0.5){
-        Context.drawImage(this.enemyGunImage,this.enemyx + this.enemyw/30, this.enemyy + this.enemyh/10 ,severRandoms[4] + this.enemyw/40,severRandoms[4] + this.enemyw/40);
-        Context.drawImage(this.enemyGunImage,this.enemyx + this.enemyw/37 - 2, this.enemyy + this.enemyh/10 ,severRandoms[4] + this.enemyw/30,severRandoms[4] + this.enemyw/30);
-        Context.drawImage(this.enemyGunImage,this.enemyx + this.enemyw/40 - 5, this.enemyy + this.enemyh/10 ,severRandoms[4] + this.enemyw/30,severRandoms[4] + this.enemyw/30);
-        Context.drawImage(this.enemyGunImage,this.enemyx + this.enemyw/42 - 7, this.enemyy + this.enemyh/10 ,severRandoms[4] + this.enemyw/30,severRandoms[4] + this.enemyw/30);
-        Context.drawImage(this.enemyGunImage,this.enemyx + this.enemyw/42 - 10, this.enemyy + this.enemyh/10 ,severRandoms[4] + this.enemyw/30,severRandoms[4] + this.enemyw/30);
+        Context.drawImage(this.enemyGunImage,this.enemyx + this.enemyw/30, this.enemyy + this.enemyh/10 ,Randoms[4] + this.enemyw/40,Randoms[4] + this.enemyw/40);
+        Context.drawImage(this.enemyGunImage,this.enemyx + this.enemyw/37 - 2, this.enemyy + this.enemyh/10 ,Randoms[4] + this.enemyw/30,Randoms[4] + this.enemyw/30);
+        Context.drawImage(this.enemyGunImage,this.enemyx + this.enemyw/40 - 5, this.enemyy + this.enemyh/10 ,Randoms[4] + this.enemyw/30,Randoms[4] + this.enemyw/30);
+        Context.drawImage(this.enemyGunImage,this.enemyx + this.enemyw/42 - 7, this.enemyy + this.enemyh/10 ,Randoms[4] + this.enemyw/30,Randoms[4] + this.enemyw/30);
+        Context.drawImage(this.enemyGunImage,this.enemyx + this.enemyw/42 - 10, this.enemyy + this.enemyh/10 ,Randoms[4] + this.enemyw/30,Randoms[4] + this.enemyw/30);
     }
 
     //적 에너지 표시
     this.enemy_energe();
 
-    //Context.fillText(this.enemy_index + this.energe_bar,this.enemyx  - 40 + severRandoms[2], this.enemyy - 10);
-    Context.fillText(this.energe_bar,this.enemyx  - 40 + severRandoms[2], this.enemyy - 10);
+    //Context.fillText(this.enemy_index + this.energe_bar,this.enemyx  - 40 + Randoms[2], this.enemyy - 10);
+    Context.fillText(this.energe_bar,this.enemyx  - 40 + Randoms[2], this.enemyy - 10);
 
     //적 충돌 함수 => 충돌함수는 drawScreen()이 아닌 enemy_move 안에서 호출한다.(this가 계속 따라가도록)
     this.enemy_collision();
@@ -1864,14 +1821,14 @@ function game_background(){
         Context.globalAlpha = 0.2;
     }
 
-    Context.drawImage(backgroundImage,0, 0 ,theCanvas.clientWidth + severRandoms[2] ,theCanvas.clientHeight);
+    Context.drawImage(backgroundImage,0, 0 ,theCanvas.clientWidth + Randoms[2] ,theCanvas.clientHeight);
 
     //콜로니끝 
     //콜로니 끝 근처는 어둡다.
     Context3.beginPath();
-    Context3.arc(theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x + 50 ,theCanvas.clientHeight / 4 + cityEnd_y +  severRandoms[2], 100 + severRandoms[4] ,0,2*Math.PI); 
+    Context3.arc(theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x + 50 ,theCanvas.clientHeight / 4 + cityEnd_y +  Randoms[2], 100 + Randoms[4] ,0,2*Math.PI); 
  
-    if (severRandoms[1] == 2){
+    if (Randoms[1] == 2){
         Context3.stroke();        //원 테두리
         //Context3.fillStyle = 'gray';
     }else{
@@ -1885,9 +1842,9 @@ function game_background(){
     //콜로니끝2 
     //콜로니 끝 근처는 어둡다.
     Context3.beginPath();
-    Context3.arc(theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x + 50 ,theCanvas.clientHeight / 4 + cityEnd_y +  severRandoms[2] ,200 + severRandoms[4] ,0,2*Math.PI); 
+    Context3.arc(theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x + 50 ,theCanvas.clientHeight / 4 + cityEnd_y +  Randoms[2] ,200 + Randoms[4] ,0,2*Math.PI); 
  
-    if (severRandoms[1] == 2){
+    if (Randoms[1] == 2){
         Context3.stroke();        //원 테두리
         //Context3.fillStyle = 'gray';
     }else{
@@ -1901,9 +1858,9 @@ function game_background(){
     //콜로니끝3 
     //콜로니 끝 근처는 어둡다.
     Context3.beginPath();
-    Context3.arc(theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x + 50 ,theCanvas.clientHeight / 4 + cityEnd_y + severRandoms[2] ,500 + severRandoms[4] ,0,2*Math.PI); 
+    Context3.arc(theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x + 50 ,theCanvas.clientHeight / 4 + cityEnd_y + Randoms[2] ,500 + Randoms[4] ,0,2*Math.PI); 
  
-    if (severRandoms[1] == 2){
+    if (Randoms[1] == 2){
         Context3.stroke();        //원 테두리
         //Context3.fillStyle = 'gray';
     }else{
@@ -1913,15 +1870,15 @@ function game_background(){
     //Context3.fillStyle = 'black';
     Context3.fill(); 
     
-    //Context3.drawImage(cityEndImage,theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x , theCanvas.clientHeight / 4 + cityEnd_y - 50 +  severRandoms[2] ,  90 ,60 );
-    //Context3.drawImage(cityEndImage,theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x + 20 , theCanvas.clientHeight / 4 + cityEnd_y - 40 +  severRandoms[2] ,  60 ,40 );
-    Context3.drawImage(cityEndImage,theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x + 35 , theCanvas.clientHeight / 4 + cityEnd_y - 10 + severRandoms[2] ,  25 ,30 );
+    //Context3.drawImage(cityEndImage,theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x , theCanvas.clientHeight / 4 + cityEnd_y - 50 +  Randoms[2] ,  90 ,60 );
+    //Context3.drawImage(cityEndImage,theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x + 20 , theCanvas.clientHeight / 4 + cityEnd_y - 40 +  Randoms[2] ,  60 ,40 );
+    Context3.drawImage(cityEndImage,theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x + 35 , theCanvas.clientHeight / 4 + cityEnd_y - 10 + Randoms[2] ,  25 ,30 );
 
     Context.restore();
 
     //게임 배경 (벽)그려주기   =? 원근 효과
     //=> 게임방향목표좌표(전체화면넓이/2 + cityEnd_x, 전체화면 Y 높이/4)에서부터 시작하여 각 모서리 양끝으로 선을그려준다.(원근표현)
-    Context3.globalAlpha = 0.1 * severRandoms[3]
+    Context3.globalAlpha = 0.1 * Randoms[3]
 
     //for (var i=1;i<=5;i++){
 
@@ -1929,9 +1886,9 @@ function game_background(){
     for (var i=0;i<=10;i++){ 
 
         Context3.beginPath();
-        //Context3.moveTo(theCanvas.clientWidth / 2  - cityEnd_size/2 + cityEnd_x +  severRandoms[4] , theCanvas.clientHeight / 4 - 100);
+        //Context3.moveTo(theCanvas.clientWidth / 2  - cityEnd_size/2 + cityEnd_x +  Randoms[4] , theCanvas.clientHeight / 4 - 100);
         Context3.moveTo(theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x - 30 + ((theCanvas.clientWidth / 2  + cityEnd_x + 30) - (theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x - 30))/2 , theCanvas.clientHeight / 4 - 50 + cityEnd_y);
-        Context3.lineTo(theCanvas.clientWidth / 2  +  severRandoms[9] + cityEnd_x, 0);
+        Context3.lineTo(theCanvas.clientWidth / 2  +  Randoms[9] + cityEnd_x, 0);
         Context3.strokeStyle = "grey";; //선 색상
         Context3.lineWidth = 2;
         Context3.stroke();
@@ -1939,7 +1896,7 @@ function game_background(){
 
         //중앙상단에서 좌측 상단선 까지
         Context3.beginPath();
-        //Context3.moveTo(theCanvas.clientWidth / 2  - cityEnd_size/2 + cityEnd_x +  severRandoms[4] , theCanvas.clientHeight / 4 - 100);
+        //Context3.moveTo(theCanvas.clientWidth / 2  - cityEnd_size/2 + cityEnd_x +  Randoms[4] , theCanvas.clientHeight / 4 - 100);
         Context3.moveTo(theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x - 30 + ((theCanvas.clientWidth / 2  + cityEnd_x + 30) - (theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x - 30))/2 ,  theCanvas.clientHeight / 4 - 50 + cityEnd_y - i * 100);
         Context3.lineTo(theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x + 20 - i * 100 , theCanvas.clientHeight / 4 - 50 - i*10 + cityEnd_y);
         Context3.strokeStyle = "grey";; //선 색상
@@ -1948,7 +1905,7 @@ function game_background(){
 
         //중앙상단에서 우측 상단선 까지
         Context3.beginPath();
-        //Context3.moveTo(theCanvas.clientWidth / 2  - cityEnd_size/2 + cityEnd_x +  severRandoms[4] , theCanvas.clientHeight / 4 - 100);
+        //Context3.moveTo(theCanvas.clientWidth / 2  - cityEnd_size/2 + cityEnd_x +  Randoms[4] , theCanvas.clientHeight / 4 - 100);
         Context3.moveTo(theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x - 30 + ((theCanvas.clientWidth / 2  + cityEnd_x + 30) - (theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x - 30))/2 ,  theCanvas.clientHeight / 4 - 50 + cityEnd_y - i * 100);
         Context3.lineTo(theCanvas.clientWidth / 2  + cityEnd_x + i - 20  + i * 100, theCanvas.clientHeight / 4 - 50 - i*10  + cityEnd_y);
         Context3.strokeStyle = "grey";; //선 색상
@@ -1979,7 +1936,7 @@ function game_background(){
     // //좌중앙
     // Context3.beginPath();
     // Context3.moveTo(theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x - 15 , theCanvas.clientHeight / 4 + cityEnd_y);
-    // Context3.lineTo(0, theCanvas.clientHeight/6   +  severRandoms[9]);
+    // Context3.lineTo(0, theCanvas.clientHeight/6   +  Randoms[9]);
     // //Context3.strokeStyle = "#f0f0f0";; //선 색상
     // Context3.strokeStyle = "grey";; //선 색상
     // Context3.stroke();
@@ -2022,7 +1979,7 @@ function game_background(){
     // //우중앙
     // Context3.beginPath();
     // Context3.moveTo(theCanvas.clientWidth / 2  + cityEnd_x + 15, theCanvas.clientHeight / 4 + cityEnd_y);
-    // Context3.lineTo(theCanvas.clientWidth,  theCanvas.clientHeight / 4 - 50 +  severRandoms[9]);
+    // Context3.lineTo(theCanvas.clientWidth,  theCanvas.clientHeight / 4 - 50 +  Randoms[9]);
     // Context3.strokeStyle = "grey";; //선 색상
     // Context3.stroke();
 
@@ -2069,7 +2026,7 @@ function game_background(){
 
             Context3.beginPath();
             //Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 - 10 , back_distance2, 0, Math.PI * 2);
-            Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 5 + 1 * i  + cityEnd_y, 55 + 5 * i + back_distance + severRandoms[1] + 1 - cityEnd_size + cityEnd_x, 0, Math.PI * 2);
+            Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 5 + 1 * i  + cityEnd_y, 55 + 5 * i + back_distance + Randoms[1] + 1 - cityEnd_size + cityEnd_x, 0, Math.PI * 2);
             Context3.lineWidth = i;
             //Context3.lineWidth = 2;
             Context3.stroke();
@@ -2078,7 +2035,7 @@ function game_background(){
             // //중앙상단에서 좌측하단 기둥
             // Context3.beginPath();        
             // Context3.moveTo(theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x - 30 + ((theCanvas.clientWidth / 2  + cityEnd_x + 30) - (theCanvas.clientWidth / 2  - cityEnd_size + cityEnd_x - 30))/2 ,  theCanvas.clientHeight / 4 - 50 + cityEnd_y - i * 100);
-            // Context3.lineTo(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 + 1 * i  + cityEnd_y, 55 + 5 * i + back_distance + severRandoms[1] + 1, 0 , theCanvas.clientHeight / 4 - 50 + i*10 + cityEnd_y);
+            // Context3.lineTo(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 + 1 * i  + cityEnd_y, 55 + 5 * i + back_distance + Randoms[1] + 1, 0 , theCanvas.clientHeight / 4 - 50 + i*10 + cityEnd_y);
             // Context3.strokeStyle = "grey";; //선 색상
             // Context3.lineWidth = 2;
             // Context3.stroke();  
@@ -2147,13 +2104,13 @@ function game_background(){
         //메인원2
         if (String(gameTime).substr(String(gameTime).length-3,1) <= 5){
             Context3.beginPath();
-            Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 + 5 , 80 +  back_distance2 + cityEnd_y + severRandoms[1] + 1, 0, Math.PI * 2);
+            Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 + 5 , 80 +  back_distance2 + cityEnd_y + Randoms[1] + 1, 0, Math.PI * 2);
             Context3.lineWidth = i - 2;
             Context3.stroke();
         }
 
         // Context3.beginPath();
-        // Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 + severRandoms[0] + 1 ,85 + back_distance2 + cityEnd_y, 0, Math.PI * 2);
+        // Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 + Randoms[0] + 1 ,85 + back_distance2 + cityEnd_y, 0, Math.PI * 2);
         // Context3.stroke();
     //}
 
@@ -2267,9 +2224,9 @@ function game_background(){
 
         for (var j = 0; j < 800; j++){
 
-            // var random01 = severRandoms[1] + 1;
-            // var random02 = severRandoms[4] + 1;
-            // var random03 = severRandoms[9] + 1;
+            // var random01 = Randoms[1] + 1;
+            // var random02 = Randoms[4] + 1;
+            // var random03 = Randoms[9] + 1;
             // var random04 = Math.floor(Math.random() * 15) + 1;
             // var random05 = Math.floor(Math.random() * 20) + 1;
             // var random06 = Math.floor(Math.random() * 30) + 1;
@@ -2282,42 +2239,42 @@ function game_background(){
             //Context3.globalAlpha = 0.2;
             Context3.globalAlpha = 0.4;
             if (parseInt(gameTime/(600-Pspeed*100)) % 3 == 0){
-                Context3.drawImage(groundImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*2 - 10,  20 + theCanvas.clientHeight / 5  + j + severRandoms[4]  + cityEnd_y, 1 * severRandoms[0] + j*4 ,20 * severRandoms[2])
+                Context3.drawImage(groundImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*2 - 10,  20 + theCanvas.clientHeight / 5  + j + Randoms[4]  + cityEnd_y, 1 * Randoms[0] + j*4 ,20 * Randoms[2])
             }else if(parseInt(gameTime/(600-Pspeed*100)) % 3 == 1){
-                Context3.drawImage(riverImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*2 - 10,  20 + theCanvas.clientHeight / 5  + j + severRandoms[4]  + cityEnd_y, 1 * severRandoms[0] + j*4 ,20 * severRandoms[2])
+                Context3.drawImage(riverImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*2 - 10,  20 + theCanvas.clientHeight / 5  + j + Randoms[4]  + cityEnd_y, 1 * Randoms[0] + j*4 ,20 * Randoms[2])
             }else {
-                Context3.drawImage(city03Image,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*2 - 10,  20 + theCanvas.clientHeight / 5  + j + severRandoms[4] + cityEnd_y , 1 * severRandoms[0] + j*4 ,20 * severRandoms[2])
+                Context3.drawImage(city03Image,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*2 - 10,  20 + theCanvas.clientHeight / 5  + j + Randoms[4] + cityEnd_y , 1 * Randoms[0] + j*4 ,20 * Randoms[2])
             }
 
             Context3.globalAlpha = 0.6;
 
             //지면 건물
             if (parseInt(gameTime/(800-Pspeed*100)) % 3 == 0){
-                Context3.drawImage(cityImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*1.5 - 10,  20 + theCanvas.clientHeight / 4  + j + severRandoms[4] + cityEnd_y , 1 * severRandoms[0] + j*3 - (cityEnd_x/200*j) ,20 * severRandoms[2])
+                Context3.drawImage(cityImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*1.5 - 10,  20 + theCanvas.clientHeight / 4  + j + Randoms[4] + cityEnd_y , 1 * Randoms[0] + j*3 - (cityEnd_x/200*j) ,20 * Randoms[2])
             }else if(parseInt(gameTime/(800-Pspeed*100)) % 2 == 0){
-                Context3.drawImage(cityImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*2 - 10,  20 + theCanvas.clientHeight / 3  + j + severRandoms[4] + cityEnd_y , 1 * severRandoms[0] + j*4 - (cityEnd_x/200*j) ,20 * severRandoms[2])
+                Context3.drawImage(cityImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*2 - 10,  20 + theCanvas.clientHeight / 3  + j + Randoms[4] + cityEnd_y , 1 * Randoms[0] + j*4 - (cityEnd_x/200*j) ,20 * Randoms[2])
             }else {
-                Context3.drawImage(cityImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*1.2 - 10,  20 + theCanvas.clientHeight / 3  + j + severRandoms[0] + cityEnd_y , 1 * severRandoms[0] + j*3 - (cityEnd_x/200*j) ,20 * severRandoms[2])
+                Context3.drawImage(cityImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*1.2 - 10,  20 + theCanvas.clientHeight / 3  + j + Randoms[0] + cityEnd_y , 1 * Randoms[0] + j*3 - (cityEnd_x/200*j) ,20 * Randoms[2])
             }
 
             //지붕 건물 반사
             Context3.globalAlpha = 0.04;
             if (parseInt(gameTime/(600-Pspeed*100)) % 3 == 0){
-                Context3.drawImage(groundImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*2 - 10,theCanvas.clientHeight / 10  - j - severRandoms[4]  + cityEnd_y, 1 * severRandoms[0] + j*3 ,20 * severRandoms[2])
+                Context3.drawImage(groundImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*2 - 10,theCanvas.clientHeight / 10  - j - Randoms[4]  + cityEnd_y, 1 * Randoms[0] + j*3 ,20 * Randoms[2])
             }else if(parseInt(gameTime/(600-Pspeed*100)) % 3 == 1){
-                Context3.drawImage(riverImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*2 - 10,theCanvas.clientHeight / 10  - j - severRandoms[4]  + cityEnd_y, 1 * severRandoms[0] + j*4 ,20 * severRandoms[2])
+                Context3.drawImage(riverImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*2 - 10,theCanvas.clientHeight / 10  - j - Randoms[4]  + cityEnd_y, 1 * Randoms[0] + j*4 ,20 * Randoms[2])
             }else {
-                Context3.drawImage(city03Image,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*2 - 10,theCanvas.clientHeight / 10  - j - severRandoms[4]  + cityEnd_y, 1 * severRandoms[0] + j*3 ,20 * severRandoms[2])
+                Context3.drawImage(city03Image,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*2 - 10,theCanvas.clientHeight / 10  - j - Randoms[4]  + cityEnd_y, 1 * Randoms[0] + j*3 ,20 * Randoms[2])
             }
                         
             //지붕 땅 반사
             Context3.globalAlpha = 0.06;
             if (parseInt(gameTime/(800-Pspeed*100)) % 3 == 0){
-                Context3.drawImage(cityImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*1.5 - 10,theCanvas.clientHeight / 10  - j - severRandoms[4]  + cityEnd_y, 1 * severRandoms[0] + j*4 ,20 * severRandoms[2])
+                Context3.drawImage(cityImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*1.5 - 10,theCanvas.clientHeight / 10  - j - Randoms[4]  + cityEnd_y, 1 * Randoms[0] + j*4 ,20 * Randoms[2])
             }else if(parseInt(gameTime/(800-Pspeed*100)) % 2 == 0){
-                Context3.drawImage(cityImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*2 - 10,theCanvas.clientHeight / 10  - j - severRandoms[4]  + cityEnd_y, 1 * severRandoms[0] + j*4 ,20 * severRandoms[2])
+                Context3.drawImage(cityImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*2 - 10,theCanvas.clientHeight / 10  - j - Randoms[4]  + cityEnd_y, 1 * Randoms[0] + j*4 ,20 * Randoms[2])
             }else {
-                Context3.drawImage(cityImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*1.2 - 10,theCanvas.clientHeight / 10  - j - severRandoms[4]  + cityEnd_y, 1 * severRandoms[0] + j*4 ,20 * severRandoms[2])
+                Context3.drawImage(cityImage,theCanvas.clientWidth / 2  - parseInt(cityEnd_size/2) + cityEnd_x - j*1.2 - 10,theCanvas.clientHeight / 10  - j - Randoms[4]  + cityEnd_y, 1 * Randoms[0] + j*4 ,20 * Randoms[2])
             }
             
             
@@ -2328,7 +2285,7 @@ function game_background(){
             // Context3.strokeStyle = "balck";
 
             // Context3.beginPath();
-            // Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 - 25  - severRandoms[4]  + cityEnd_y, 40 - random01, 0, Math.PI * 2);
+            // Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 - 25  - Randoms[4]  + cityEnd_y, 40 - random01, 0, Math.PI * 2);
             // Context3.stroke();
 
             // Context3.fillStyle = 'black'; // 채우기 색 지정
@@ -2337,14 +2294,14 @@ function game_background(){
 
 			// Context3.beginPath();
 			// Context3.globalAlpha = "0.01"
-			// Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 + 2 - random05 + cityEnd_y , 100 - severRandoms[4] , 0, Math.PI * 2);
+			// Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 + 2 - random05 + cityEnd_y , 100 - Randoms[4] , 0, Math.PI * 2);
 			// Context3.stroke();
 
             /*
             //콜로니 끝 근처 원
 			Context3.beginPath();
-			Context3.globalAlpha = 0.08 * severRandoms[2];
-            Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 - severRandoms[4] + cityEnd_y + 20 , 60 - severRandoms[9] , 0, Math.PI * 2);
+			Context3.globalAlpha = 0.08 * Randoms[2];
+            Context3.arc(theCanvas.clientWidth / 2  + cityEnd_x - cityEnd_size/2   , theCanvas.clientHeight / 4 - Randoms[4] + cityEnd_y + 20 , 60 - Randoms[9] , 0, Math.PI * 2);
             Context3.lineWidth = 1;
 			Context3.stroke();
             */
@@ -2361,11 +2318,11 @@ function game_background(){
 
             //j의 크기를 줄여주면 속도감이 더 빠르고 늘려주면 느려진다.
             if (parseInt(gameTime/(600-Pspeed*500)) % 3 == 0){
-                 j = j + (12*severRandoms[2]);     //건물 상하 조밀도
+                 j = j + (12*Randoms[2]);     //건물 상하 조밀도
             }else if (parseInt(gameTime/(600-Pspeed*500)) % 3 == 1){
-                j = j + (11*severRandoms[2]);     //건물 상하 조밀도
+                j = j + (11*Randoms[2]);     //건물 상하 조밀도
             }else {
-                j = j + (10*severRandoms[2]);     //건물 상하 조밀도
+                j = j + (10*Randoms[2]);     //건물 상하 조밀도
             }
         }
     //} 
@@ -2511,9 +2468,9 @@ GameCanvas.addEventListener('mousedown', function(event) {
          playerImage = noneImage;
          laserImage = noneImage;
          player_warp =  noneImage;
-         Context.drawImage(explosionImage01,playerX-sRandom40,playerY+sRandom40,35,25);
+         Context.drawImage(explosionImage01,playerX-Randoms[9]*4,playerY+Randoms[9]*4,35,25);
          Context.drawImage(explosionImage01,playerX-10,playerY - 15,60*(Pdistance/500)*playerHeight/50,30*(Pdistance/500)*playerWidth/10);
-         Context.drawImage(explosionImage01,playerX+severRandoms[9],playerY-sRandom60,120,115);
+         Context.drawImage(explosionImage01,playerX+Randoms[9],playerY-Randoms[9]*6,120,115);
 
          playerImage = explosionImage01;
          player_warp = explosionImage01;
@@ -2704,7 +2661,7 @@ function clickCanvas(event, as_gb) {
 		//Warp 이미지로 변경
 		for (var i=0;i<=warp_distance;i++){
 
-			Context.drawImage(player_warp,playerX,playerY,playerWidth + severRandoms[1],playerHeight + severRandoms[2])
+			Context.drawImage(player_warp,playerX,playerY,playerWidth + Randoms[1],playerHeight + Randoms[2])
 
 			//warp_sound.play();
 
@@ -2879,7 +2836,7 @@ function fn_move_warp(){
     //Warp 이미지로 변경
     for (var i=0;i<=warp_distance;i++){
 
-        Context.drawImage(player_warp,playerX,playerY,playerWidth + severRandoms[1],playerHeight + severRandoms[2])
+        Context.drawImage(player_warp,playerX,playerY,playerWidth + Randoms[1],playerHeight + Randoms[2])
 
         //warp_sound.play();
 
@@ -2971,10 +2928,10 @@ function weappon_init(){
         this.weapponArray[i].bsize = this.weappon_size;
         this.weapponArray[i].bspeed  = this.weappon_speed;
 
-        if (severRandoms[1] == 0){
-            this.weapponArray[i].bdirection =   severRandoms[9] * 1;   //미사일의 방향은 랜덤하게 생성 => 미사일 방향 오른쪽 으로
-        }else if (severRandoms[1] == 1){
-            this.weapponArray[i].bdirection =   severRandoms[9] * -1;   //미사일의 방향은 랜덤하게 생성 => 미사일 방향 왼쪽 으로
+        if (Randoms[1] == 0){
+            this.weapponArray[i].bdirection =   Randoms[9] * 1;   //미사일의 방향은 랜덤하게 생성 => 미사일 방향 오른쪽 으로
+        }else if (Randoms[1] == 1){
+            this.weapponArray[i].bdirection =   Randoms[9] * -1;   //미사일의 방향은 랜덤하게 생성 => 미사일 방향 왼쪽 으로
         }
 
     }
@@ -3009,8 +2966,8 @@ function weappon_move(){
             
             
             //2.좌우로 흔들린다.
-            this.weapponArray[i].bmx = this.weapponArray[i].bmx + severRandoms[9] - severRandoms[9];
-            this.weapponArray[i].bmy = this.weapponArray[i].bmy + severRandoms[1] - severRandoms[2];
+            this.weapponArray[i].bmx = this.weapponArray[i].bmx + Randoms[9] - Randoms[9];
+            this.weapponArray[i].bmy = this.weapponArray[i].bmy + Randoms[1] - Randoms[2];
             //3.속도가 느리다.
             this.weappon_speed = 1;
 
@@ -3050,22 +3007,22 @@ function weappon_move(){
             //총알 반은 위로 반은 아래로향한다.
             if (this.weappon_index%4 == 0){
                 this.weappon_upDown = 1;
-                this.weappon_leftRight =  1 * (severRandoms[0]==0?1:-1);
+                this.weappon_leftRight =  1 * (Randoms[0]==0?1:-1);
             }else if (this.weappon_index%4 == 1){
                 this.weappon_upDown = -1;
-                this.weappon_leftRight =  1 * (severRandoms[0]==0?1:-1);
+                this.weappon_leftRight =  1 * (Randoms[0]==0?1:-1);
             }else if (this.weappon_index%4 == 2){
-                this.weappon_leftRight = -1 - (severRandoms[0] + 1);
-                this.weappon_upDown = this.weappon_tmp_random * (severRandoms[0]==0?1:-1);
+                this.weappon_leftRight = -1 - (Randoms[0] + 1);
+                this.weappon_upDown = this.weappon_tmp_random * (Randoms[0]==0?1:-1);
             }else {
-                this.weappon_leftRight = 1 + (severRandoms[0] + 1);
-                this.weappon_upDown = this.weappon_tmp_random * (severRandoms[0]==0?1:-1);
+                this.weappon_leftRight = 1 + (Randoms[0] + 1);
+                this.weappon_upDown = this.weappon_tmp_random * (Randoms[0]==0?1:-1);
             }
         }
 
         this.weapponArray[i].bmx =  this.weapponArray[i].bmx + this.weapponArray[i].bdirection * this.weappon_leftRight;
         this.weapponArray[i].bsize = this.weappon_size;
-        this.weapponArray[i].bmy = this.weapponArray[i].bmy + this.weapponArray[i].bsize * this.weappon_upDown / (severRandoms[0] + 2); //<= 총알 속도의 핵심(his.weappon_upDown / 4).
+        this.weapponArray[i].bmy = this.weapponArray[i].bmy + this.weapponArray[i].bsize * this.weappon_upDown / (Randoms[0] + 2); //<= 총알 속도의 핵심(his.weappon_upDown / 4).
         this.weapponArray[i].bmy  = this.weapponArray[i].bmy  * this.weapponArray[i].bspeed;
 
         Context.drawImage(this.weapponImage,this.weapponArray[i].bmx,this.weapponArray[i].bmy,this.weapponArray[i].bsize,this.weapponArray[i].bsize);
@@ -3080,7 +3037,7 @@ function weappon_move(){
         if ( this.weapponArray[i].bmy >= theCanvas.clientHeight + add_borderX || this.weapponArray[i].bmy + add_borderX <= 0){
 
             //최대 max_weappon_cnt 개까지만 생성
-            if (1 == severRandoms[1]){
+            if (1 == Randoms[1]){
 
                 //this.weappon_cnt = Math.floor(Math.random()*5) + 1;
 
@@ -3132,9 +3089,9 @@ function player_collision(){
                 // explosion_sound.play();
 
 
-                Context.drawImage(explosionImage01,playerX-sRandom40,playerY+sRandom40,35,25);
+                Context.drawImage(explosionImage01,playerX-Randoms[9]*4,playerY+Randoms[9]*4,35,25);
                 Context.drawImage(explosionImage01,playerX-10,playerY - 15,60*(Pdistance/500)*playerHeight/50,30*(Pdistance/500)*playerWidth/10);
-                Context.drawImage(explosionImage01,playerX+severRandoms[9],playerY-sRandom60,120,115);
+                Context.drawImage(explosionImage01,playerX+Randoms[9],playerY-Randoms[9]*6,120,115);
 
                 playerImage = explosionImage01;
                 player_warp = explosionImage01;
@@ -3221,8 +3178,8 @@ function player_collision(){
                 if (player_collision_yn == 'N'){
 
                     Context.drawImage(explosionImage01,playerX+5,playerY - 10,40*(Pdistance/500)*playerWidth/40,60*(Pdistance/500)*playerHeight/20);
-                    Context.drawImage(explosionImage01,playerX-sRandom50,playerY+sRandom50,50,35);
-                    Context.drawImage(explosionImage01,playerX-sRandom40,playerY+sRandom40,35,25);
+                    Context.drawImage(explosionImage01,playerX-Randoms[9]*5,playerY+Randoms[9]*5,50,35);
+                    Context.drawImage(explosionImage01,playerX-Randoms[9]*4,playerY+Randoms[9]*4,35,25);
                     Context.drawImage(explosionImage01,playerX-10,playerY - 15,60*(Pdistance/500)*playerHeight/50,30*(Pdistance/500)*playerWidth/30);
                     crash02_sound.play();
                     crash02_sound.currentTime  = 0;
@@ -3250,8 +3207,8 @@ gfwSocket.On("sinc_time2",function(serverTime,sRandoms){
     gameTime = serverTime;
 
     for(var i=0; i < sRandoms.length; i++){
-        console.log(i,sRandoms[i]);
-        severRandoms[i] = sRandoms[i]
+        //console.log(i,sRandoms[i]);
+        Randoms[i] = sRandoms[i]
 	}
 
 })  
@@ -3369,7 +3326,7 @@ function drawScreen(){
     //10초마다 적 추가생성 => 5초
     //if(gameTime % 500 === 0){
     //랜덤하게
-    if(gameTime % ((severRandoms[2] + 5) * 100) === 0){
+    if(gameTime % ((Randoms[2] + 5) * 100) === 0){
 
         //적 추가 생성
         enemy_cnt = enemy_cnt + 1;

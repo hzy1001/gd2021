@@ -1642,31 +1642,13 @@ function enemy_energe(){
     }
 
     return this.energe_bar;
-} 
-
-    
-
-    gfwSocket.On("sinc_time2",function(serverTime){ 
-        console.log("sinc_time2 :" + serverTime);
-        gameTime = serverTime;
-    
-    })  
+}  
 
 ////////////////// 적 이동 
 function enemy_move(){
 //alert(String(gameTime*100).substr(0,2));
 //alert(parseInt(String(gameTime*100).substr(0,2)) % 5)
 //console.log(String(gameTime).substr(String(gameTime).length-3,1)) 
-
-    //주기적으로 양쪽의 시간 씽크가 맞지않을 경우를 대비하여 느린쪽 시간에 싱크를 맞춘다.
-    if (game_mode == 'M'){    
-        if (gameTime % 100 === 0){
-     
-            console.log("sinc_time :",gameTime);
-            gfwSocket.Emit("sinc_time",gameTime)  
-        }  
-    }  
-  
 
     //적(enemy) 왔다같다 이동
     if (String(gameTime).substr(String(gameTime).length-3,1) == 1){
@@ -1821,8 +1803,6 @@ function ship01_move(){
 function game_background(){
 
     //시간이 흐름에 따라 게임 타겟 방향 좌표 이동
-    gameTime++;         //시간 증가
-    gameScore++;
     back_distance = back_distance + Pspeed*5;    //백그라운드 라인이 밖으로 나가면 다시 초기화(플레이어 속도만큼 더 빨리 진행)
 
 	//back_distance = back_distance + 0.1;
@@ -2787,7 +2767,7 @@ function clickCanvas(event, as_gb) {
 ///////////////////////////////////////
 function clickDblCanvas(event, as_gb) {
 
-    alert("dbl:"+as_gb) 
+    //alert("dbl:"+as_gb) 
     
     // //방향 up
     // if(Context.isPointInPath(directonUp, x,  y)) {
@@ -3256,10 +3236,30 @@ function player_collision(){
     }
 } 
 
+//주기적 타임 싱크 맞추기;
+gfwSocket.On("sinc_time2",function(serverTime){ 
+    console.log("sinc_time2 :" + serverTime);
+    gameTime = serverTime;
+
+})  
+
 
 ////////////////// 화면 로드(게임 프래임 수 만큼)  
 function drawScreen(){  
+
+    gameTime++;         //시간 증가
+    gameScore++;        //스코어 증가    
     //console.log("gameTime :" + gameTime);
+
+
+    //주기적으로 양쪽의 시간 씽크가 맞지않을 경우를 대비하여 느린쪽 시간에 싱크를 맞춘다.
+    if (game_mode == 'M'){    
+        if (gameTime % 100 === 0){
+     
+            console.log("sinc_time :",gameTime);
+            gfwSocket.Emit("sinc_time",gameTime)  
+        }  
+    }  
 
     //게임 진행 컨텍스트(레이어)
     Context.fillStyle = "#000000";
@@ -3350,12 +3350,13 @@ function drawScreen(){
     //     for (var i = 0;i<=2; i++){
     //         //weapponArray.push({bx:weapponX, by:weapponY, bmx:move_weapponX, bmy:100, bsize:10, bspeed:20, bdirection:weappon_Randon});
     //     }
-    // }
+    // } 
+
 
     //10초마다 적 추가생성 => 5초
     //if(gameTime % 500 === 0){
     //랜덤하게
-    if(gameTime % ((sRandom03 + 2) * 100) === 0){
+    if(gameTime % ((sRandom03 + 5) * 100) === 0){
 
         //적 추가 생성
         enemy_cnt = enemy_cnt + 1;
@@ -3387,9 +3388,7 @@ function drawScreen(){
     } 
 
 
-}
-
-
+} 
 
 
 function MultidrawScreen(){

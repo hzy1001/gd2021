@@ -1528,9 +1528,9 @@ function enemy_collision(){
                 this.energe_bar = '';
 
                 //콜로니 밖 우주 배경그려주기(투명도 적용)
-                Context.save();
+                Context.save(); 
 
-                Context.globalAlpha = 0.8;
+                Context.globalAlpha = 0.9;
 
                 Context.drawImage(backgroundImage,0, 0 ,theCanvas.clientWidth + Randoms[2] ,theCanvas.clientHeight);
                 //적이 강할수록 i를 높게한다.(i = 점수)
@@ -3099,7 +3099,7 @@ function player_collision(){
                 //콜로니 밖 우주 배경그려주기(투명도 적용)
                 Context.save();
 
-                Context.globalAlpha = 0.8;
+                Context.globalAlpha = 0.9;
 
                 status = 4;    //게임 END
 

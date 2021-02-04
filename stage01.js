@@ -2210,7 +2210,7 @@ function game_background(){
 
         //k = 0; //조명 간격
 
-        for (var j = 0; j < 800; j++){
+        for (var j = 0; j < 1000; j++){
 
             // var random01 = Randoms[1] + 1;
             // var random02 = Randoms[4] + 1;

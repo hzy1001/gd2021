@@ -617,8 +617,6 @@ function addJavascript(jsname) {
 
 }
 
-
-
 // ////////////////// 게임 시작
 // function gameStart(as_keycode) { 
 
@@ -1554,7 +1552,7 @@ function enemy_collision(){
                 gameScore = parseInt(gameScore) + ini_enemy_life*10;
 
                 //타겟 새로 출현 시간.
-                this.enemy_dealy_time = parseInt(Randoms[2] + 2) * 1000;
+                this.enemy_dealy_time = parseInt(Randoms[2] + 2) * 500;
 
                 Context.restore();
 
@@ -3192,11 +3190,13 @@ function player_collision(){
 } 
 
 //주기적 타임 싱크 맞추기;
-gfwSocket.On("sincDrawScreen2",function(serverTime,Jenemy_array){ 
-    //console.log("sincDrawScreen2 :" + serverTime);
-    console.log("receive Jenemy_array :",Jenemy_array); 
-    gameTime = serverTime;
-    enemy_array = JSON.parse(Jenemy_array)
+gfwSocket.On("sincDrawScreen2",function(server_time,server_data){ 
+    
+    console.log("server_time :",server_time);
+    console.log("server_data :",server_data); 
+
+    gameTime = server_time;
+    //enemy_array = JSON.parse(server_data)
     
     // for(var i=0; i < sRandoms.length; i++){
     //     //console.log(i,sRandoms[i]);
@@ -3205,8 +3205,8 @@ gfwSocket.On("sincDrawScreen2",function(serverTime,Jenemy_array){
 
 })  
 
-var Jenemy_array = new Object();
-var penemy_array = new Array();
+var server_data = new Object();
+var client_data = {};
 
 ////////////////// 화면 로드(게임 프래임 수 만큼)  
 function drawScreen(){  
@@ -3218,18 +3218,19 @@ function drawScreen(){
     //멀티 게임일경우 주기적으로 양쪽의 시간 씽크가 맞지않을 경우를 대비하여 서버로부터 시간 싱크를 맞춘다.
     //적배열객체도 넘겨준다.
     if (game_mode == 'M'){    
-        if (gameTime % 100 === 0){
+        if (gameTime % 50 === 0){
      
-            penemy_array = enemy_array.slice();
-            console.log("send penemy_array :",penemy_array); 
+            client_data = enemy_array.slice();
+            console.log("client_time :",gameTime); 
+            console.log("client_data :",client_data); 
 
-            Jenemy_array = JSON.stringify(penemy_array);
-            console.log("send Jenemy_array :",Jenemy_array); 
-      
+            //server_data = JSON.stringify({client_data}); 
+            //alert(server_data)
+            //console.log("send server_data :",server_data);  
             // JSON.stringify(
 
-            gfwSocket.Emit("sincDrawScreen",gameTime,Jenemy_array)  
-            //gfwSocket.Emit("sincDrawScreen",penemy_array)  
+            gfwSocket.Emit("sincDrawScreen",gameTime,client_data)  
+            //gfwSocket.Emit("sincDrawScreen",client_data)  
         }  
     }  
 
@@ -3249,13 +3250,13 @@ function drawScreen(){
     //console.log("gameScore/1000",parseInt(gameScore/1000))
     //플레이어 갯수(보너스)(10000점마다 1개씩 증가) 
     //bonus_cnt = Math.floor(gameScore/1000);
-    if (gameScore >= 10000 &&  bonus_cnt == Math.floor(gameScore/10000)){    
+    if (gameScore >= 10000 && bonus_cnt == Math.floor(gameScore/10000)){    
         
         //if (gameScore%1000 == 0){
             
             if (player_cnt > 0){
-                bonus_sound.play();
-                 
+
+                bonus_sound.play(); 
                 bonus_cnt = bonus_cnt + 1;
                 //alert(bonus_cnt)
                
@@ -3322,8 +3323,7 @@ function drawScreen(){
     //     for (var i = 0;i<=2; i++){
     //         //weapponArray.push({bx:weapponX, by:weapponY, bmx:move_weapponX, bmy:100, bsize:10, bspeed:20, bdirection:weappon_Randon});
     //     }
-    // } 
-
+    // }  
 
     //10초마다 적 추가생성 => 5초
     //if(gameTime % 500 === 0){
@@ -3357,11 +3357,8 @@ function drawScreen(){
         Context2.font = '100px Arial';
         Context2.fillText("Ready", (theCanvas.clientWidth - ini_player_width) / 2 - theCanvas.offsetLeft - 100, theCanvas.clientHeight / 2 - theCanvas.offsetTop);
         Context2.font = '30px Arial';
-    } 
-
-
-} 
-
+    }   
+}  
 
 function MultidrawScreen(){
 
@@ -3373,8 +3370,7 @@ function MultidrawScreen(){
     this.Multi_id = fgwSocket.id;
     this.MultidrawScreen = drawScreen();
 
-}
-
+} 
 
 ////////////////// 키 다운 이벤트 처리(데스크 탑 이용시)
 function onkeyDown(e, as_strKeyEventValue){

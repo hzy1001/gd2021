@@ -27,7 +27,8 @@ var socketIdList = [];
 //시간 맞추기
 var time1 = 0;
 var time2 = 0; 
-
+var server_time = 0;
+var server_date = {};
 
 //멀티 화면 싱크 맞추기 
 var sRandoms = new Array; //서버랜덤값
@@ -41,9 +42,7 @@ function f_sRandoms(){
         sRandoms[i] = Math.floor(Math.random() * (i+1)); 
         //console.log(i,sRandoms[i])
     } 
-
 }
-
 
 //신규접속
 io.on('connection', function(socket) {  
@@ -103,11 +102,11 @@ io.on('connection', function(socket) {
         }  
     });    
 
-
     //멀티 수락 및 시작(수락하면 수락한의 gameTime 공유)
     socket.on('multi_allowed', function(game_time) {   
         console.log("game_time",game_time);  
         //serverTime = game_time;
+
             f_sRandoms();
 
             socketList.forEach(function(item, i) {  
@@ -124,53 +123,45 @@ io.on('connection', function(socket) {
     });   
 
     //클라이언트에서 시간과 적(배열)을 받아서 다시 상대편으로 넘겨줘서 싱크를 맞춘다.
-    socket.on('sincDrawScreen', function(pgame_time,Jenemy_array) {    
+    socket.on('sincDrawScreen', function(client_time,client_data) {    
         //socket.on('sincDrawScreen', function(Jenemy_array) {    
           
-            console.log("receive pgame_time :", pgame_time);
-            console.log("receive Jenemy_array :", Jenemy_array);
+            console.log("client_time :", client_time);
+            console.log("client_data :", client_data);
             socketList.forEach(function(item, i) {  
                     // if (item != socket) {
-                    //     item.emit('sincDrawScreen2', pgame_time);
+                    //     item.emit('sincDrawScreen2', client_time);
                     //     console.log("receive Jenemy_array :", Jenemy_array);
                     // }  
 
                     //console.log("i",i);
                     if (i == 0){
-                        time1 = pgame_time;
-                        Jenemy_array1 = Jenemy_array;
+                        time1 = client_time;
+                        server_data = client_data;
                     }else {
-                        time2 = pgame_time;         
-                        Jenemy_array2 = Jenemy_array;       
-                    }    
-
+                        time2 = client_time;         
+                        server_data = client_data;
+                    }   
             });  
 
-
-
             if(time1  > time2){
-                pgame_time = time1;
-                Jenemy_array = Jenemy_array1;
+                server_time = time1;
+                server_data = client_data;
             }else {
-                pgame_time = time2;
-                Jenemy_array = Jenemy_array2;
+                server_time = time2;
+                server_data = client_data;
             }
-
-                        //console.log(time1,time2);
-        
-
             
+            //console.log(time1,time2);
             //f_sRandoms();
 
             socketList.forEach(function(item, i) {  
                 if (item != socket) {
-                     item.emit('sincDrawScreen2', pgame_time, Jenemy_array);
-                     console.log("send Jenemy_array :", Jenemy_array);
+                     item.emit('sincDrawScreen2', server_time, server_data);
+                     console.log("server_time :", server_time);
+                     console.log("server_data :", server_data);
                 }   
             });  
-
-
-
     });       
 
     //이러게 하니깐 부하많이걸림
@@ -211,7 +202,6 @@ io.on('connection', function(socket) {
 
       
             console.log("serverFrame : ", serverTime)
-
             //socket.emit('serverFrame', serverTime);            
         
     });    

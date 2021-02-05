@@ -46,6 +46,7 @@ var minX = theCanvas.offsetLeft;
 var maxX = theCanvas.clientWidth - minX;
 var minY = theCanvas.offsetTop;
 var maxY = theCanvas.clientHeight - minY;
+
 var add_borderX = 0;
 var add_borderY = 0;
 
@@ -1677,26 +1678,46 @@ function enemy_move(){
     if (this.enemy_size <= 1){this.enemy_size = 1};
 
     //적이 게임 경게 밖으로 나가지 못하다록 한다.
-    if (this.enemyx > maxX - 30){
+    // if (this.enemyx > maxX - 30){
+    //     this.enemyxx = 0;
+    //     this.enemyx = this.enemyx - Randoms[1];
+    // }
+
+    // if (this.enemyx < minX + 30){
+    //     this.enemyxx = 0;
+    //     this.enemyx = this.enemyx + Randoms[1];
+    // }
+
+    // if (this.enemyy > maxY - 30){
+    //     this.enemyyy = 0;
+    //     this.enemyy = this.enemyy - Randoms[1];
+    // }
+
+    // if (this.enemyy < minY + 30){
+    //     this.enemyyy = 0;
+    //     this.enemyy = this.enemyy + Randoms[1];
+    // }
+
+
+    if (this.enemyx > 400 - 30){
         this.enemyxx = 0;
         this.enemyx = this.enemyx - Randoms[1];
     }
 
-    if (this.enemyx < minX + 30){
+    if (this.enemyx < 400 + 30){
         this.enemyxx = 0;
         this.enemyx = this.enemyx + Randoms[1];
     }
 
-    if (this.enemyy > maxY - 30){
+    if (this.enemyy > 300 - 30){
         this.enemyyy = 0;
         this.enemyy = this.enemyy - Randoms[1];
     }
 
-    if (this.enemyy < minY + 30){
+    if (this.enemyy < 300 + 30){
         this.enemyyy = 0;
         this.enemyy = this.enemyy + Randoms[1];
     }
-
 
     //적(enemy)) 이미지
     //적 미사일 초기 위치
@@ -3236,6 +3257,7 @@ gfwSocket.On("server_drawscreen",function(server_time,serverEnemyIdx){
 
 ////////////////// 화면 로드(게임 프래임 수 만큼)  
 function drawscreen(){  
+
 
     gameTime++;         //시간 증가
     gameScore++;        //스코어 증가    

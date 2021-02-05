@@ -1698,23 +1698,23 @@ function enemy_move(){
     //     this.enemyy = this.enemyy + Randoms[1];
     // }
 
-
-    if (this.enemyx > 400 - 30){
+    //멀티의 경우 화면 사이즈(해상도)에 따라 경계가 달라 이동 싱크가 안맞는 점을 감안하여 사이즈를 고정한다.
+    if (this.enemyx > 800 - 30){
         this.enemyxx = 0;
         this.enemyx = this.enemyx - Randoms[1];
     }
 
-    if (this.enemyx < 400 + 30){
+    if (this.enemyx < 800 + 30){
         this.enemyxx = 0;
         this.enemyx = this.enemyx + Randoms[1];
     }
 
-    if (this.enemyy > 300 - 30){
+    if (this.enemyy > 600 - 30){
         this.enemyyy = 0;
         this.enemyy = this.enemyy - Randoms[1];
     }
 
-    if (this.enemyy < 300 + 30){
+    if (this.enemyy < 600 + 30){
         this.enemyyy = 0;
         this.enemyy = this.enemyy + Randoms[1];
     }
@@ -3002,6 +3002,7 @@ function weappon_move(){
             //2.좌우로 흔들린다.
             this.weapponArray[i].bmx = this.weapponArray[i].bmx + Randoms[9] - Randoms[9];
             this.weapponArray[i].bmy = this.weapponArray[i].bmy + Randoms[1] - Randoms[2];
+
             //3.속도가 느리다.
             this.weappon_speed = 1;
 
@@ -3068,7 +3069,9 @@ function weappon_move(){
        //미사일 화면 이탈시 또는 미사일이 너무 커지면
        //if (weapponArray[i].bmx >= theCanvas.clientWidth  || weapponArray[i].bmx <= 0 ){
        //if ( this.weapponArray[i].bmy >= theCanvas.clientHeight + add_borderX || this.weapponArray[i].bmy + add_borderX <= 0 || this.weapponArray[i].bsize >= 150){
-        if ( this.weapponArray[i].bmy >= theCanvas.clientHeight + add_borderX || this.weapponArray[i].bmy + add_borderX <= 0){
+        //if ( this.weapponArray[i].bmy >= theCanvas.clientHeight + add_borderX || this.weapponArray[i].bmy + add_borderX <= 0){
+        //멀티의 경우 화면 해상도가 달라도 화면 경계를 고정시켜 총알 이동 싱크를 맞추기 위해 고정한다.
+        if ( this.weapponArray[i].bmy >= 1000 || this.weapponArray[i].bmy + 1000 <= 0){
 
             //최대 max_weappon_cnt 개까지만 생성
             if (1 == Randoms[1]){

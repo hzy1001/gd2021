@@ -1317,11 +1317,11 @@ function enemy_init(index){
     //this.enemy02Image = new Image();
     //this.enemy02Image.src = enemy02Image.src; 
 
-
+    index = 1;
     //멀티 게임의 경우 index를 서로 공유하여 적들이 동일하게 동작하도록 한다.
     if (game_mode == 'M'){    
          //적 고유 index 
-         index = 1;
+ 
          clientEnemyIdx = index;
 
         //gfwSocket.Emit("client_drawscreen",gameTime,clientEnemyIdx);      
@@ -3255,7 +3255,7 @@ function drawscreen(){
             //alert(server_data)
             //console.log("send server_data :",server_data);  
             // JSON.stringify(
- 
+                clientEnemyIdx = 1;
             console.log("gameTime : ",gameTime);
             console.log("clientEnemyIdx : ",clientEnemyIdx);
 

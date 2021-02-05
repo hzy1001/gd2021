@@ -1709,12 +1709,12 @@ function enemy_move(){
         this.enemyx = this.enemyx + Randoms[1];
     }
 
-    if (this.enemyy > 600 - 30){
+    if (this.enemyy > 500 - 30){
         this.enemyyy = 0;
         this.enemyy = this.enemyy - Randoms[1];
     }
 
-    if (this.enemyy < 600 + 30){
+    if (this.enemyy < 500 + 30){
         this.enemyyy = 0;
         this.enemyy = this.enemyy + Randoms[1];
     }

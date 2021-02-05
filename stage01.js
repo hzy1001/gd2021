@@ -3071,7 +3071,7 @@ function weappon_move(){
        //if ( this.weapponArray[i].bmy >= theCanvas.clientHeight + add_borderX || this.weapponArray[i].bmy + add_borderX <= 0 || this.weapponArray[i].bsize >= 150){
         //if ( this.weapponArray[i].bmy >= theCanvas.clientHeight + add_borderX || this.weapponArray[i].bmy + add_borderX <= 0){
         //멀티의 경우 화면 해상도가 달라도 화면 경계를 고정시켜 총알 이동 싱크를 맞추기 위해 고정한다.
-        if ( this.weapponArray[i].bmy >= 1200 || this.weapponArray[i].bmy + 1200 <= 0){
+        if ( this.weapponArray[i].bmy >= 1200 || this.weapponArray[i].bmy + 600 <= 0){
 
             //최대 max_weappon_cnt 개까지만 생성
             if (1 == Randoms[1]){

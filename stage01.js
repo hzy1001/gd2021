@@ -6,7 +6,7 @@
 // 게임 상태값을 저장하는 변수
 //var GameState = GAME_STATE_READY; // 초깃값은 준비 상태 
 //게임 진행시 필요한 이벤트 선언
-window.addEventListener("load",drawScreen, false);
+window.addEventListener("load",drawscreen, false);
 window.addEventListener("keydown",onkeyDown, false);
 window.addEventListener("keyup",onkeyUp, false);
 
@@ -154,7 +154,7 @@ var gameTime = 0;
 var init_gameScore = 0;
 var gameScore = 0;
 //화면 타이머 id
-var init_Timer_Id = 0;  //var Timer_Id = setInterval(drawScreen, 1000/gameFrame); <= 재일 처음 시작시에는 움지기지 않는다.
+var init_Timer_Id = 0;  //var Timer_Id = setInterval(drawscreen, 1000/gameFrame); <= 재일 처음 시작시에는 움지기지 않는다.
 var Timer_Id = 0;
 //게임 배경의 진행 시점(목적지)
 var init_cityEnd_size = 100;       //게임 진행 방향 타겟 사이즈
@@ -277,97 +277,97 @@ if (game_mode == 'M'){
 //무공간(투명)이미지
 var noneImage = new Image();
 noneImage.src = "./img/none.png";
-noneImage.addEventListener("load",drawScreen, false);
+noneImage.addEventListener("load",drawscreen, false);
 
 //게임 배경(우주) 이미지
 var backgroundImage = new Image();
 backgroundImage.src = "./img/background01.png";
-backgroundImage.addEventListener("load",drawScreen, false);
+backgroundImage.addEventListener("load",drawscreen, false);
 
 //게임 배경(도로) 이미지
 var cityImage = new Image();
 cityImage.src = "./img/city01.png";
-cityImage.addEventListener("load",drawScreen, false);
+cityImage.addEventListener("load",drawscreen, false);
 
 var city01Image = new Image();
 city01Image.src = "./img/city01.png";
-city01Image.addEventListener("load",drawScreen, false);
+city01Image.addEventListener("load",drawscreen, false);
 
 var city02Image = new Image();
 city02Image.src = "./img/city02.png";
-city02Image.addEventListener("load",drawScreen, false);
+city02Image.addEventListener("load",drawscreen, false);
 
 var city03Image = new Image();
 city03Image.src = "./img/city03.png";
-city03Image.addEventListener("load",drawScreen, false);
+city03Image.addEventListener("load",drawscreen, false);
 
 var cityEndImage = new Image();
 cityEndImage.src = "./img/cityEnd.png";
-cityEndImage.addEventListener("load",drawScreen, false);
+cityEndImage.addEventListener("load",drawscreen, false);
 
 //땅
 var groundImage = new Image();
 groundImage.src = "./img/ground.png";
-groundImage.addEventListener("load",drawScreen, false);
+groundImage.addEventListener("load",drawscreen, false);
 
 //강
 var riverImage = new Image();
 riverImage.src = "./img/river.png";
-riverImage.addEventListener("load",drawScreen, false);
+riverImage.addEventListener("load",drawscreen, false);
 
 ///////////////////////////////////플레이어 초기 설정///////////////////////////////////////////////////////
 var playerImage = new Image();
 playerImage.src = "./img/player.png";
 //playerImage.src = "player29.png";
-playerImage.addEventListener("load",drawScreen, false);
+playerImage.addEventListener("load",drawscreen, false);
 
 var player = new Image();
 player.src = "./img/player.png";
 //playerImage.src = "player29.png";
-player.addEventListener("load",drawScreen, false);
+player.addEventListener("load",drawscreen, false);
 
 var player_90 = new Image();
 player_90.src = "./img/player_90.png";
-player_90.addEventListener("load",drawScreen, false);
+player_90.addEventListener("load",drawscreen, false);
 
 var player_135 = new Image();
 player_135.src = "./img/player_135.png";
-player_135.addEventListener("load",drawScreen, false);
+player_135.addEventListener("load",drawscreen, false);
 
 var player_180 = new Image();
 player_180.src = "./img/player_180.png";
-player_180.addEventListener("load",drawScreen, false);
+player_180.addEventListener("load",drawscreen, false);
 
 var player_270 = new Image();
 player_270.src = "./img/player_270.png";
-player_270.addEventListener("load",drawScreen, false);
+player_270.addEventListener("load",drawscreen, false);
 
 var player_360 = new Image();
 player_360.src = "./img/player_360.png";
-player_360.addEventListener("load",drawScreen, false);
+player_360.addEventListener("load",drawscreen, false);
 
 var player_45 = new Image();
 player_45.src = "./img/player_45.png";
-player_45.addEventListener("load",drawScreen, false);
+player_45.addEventListener("load",drawscreen, false);
 
 var player_warp = new Image();
 player_warp.src = "./img/player_warp.png";
-player_warp.addEventListener("load",drawScreen, false);
+player_warp.addEventListener("load",drawscreen, false);
 
 var warp = new Image();
 warp.src = "./img/player_warp.png";
-warp.addEventListener("load",drawScreen, false);
+warp.addEventListener("load",drawscreen, false);
 
 
 //폭파이미지01
 var explosionImage01 = new Image();
 explosionImage01.src = "./img/explosion01.png";
-explosionImage01.addEventListener("load",drawScreen, false);
+explosionImage01.addEventListener("load",drawscreen, false);
 
 //엔진이미지01
 var enginImage = new Image();
 enginImage.src = "./img/engin01.png";
-enginImage.addEventListener("load",drawScreen, false);
+enginImage.addEventListener("load",drawscreen, false);
 
 //이전 플레이어 진행방향 키값 => 속도변경시 방향키 새로 안눌러두 이전 방향으로 계속해서 진행되도록 하기위해 필요
 var wayBefore = 'None;'
@@ -418,11 +418,11 @@ var bonus_cnt = 1;
 /////////////////////////////////////////플레이어 레이져 초기 설정///////////////////////////////////////////
 var laserImage = new Image();
 laserImage.src = "./img/laser01.png";
-laserImage.addEventListener("load",drawScreen, false);
+laserImage.addEventListener("load",drawscreen, false);
 
 var laser = new Image();
 laser.src = "./img/laser01.png";
-laser.addEventListener("load",drawScreen, false);
+laser.addEventListener("load",drawscreen, false);
 
 //레이져 초기 생성 위치
 var laserX = playerX + playerWidth/2;
@@ -449,7 +449,7 @@ var laser_d = 0;
 //전함01 이미지
 var ship01_Image = new Image();
     ship01_Image.src = "./img/ship01.png";
-    ship01_Image.addEventListener("load",drawScreen, false);
+    ship01_Image.addEventListener("load",drawscreen, false);
 //var enemyGunImage = new Image();
 //var weapponImage = new Image();
 
@@ -470,12 +470,12 @@ var weapponImage = new Image();
 //적01 이미지
 var enemy01Image = new Image();
 enemy01Image.src = "./img/enemy01.png";
-enemy01Image.addEventListener("load",drawScreen, false);
+enemy01Image.addEventListener("load",drawscreen, false);
 
 //적01 건 이미지
 var enemy01GunImage = new Image();
 enemy01GunImage.src = "./img/bullet01.png";
-enemy01GunImage.addEventListener("load",drawScreen, false);
+enemy01GunImage.addEventListener("load",drawscreen, false);
 
 //적 미사일 이미지
 //var weapponImage = new Image();
@@ -483,32 +483,32 @@ enemy01GunImage.addEventListener("load",drawScreen, false);
 //적01 총알 이미지 및 로드
 var weappon01Image = new Image();
 weappon01Image.src = "./img/bullet01.png";
-weappon01Image.addEventListener("load",drawScreen, false);
+weappon01Image.addEventListener("load",drawscreen, false);
 
 //적01 엔진 이미지
 var engin01Image = new Image();
 engin01Image.src = "./img/engin01.png";
-engin01Image.addEventListener("load",drawScreen, false);
+engin01Image.addEventListener("load",drawscreen, false);
 
 //적02 이미지
 var enemy02Image = new Image();
 enemy02Image.src = "./img/enemy02.png";
-enemy02Image.addEventListener("load",drawScreen, false);
+enemy02Image.addEventListener("load",drawscreen, false);
 
 //적02 건 이미지
 var enemy02GunImage = new Image();
 enemy02GunImage.src = "./img/missile01.png";
-enemy02GunImage.addEventListener("load",drawScreen, false);
+enemy02GunImage.addEventListener("load",drawscreen, false);
 
 //적02 미시일 이미지 및 로드
 var weappon02Image = new Image();
 weappon02Image.src = "./img/missile01.png";
-weappon02Image.addEventListener("load",drawScreen, false);
+weappon02Image.addEventListener("load",drawscreen, false);
 
 //적02 엔진 이미지
 var engin02Image = new Image();
 engin02Image.src = "./img/engin01.png";
-engin02Image.addEventListener("load",drawScreen, false);
+engin02Image.addEventListener("load",drawscreen, false);
 
 //적 크기
 var enemy_size = 1;
@@ -624,13 +624,13 @@ function addJavascript(jsname) {
 //     //다시 서버로
 //     fgwgfwSocket.Emit('multi_want',ls_socketid);
  
-//     fgwgfwSocket.On("MdrawScreen",function(i){  
+//     fgwgfwSocket.On("Mdrawscreen",function(i){  
 
-//         //function MdrawScreen(fgwdrawScreen){
+//         //function Mdrawscreen(fgwdrawscreen){
 //             //alert(id)
-//             //this.fgwdrawScreen;
+//             //this.fgwdrawscreen;
     
-//             //console.log("client:",fgwdrawScreen);
+//             //console.log("client:",fgwdrawscreen);
 //         //}
 //         //alert("id>>>"+i);
 //         console.log("i",i)
@@ -673,7 +673,7 @@ function gameStart(as_keycode) {
     //타이머 초기화
     clearInterval(Timer_Id); 
 
-    imer_Id = setInterval(drawScreen, 1000/gameFrame);   //게임 프레임(gameFrame은  초기 ini_gameFram 설정값) 
+    imer_Id = setInterval(drawscreen, 1000/gameFrame);   //게임 프레임(gameFrame은  초기 ini_gameFram 설정값) 
 
 }  
 
@@ -1265,29 +1265,42 @@ function laser_move(){
 
 ////////////////// 적 객체 생성
 ////////////////// 적 1th
+
 function create_enemy(index){
 
-    //this.enemy_index = index;
+    //this.enemy_index = index; 
     //적의 인덱스가 없는경우 전체 새로 생성.
     if (index == null || index == ""  || index == undefined){
         //alert("1")
         for (var i=0;i<=enemy_cnt;i++){
 
-            enemy_array[i] = new enemy_init(i);
+            //  //멀티 게임일경우 적의 싱크를 맞추기 위해 생성시 고유id값을 서버로부터 재전송 받는다.
+            // if(game_mode == 'M'){
+            //     clientEnemyIdx = i;
+            //     gfwSocket.Emit("client_drawscreen",gameTime,clientEnemyIdx);
+            // }
+
+            enemy_array[i] = new enemy_init(i); 
             //enemy.enemy_index = i;
             enemy_array[i].weappon_create();
-            enemy_array[i].weappon_init();
+            enemy_array[i].weappon_init();  
         }
+
     //인덱스가 기존에 있는거나 추가된경우 해당 인덱스건에 대하여만 새로 생성.
     }else {
+
+
+        // //멀티 게임일경우 적의 싱크를 맞추기 위해 생성시 고유id값을 서버로부터 재전송 받는다.
+        // if(game_mode == 'M'){
+        //     clientEnemyIdx = index;
+        //     gfwSocket.Emit("client_drawscreen",gameTime,clientEnemyIdx);
+        // }
 
         enemy_array[index] = new enemy_init(index);
         //enemy.enemy_index = i;
         enemy_array[index].weappon_create();
-        enemy_array[index].weappon_init();
-
+        enemy_array[index].weappon_init(); 
     }
-
  }
 
 ////////////////// 적 초기화
@@ -1302,10 +1315,20 @@ function enemy_init(index){
     //this.create_enemy03 = create_enemy03;
 
     //this.enemy02Image = new Image();
-    //this.enemy02Image.src = enemy02Image.src;
+    //this.enemy02Image.src = enemy02Image.src; 
 
-    //적 고유 index
-    this.enemy_index = index;
+
+    //멀티 게임의 경우 index를 서로 공유하여 적들이 동일하게 동작하도록 한다.
+    if (game_mode == 'M'){    
+         //적 고유 index 
+         index = 1;
+         clientEnemyIdx = index;
+
+        //gfwSocket.Emit("client_drawscreen",gameTime,clientEnemyIdx);      
+        this.enemy_index = clientEnemyIdx;
+    } else {
+        this.enemy_index = index; 
+    }   
 
     //적 고유 index에 따른 적 타입 변경
     if ((this.enemy_index + 1) <= 2){
@@ -1471,6 +1494,8 @@ function enemy_init(index){
 
     //배경종점에서 적까지 거리
     this.enemy_didtance = enemy_didtance;
+
+
 
 }
 
@@ -1721,7 +1746,7 @@ function enemy_move(){
     //Context.fillText(this.enemy_index + this.energe_bar,this.enemyx  - 40 + Randoms[2], this.enemyy - 10);
     Context.fillText(this.energe_bar,this.enemyx  - 40 + Randoms[2], this.enemyy - 10);
 
-    //적 충돌 함수 => 충돌함수는 drawScreen()이 아닌 enemy_move 안에서 호출한다.(this가 계속 따라가도록)
+    //적 충돌 함수 => 충돌함수는 drawscreen()이 아닌 enemy_move 안에서 호출한다.(this가 계속 따라가도록)
     this.enemy_collision();
 
 } 
@@ -3189,13 +3214,17 @@ function player_collision(){
     }
 } 
 
-//주기적 타임 싱크 맞추기;
-gfwSocket.On("sincDrawScreen2",function(server_time,server_data){ 
-    
-    console.log("server_time :",server_time);
-    console.log("server_data :",server_data); 
+var server_data = new Object();
+var client_data = {};
+var clientEnemyIdx;
 
+//주기적 타임 싱크 맞추기;
+gfwSocket.On("server_drawscreen",function(server_time,serverEnemyIdx){ 
+    
+    console.log("server_time : ",server_time);
+    console.log("serverEnemyIdx : ",serverEnemyIdx); 
     gameTime = server_time;
+    clientEnemyIdx = serverEnemyIdx;
     //enemy_array = JSON.parse(server_data)
     
     // for(var i=0; i < sRandoms.length; i++){
@@ -3203,13 +3232,10 @@ gfwSocket.On("sincDrawScreen2",function(server_time,server_data){
     //     Randoms[i] = sRandoms[i]
 	// }
 
-})  
-
-var server_data = new Object();
-var client_data = {};
+})   
 
 ////////////////// 화면 로드(게임 프래임 수 만큼)  
-function drawScreen(){  
+function drawscreen(){  
 
     gameTime++;         //시간 증가
     gameScore++;        //스코어 증가    
@@ -3218,19 +3244,22 @@ function drawScreen(){
     //멀티 게임일경우 주기적으로 양쪽의 시간 씽크가 맞지않을 경우를 대비하여 서버로부터 시간 싱크를 맞춘다.
     //적배열객체도 넘겨준다.
     if (game_mode == 'M'){    
+        //0.5초 마다 서버로 전송.
         if (gameTime % 50 === 0){
      
-            client_data = enemy_array.slice();
-            console.log("client_time :",gameTime); 
-            console.log("client_data :",client_data); 
+            // client_data = enemy_array.slice();
+            // console.log("client_time :",gameTime); 
+            // console.log("client_data :",client_data); 
 
             //server_data = JSON.stringify({client_data}); 
             //alert(server_data)
             //console.log("send server_data :",server_data);  
             // JSON.stringify(
+ 
+            console.log("gameTime : ",gameTime);
+            console.log("clientEnemyIdx : ",clientEnemyIdx);
 
-            gfwSocket.Emit("sincDrawScreen",gameTime,client_data)  
-            //gfwSocket.Emit("sincDrawScreen",client_data)  
+            gfwSocket.Emit("client_drawscreen",gameTime,clientEnemyIdx);
         }  
     }  
 
@@ -3360,15 +3389,15 @@ function drawScreen(){
     }   
 }  
 
-function MultidrawScreen(){
+function Multidrawscreen(){
 
-    // fgwdrawScreen = this;
-    // //console.log("fgwdrawScreen",fgwdrawScreen) 
+    // fgwdrawscreen = this;
+    // //console.log("fgwdrawscreen",fgwdrawscreen) 
     //  //다시 서버로
     // fgwgfwSocket.Emit("multi_request",gameTime); 
 
     this.Multi_id = fgwSocket.id;
-    this.MultidrawScreen = drawScreen();
+    this.Multidrawscreen = drawscreen();
 
 } 
 
@@ -3404,7 +3433,7 @@ function onkeyDown(e, as_strKeyEventValue){
 
             status = 2;         //진행
 
-            Timer_Id = setInterval(drawScreen, 1000/gameFrame);
+            Timer_Id = setInterval(drawscreen, 1000/gameFrame);
 
             audio.play();
             //audio.pause();
@@ -3415,7 +3444,7 @@ function onkeyDown(e, as_strKeyEventValue){
 
             clearInterval(Timer_Id);
 
-            Timer_Id = setInterval(drawScreen, 1000/gameFrame);
+            Timer_Id = setInterval(drawscreen, 1000/gameFrame);
 
             //audio.play();
             audio.pause();
@@ -3438,7 +3467,7 @@ function onkeyDown(e, as_strKeyEventValue){
             //상태값 : 시작
             status = 1;
 
-            Timer_Id = setInterval(drawScreen, 1000/gameFrame);
+            Timer_Id = setInterval(drawscreen, 1000/gameFrame);
 
             //audio.play();
             audio.pause();
@@ -3447,7 +3476,7 @@ function onkeyDown(e, as_strKeyEventValue){
 
             status = 2;  //진행
 
-            Timer_Id = setInterval(drawScreen, 1000/gameFrame);
+            Timer_Id = setInterval(drawscreen, 1000/gameFrame);
 
             audio.play();
             //audio.pause();
@@ -3473,7 +3502,7 @@ function onkeyDown(e, as_strKeyEventValue){
                 //상태값  : 시작
                 status = 1;
 
-                Timer_Id = setInterval(drawScreen, 1000/gameFrame);
+                Timer_Id = setInterval(drawscreen, 1000/gameFrame);
 
                 audio.play();
                 //audio.pause();
@@ -3481,7 +3510,7 @@ function onkeyDown(e, as_strKeyEventValue){
                 //상태값: 그냥 이어서 진행
                 status = 2;
 
-                Timer_Id = setInterval(drawScreen, 1000/gameFrame);
+                Timer_Id = setInterval(drawscreen, 1000/gameFrame);
 
                 audio.play();
                 //audio.pause();

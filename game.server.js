@@ -25,10 +25,12 @@ server.listen(port, function() {
 var socketList = [];
 var socketIdList = [];
 //시간 맞추기
-var time1 = 0;
-var time2 = 0; 
-var server_time = 0;
-var server_date = {};
+var game_time1 = 0;
+var game_time2 = 0; 
+var server_game_time = 0;
+var enemy_idx1;
+var enemy_idx2;
+var server_enemy_idx;
 
 //멀티 화면 싱크 맞추기 
 var sRandoms = new Array; //서버랜덤값
@@ -42,6 +44,7 @@ function f_sRandoms(){
         sRandoms[i] = Math.floor(Math.random() * (i+1)); 
         //console.log(i,sRandoms[i])
     } 
+
 }
 
 //신규접속
@@ -117,49 +120,47 @@ io.on('connection', function(socket) {
 
                     //이러게 하니깐 부하많이걸림
                     //setInterval(serverFrame, 1000/10);
-                    
                     //serverTime = 0;  
             });   
     });   
 
     //클라이언트에서 시간과 적(배열)을 받아서 다시 상대편으로 넘겨줘서 싱크를 맞춘다.
-    socket.on('sincDrawScreen', function(client_time,client_data) {    
-        //socket.on('sincDrawScreen', function(Jenemy_array) {    
+    socket.on('client_drawscreen', function(client_time,client_enemy_idx) {    
+        //socket.on('sincdrawscreen', function(Jenemy_array) {    
           
             console.log("client_time :", client_time);
-            console.log("client_data :", client_data);
+            console.log("client_enemy_idx :", client_enemy_idx);
             socketList.forEach(function(item, i) {  
                     // if (item != socket) {
-                    //     item.emit('sincDrawScreen2', client_time);
+                    //     item.emit('server_drawscreen', client_time);
                     //     console.log("receive Jenemy_array :", Jenemy_array);
                     // }  
 
                     //console.log("i",i);
                     if (i == 0){
-                        time1 = client_time;
-                        server_data = client_data;
+                        game_time1 = client_time;
+                        enemy_idx1 = client_enemy_idx;
                     }else {
-                        time2 = client_time;         
-                        server_data = client_data;
+                        game_time2 = client_time;      
+                        enemy_idx2 = client_enemy_idx;   
                     }   
             });  
 
-            if(time1  > time2){
-                server_time = time1;
-                server_data = client_data;
+            if(game_time1  > game_time2){
+                server_game_time = game_time1;
+                server_enemy_idx = enemy_idx1;
             }else {
-                server_time = time2;
-                server_data = client_data;
+                server_game_time = game_time2;
+                server_enemy_idx = enemy_idx2;
             }
             
-            //console.log(time1,time2);
+            //console.log(game_time1,game_time2);
             //f_sRandoms();
-
             socketList.forEach(function(item, i) {  
                 if (item != socket) {
-                     item.emit('sincDrawScreen2', server_time, server_data);
-                     console.log("server_time :", server_time);
-                     console.log("server_data :", server_data);
+                     item.emit('server_drawscreen', server_game_time, server_enemy_idx);
+                     console.log("server_game_time :", server_game_time);
+                     console.log("server_enemy_idx :", server_enemy_idx);
                 }   
             });  
     });       
@@ -199,7 +200,6 @@ io.on('connection', function(socket) {
             //     //모든 클라이언트 공용
             //     item.emit('serverFrame', serverTime);    
             // });       
-
       
             console.log("serverFrame : ", serverTime)
             //socket.emit('serverFrame', serverTime);            

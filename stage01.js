@@ -1699,22 +1699,22 @@ function enemy_move(){
     // }
 
     //멀티의 경우 화면 사이즈(해상도)에 따라 경계가 달라 이동 싱크가 안맞는 점을 감안하여 사이즈를 고정한다.
-    if (this.enemyx > 1000 - 30){
+    if (this.enemyx > 800 - 30){
         this.enemyxx = 0;
         this.enemyx = this.enemyx - Randoms[1];
     }
 
-    if (this.enemyx < 1000 + 30){
+    if (this.enemyx < 800 + 30){
         this.enemyxx = 0;
         this.enemyx = this.enemyx + Randoms[1];
     }
 
-    if (this.enemyy > 800 - 30){
+    if (this.enemyy > 600 - 30){
         this.enemyyy = 0;
         this.enemyy = this.enemyy - Randoms[1];
     }
 
-    if (this.enemyy < 800 + 30){
+    if (this.enemyy < 600 + 30){
         this.enemyyy = 0;
         this.enemyy = this.enemyy + Randoms[1];
     }
@@ -3071,7 +3071,7 @@ function weappon_move(){
        //if ( this.weapponArray[i].bmy >= theCanvas.clientHeight + add_borderX || this.weapponArray[i].bmy + add_borderX <= 0 || this.weapponArray[i].bsize >= 150){
         //if ( this.weapponArray[i].bmy >= theCanvas.clientHeight + add_borderX || this.weapponArray[i].bmy + add_borderX <= 0){
         //멀티의 경우 화면 해상도가 달라도 화면 경계를 고정시켜 총알 이동 싱크를 맞추기 위해 고정한다.
-        if ( this.weapponArray[i].bmy >= 1000 || this.weapponArray[i].bmy + 800 <= 0){
+        if ( this.weapponArray[i].bmy >= 1200 || this.weapponArray[i].bmy + 1200 <= 0){
 
             //최대 max_weappon_cnt 개까지만 생성
             if (1 == Randoms[1]){

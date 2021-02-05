@@ -146,6 +146,7 @@ io.on('connection', function(socket) {
                     }   
             });  
 
+            //시간이 빠른쪽 기준으로 싱크를 맞춘다.
             if(game_time1  > game_time2){
                 server_game_time = game_time1;
                 server_enemy_idx = enemy_idx1;
@@ -157,11 +158,11 @@ io.on('connection', function(socket) {
             //console.log(game_time1,game_time2);
             //f_sRandoms();
             socketList.forEach(function(item, i) {  
-                if (item != socket) {
+                //if (item != socket) {
                      item.emit('server_drawscreen', server_game_time, server_enemy_idx);
                      console.log("server_game_time :", server_game_time);
                      console.log("server_enemy_idx :", server_enemy_idx);
-                }   
+                //}   
             });  
     });       
 

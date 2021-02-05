@@ -148,7 +148,7 @@ button02.arc(maxX - 80, maxY - 180, 70, 0, 2*Math.PI, true);    //arc(x, y, radi
 //초기 게임 상태
 var init_status = 1;  //1:Start,   2:ing,  3:Pause
 //기본 게임 프래임
-var ini_gameFrame = 60;  //60프레임
+var ini_gameFrame = 30;  //60프레임
 //진행시간(=거리)
 var init_gameTime = 0;
 var gameTime = 0;
@@ -396,7 +396,7 @@ var playerY = ini_playerY;
 //플레이어 이동 거리
 var pmovex = 0;
 var pmovey = 0;
-var ini_Pspeed = 1;         //플레이어 초기 스피드
+var ini_Pspeed = 3;         //플레이어 초기 스피드
 var Pspeed = ini_Pspeed;
 var before_pspeed = 0;      //이전 스피트(스트드 업버튼 누르면 바로 속도 증가하도록 하기위해)
 var ini_player_life = 5;    //플레이어 생명
@@ -1275,12 +1275,12 @@ function create_enemy(index){
         //alert("1")
         for (var i=0;i<=enemy_cnt;i++){
 
-            //  //멀티 게임일경우 적의 싱크를 맞추기 위해 생성시 고유id값을 서버로부터 재전송 받는다.
+            // //멀티 게임일경우 적의 싱크를 맞추기 위해 생성시 고유id값을 서버로부터 재전송 받는다.
             // if(game_mode == 'M'){
             //     clientEnemyIdx = i;
             //     gfwSocket.Emit("client_drawscreen",gameTime,clientEnemyIdx);
             // }
-
+            //clientEnemyIdx = i;
             enemy_array[i] = new enemy_init(i); 
             //enemy.enemy_index = i;
             enemy_array[i].weappon_create();
@@ -1296,7 +1296,7 @@ function create_enemy(index){
         //     clientEnemyIdx = index;
         //     gfwSocket.Emit("client_drawscreen",gameTime,clientEnemyIdx);
         // }
-
+        //clientEnemyIdx = index;
         enemy_array[index] = new enemy_init(index);
         //enemy.enemy_index = i;
         enemy_array[index].weappon_create();
@@ -1306,6 +1306,7 @@ function create_enemy(index){
 
 ////////////////// 적 초기화
 function enemy_init(index){
+
 
     //객체내에서 사용되는 모든 참조객체(변수,이미지,배열,함수등을 모두 생성자 함수에 넣어준다.)
     //참조 개체내에서의 this.propoerty는 해당 생성자함수(클래스)의 현재실행객체의 property를 가리킨다.
@@ -1319,17 +1320,15 @@ function enemy_init(index){
     //this.enemy02Image.src = enemy02Image.src; 
 
     index = 1;
+
     //멀티 게임의 경우 index를 서로 공유하여 적들이 동일하게 동작하도록 한다.
     if (game_mode == 'M'){    
-         //적 고유 index 
- 
-         clientEnemyIdx = index;
-
-        //gfwSocket.Emit("client_drawscreen",gameTime,clientEnemyIdx);      
-        this.enemy_index = clientEnemyIdx;
-    } else {
-        this.enemy_index = index; 
-    }   
+        //적 고유 index  
+        clientEnemyIdx = index;
+    }
+    
+    this.enemy_index = index; 
+       
 
     //적 고유 index에 따른 적 타입 변경
     if ((this.enemy_index + 1) <= 2){
@@ -3240,7 +3239,7 @@ function player_collision(){
 
 var server_data = new Object();
 var client_data = {};
-var clientEnemyIdx;
+var clientEnemyIdx = 0;
 
 //주기적 타임 싱크 맞추기;
 gfwSocket.On("server_drawscreen",function(server_time,serverEnemyIdx){ 
@@ -3270,7 +3269,7 @@ function drawscreen(){
     //적배열객체도 넘겨준다.
     if (game_mode == 'M'){    
         //0.5초 마다 서버로 전송.
-        if (gameTime % 50 === 0){
+        if (gameTime % 200 === 0){
      
             // client_data = enemy_array.slice();
             // console.log("client_time :",gameTime); 
@@ -3280,7 +3279,7 @@ function drawscreen(){
             //alert(server_data)
             //console.log("send server_data :",server_data);  
             // JSON.stringify(
-                clientEnemyIdx = 1;
+            //clientEnemyIdx = 1;
             console.log("gameTime : ",gameTime);
             console.log("clientEnemyIdx : ",clientEnemyIdx);
 

@@ -41,7 +41,7 @@ var Jenemy_array = "";
 function f_sRandoms(){
 
     for (var i=0;i<10;i++){
-        sRandoms[i] = Math.floor(Math.random() * (i+1)); 
+        sRandoms[i] = Math.floor(Math.random() * (i+1)) + 1; 
         //console.log(i,sRandoms[i])
     } 
 

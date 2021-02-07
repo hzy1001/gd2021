@@ -1270,6 +1270,8 @@ function laser_move(){
 function create_enemy(index){
 
     //this.enemy_index = index; 
+
+    
     //적의 인덱스가 없는경우 전체 새로 생성.
     if (index == null || index == ""  || index == undefined){
         //alert("1")
@@ -1300,8 +1302,9 @@ function create_enemy(index){
         enemy_array[index] = new enemy_init(index);
         //enemy.enemy_index = i;
         enemy_array[index].weappon_create();
-        enemy_array[index].weappon_init(); 
+        enemy_array[index].weappon_init();  
     }
+    
  }
 
 ////////////////// 적 초기화
@@ -1319,16 +1322,8 @@ function enemy_init(index){
     //this.enemy02Image = new Image();
     //this.enemy02Image.src = enemy02Image.src; 
 
-    index = 1;
-
-    //멀티 게임의 경우 index를 서로 공유하여 적들이 동일하게 동작하도록 한다.
-    if (game_mode == 'M'){    
-        //적 고유 index  
-        clientEnemyIdx = index;
-    }
-    
+    //적 고유 index
     this.enemy_index = index; 
-       
 
     //적 고유 index에 따른 적 타입 변경
     if ((this.enemy_index + 1) <= 2){
@@ -1406,7 +1401,7 @@ function enemy_init(index){
 
         //적 동시 미사일 발사수는 랜덤하게
         this.weappon_cnt = Randoms[3] + 2;
-        this.max_weappon_cnt = 6;
+        this.max_weappon_cnt = 6; 
 
     }
 
@@ -1493,9 +1488,19 @@ function enemy_init(index){
     this.player_collision = player_collision;
 
     //배경종점에서 적까지 거리
-    this.enemy_didtance = enemy_didtance;
+    this.enemy_didtance = enemy_didtance;   
 
-
+    // //멀티 게임의 경우 index를 서로 공유하여 적들이 동일하게 동작하도록 한다.
+    // if (game_mode == 'M'){    
+    //     //적 고유 index  
+    //     this.game_time = gameTime;
+    //     this.clientEnemyIdx = index;
+        
+        
+    //     //send_multiObject(clientEnemyIdx);    
+    //     //멀티 보내기
+    //     this.send_multiObject = send_multiObject;            
+    // }    
 
 }
 
@@ -1624,6 +1629,14 @@ function enemy_move(){
 //alert(String(gameTime*100).substr(0,2));
 //alert(parseInt(String(gameTime*100).substr(0,2)) % 5)
 //console.log(String(gameTime).substr(String(gameTime).length-3,1)) 
+
+
+// if (game_mode == 'M'){    
+    
+//     send_multiObject(this.enemy_index);
+
+// }  
+
 
     //적(enemy) 왔다같다 이동
     if (String(gameTime).substr(String(gameTime).length-3,1) == 1){
@@ -3242,50 +3255,205 @@ var client_data = {};
 var clientEnemyIdx = 0;
 
 //주기적 타임 싱크 맞추기;
-gfwSocket.On("server_drawscreen",function(server_time,serverEnemyIdx){ 
-    
-    console.log("server_time : ",server_time);
-    console.log("serverEnemyIdx : ",serverEnemyIdx); 
-    gameTime = server_time;
-    clientEnemyIdx = serverEnemyIdx;
-    //enemy_array = JSON.parse(server_data)
-    
-    // for(var i=0; i < sRandoms.length; i++){
-    //     //console.log(i,sRandoms[i]);
-    //     Randoms[i] = sRandoms[i]
-	// }
+gfwSocket.On("server_drawscreen",function(multiObject){  
+
+    receive_multiObject(multiObject); 
 
 })   
+
+
+var multiIndex = 0;
+var multiObject = {}
+
+function send_multiObject(clientEnemyIdx){
+
+        //0.5초 마다 서버로 전송.
+        //if (gameTime % 10 === 0){   
+
+            //multiObject.game_time = this.game_time;
+            multiObject.multi_index = multiIndex;
+            multiObject.game_time = gameTime; 
+            multiObject.enemy_cnt = enemy_cnt;
+            multiObject.enemy_index = clientEnemyIdx;            
+            multiObject.enemy_type = enemy_type;
+            //multiObject.enemy_array_str = JSON.stringify(enemy_init.enemy_array[multiObject.enemy_index]);
+            //alert(multiObject.enemy_array_str)
+            /*
+            multiObject.Edistance = this.Edistance;
+            multiObject.create_enemy = this.create_enemy;
+            multiObject.enemyGunImage = this.enemyGunImage;
+            multiObject.enemyImage = this.enemyImage;
+
+            //multiObject.enemy_array = enemy_array;
+            multiObject.enemy_collision = this.enemy_collision;
+
+            multiObject.enemy_collision_yn = this.enemy_collision_yn;
+            multiObject.enemy_dealy_time = this.enemy_dealy_time;
+
+            multiObject.enemy_didtance = this.enemy_didtance;
+            multiObject.enemy_energe = this.enemy_energe;
+
+            //multiObject.enemy_index = this.enemy_index;
+
+
+            multiObject.enemy_life = this.enemy_life;
+
+            multiObject.enemy_move = this.enemy_move;
+
+            multiObject.enemy_size = this.enemy_size;
+            multiObject.enemy_speed = this.enemy_speed;
+            //multiObject.enemy_type = this.enemy_type;
+            
+            multiObject.enemyh = this.enemyh;
+            multiObject.enemyw = this.enemyw;
+            multiObject.enemyx = this.enemyx;
+            multiObject.enemyxx = this.enemyxx;
+            multiObject.enemyy = this.enemyy;
+            multiObject.enemyyy = this.enemyyy;
+            multiObject.energe_bar = this.energe_bar;
+            multiObject.enginImage = this.enginImage;
+            multiObject.explosionImage01 = this.explosionImage01;
+            multiObject.laser_move = this.laser_move;
+            multiObject.max_weappon_cnt = this.max_weappon_cnt;
+            multiObject.noneImage = this.noneImage;
+
+            multiObject.player_collision = this.player_collision;
+            multiObject.weapponArray = this.weapponArray;
+
+            multiObject.weapponImage = this.weapponImage;
+            multiObject.weapponX = this.weapponX;
+            multiObject.weapponY = this.weapponY;
+            multiObject.weappon_Randon = this.weappon_Randon;
+            multiObject.weappon_cnt = this.weappon_cnt;
+
+            multiObject.weappon_create = this.weappon_create;
+
+            multiObject.weappon_index = this.weappon_index;
+
+            multiObject.weappon_init = this.weappon_init;
+
+            multiObject.weappon_leftRight = this.weappon_leftRight;
+
+            multiObject.weappon_move = this.weappon_move;
+
+            multiObject.weappon_size = this.weappon_size;
+            multiObject.weappon_speed = this.weappon_speed;
+            multiObject.weappon_tmp_random = this.weappon_tmp_random;      
+            
+            //console.log("multiObject" + gameTime,multiObject)
+            //console.log("JSON.stringify(multiObject)",JSON.stringify(multiObject)) 
+
+            */
+
+            gfwSocket.Emit("client_drawscreen",multiObject);                
+       // }  
+
+} 
+
+
+function receive_multiObject(multiObject){
+ 
+    console.log("server_game_time : ",multiObject.game_time);
+    console.log("server_enemy_cnt : ",multiObject.enemy_cnt); 
+    console.log("server_enemyIdx : ",multiObject.enemy_index); 
+    console.log("server_enemytype : ",multiObject.enemy_type); 
+
+
+
+    multiIndex = multiObject.multi_index;
+
+    // if(multiIndex == 1){
+    //     return;
+    // }
+
+
+    gameTime = multiObject.game_time; 
+    enemy_cnt = multiObject.enemy_cnt;
+    enemy_type = multiObject.enemy_type;
+    enemy_index = multiObject.enemy_index;
+    //alert(multiObject.enemy_array_str)
+    //enemy_array = JSON.parse(multiObject.enemy_array_str);
+
+    // enemy_init.game_time = multiObject.gameTime;
+    // enemy_init.Edistance = multiObject.Edistance;
+    // enemy_init.create_enemy = multiObject.create_enemy;
+    // enemy_init.enemyGunImage = multiObject.enemyGunImage;
+    // enemy_init.enemyImage = multiObject.enemyImage;
+    
+    // enemy_init.enemy_array = multiObject.enemy_array;
+    // enemy_init.enemy_collision = multiObject.enemy_collision;
+    
+    // enemy_init.enemy_collision_yn = multiObject.enemy_collision_yn;
+    // enemy_init.enemy_dealy_time = multiObject.enemy_dealy_time;
+    
+    // enemy_init.enemy_didtance = multiObject.enemy_didtance;
+    // enemy_init.enemy_energe = multiObject.enemy_energe;
+     
+    
+
+    // enemy_init.enemy_life = multiObject.enemy_life;
+
+    // enemy_init.enemy_move = multiObject.enemy_move;
+    // enemy_init.enemy_size = multiObject.enemy_size;
+    // enemy_init.enemy_speed = multiObject.enemy_speed;
+
+    // enemy_init.enemyh = multiObject.enemyh;
+    // enemy_init.enemyw = multiObject.enemyw;
+    // enemy_init.enemyx = multiObject.enemyx;
+    // enemy_init.enemyxx = multiObject.enemyxx;
+    // enemy_init.enemyy = multiObject.enemyy;
+    // enemy_init.enemyyy = multiObject.enemyyy;
+    // enemy_init.energe_bar = multiObject.energe_bar;
+    // enemy_init.enginImage = multiObject.enginImage;
+    // enemy_init.explosionImage01 = multiObject.explosionImage01;
+    // enemy_init.laser_move = multiObject.laser_move;
+    // enemy_init.max_weappon_cnt = multiObject.max_weappon_cnt;
+    // enemy_init.noneImage = multiObject.noneImage;
+
+    // enemy_init.player_collision = multiObject.player_collision;
+    // enemy_init.weapponArray = multiObject.weapponArray;
+
+    // enemy_init.weapponImage = multiObject.weapponImage;
+    // enemy_init.weapponX = multiObject.weapponX;
+    // enemy_init.weapponY = multiObject.weapponY;
+    // enemy_init.weappon_Randon = multiObject.weappon_Randon;
+    // enemy_init.weappon_cnt = multiObject.weappon_cnt;
+    
+    // enemy_init.weappon_create = multiObject.weappon_create;
+
+    // enemy_init.weappon_index = multiObject.weappon_index;
+
+    // enemy_init.weappon_init = multiObject.weappon_init;
+
+    // enemy_init.weappon_leftRight = multiObject.weappon_leftRight;
+
+    // enemy_init.weappon_move = multiObject.eappon_move;
+
+    // enemy_init.weappon_size = multiObject.weappon_size;
+    // enemy_init.weappon_speed = multiObject.weappon_speed;
+    // enemy_init.weappon_tmp_random = multiObject.weappon_tmp_random;   
+    
+}
+
+
 
 ////////////////// 화면 로드(게임 프래임 수 만큼)  
 function drawscreen(){  
 
+    //멀티 게임일경우 주기적으로 양쪽의 시간 씽크가 맞지않을 경우를 대비하여 서버로부터 시간 싱크를 맞춘다.
+    //적배열객체도 넘겨준다.
+    if (game_mode == 'M'){    
+    
+        send_multiObject(clientEnemyIdx);
+
+    }
+    
 
     gameTime++;         //시간 증가
     gameScore++;        //스코어 증가    
     //console.log("gameTime :" + gameTime);
 
-    //멀티 게임일경우 주기적으로 양쪽의 시간 씽크가 맞지않을 경우를 대비하여 서버로부터 시간 싱크를 맞춘다.
-    //적배열객체도 넘겨준다.
-    if (game_mode == 'M'){    
-        //0.5초 마다 서버로 전송.
-        if (gameTime % 200 === 0){
-     
-            // client_data = enemy_array.slice();
-            // console.log("client_time :",gameTime); 
-            // console.log("client_data :",client_data); 
 
-            //server_data = JSON.stringify({client_data}); 
-            //alert(server_data)
-            //console.log("send server_data :",server_data);  
-            // JSON.stringify(
-            //clientEnemyIdx = 1;
-            console.log("gameTime : ",gameTime);
-            console.log("clientEnemyIdx : ",clientEnemyIdx);
-
-            gfwSocket.Emit("client_drawscreen",gameTime,clientEnemyIdx);
-        }  
-    }  
 
     //게임 진행 컨텍스트(레이어)
     Context.fillStyle = "#000000";
@@ -3348,10 +3516,19 @@ function drawscreen(){
     //적 이동
      for (var i=0;i<=enemy_array.length - 1;i++){
         if (enemy_array[i].enemy_index == i){
-             enemy_array[i].enemy_move();
              
             //이거를 다른플레이어와 공유
-           //console.log("enemy_array[i]",enemy_array[i])
+            //console.log("clientEnemyIdx : ",clientEnemyIdx) 
+            
+            enemy_array[i].enemy_move();     
+            
+            
+            // if (game_mode == 'M'){    
+            
+            //     send_multiObject(i); 
+        
+            // }  
+        
 
         }
      }
@@ -3364,7 +3541,9 @@ function drawscreen(){
     //적 미사일 이동(적미사일과 충돌시 폭파이미지는 플레이어 뒤에 나타나도록 한다.)
     for (var i=0;i<=enemy_array.length - 1;i++){
         if (enemy_array[i].enemy_index == i){
-             enemy_array[i].weappon_move();
+
+             enemy_array[i].weappon_move();          
+
         }
      }
     //*/
@@ -3411,20 +3590,8 @@ function drawscreen(){
         Context2.fillText("Ready", (theCanvas.clientWidth - ini_player_width) / 2 - theCanvas.offsetLeft - 100, theCanvas.clientHeight / 2 - theCanvas.offsetTop);
         Context2.font = '30px Arial';
     }   
-}  
-
-function Multidrawscreen(){
-
-    // fgwdrawscreen = this;
-    // //console.log("fgwdrawscreen",fgwdrawscreen) 
-    //  //다시 서버로
-    // fgwgfwSocket.Emit("multi_request",gameTime); 
-
-    this.Multi_id = fgwSocket.id;
-    this.Multidrawscreen = drawscreen();
-
-} 
-
+}   
+ 
 ////////////////// 키 다운 이벤트 처리(데스크 탑 이용시)
 function onkeyDown(e, as_strKeyEventValue){
 

@@ -7,6 +7,12 @@ var socket = require('socket.io');   //소켓 IO
 var io = socket(server);             //웹서버를 탑제한 소켓 IO
 var i = 0;
 
+var client_time;
+var client_enemy_idx;
+
+var clientObject = {};
+var serverObject;
+
 // app.use('/', function(req, resp) {   //익스프레스 라우팅
 //     resp.sendFile(__dirname + '/index.html');
 // });  
@@ -28,16 +34,12 @@ var socketIdList = [];
 var game_time1 = 0;
 var game_time2 = 0; 
 var server_game_time = 0;
-var enemy_idx1;
-var enemy_idx2;
 var server_enemy_idx;
+var servar_enemy_type;
 
 //멀티 화면 싱크 맞추기 
 var sRandoms = new Array; //서버랜덤값
-var Jenemy_array1 = "";
-var Jenemy_array2 = "";
-var Jenemy_array = ""; 
-
+ 
 function f_sRandoms(){
 
     for (var i=0;i<10;i++){
@@ -125,11 +127,15 @@ io.on('connection', function(socket) {
     });   
 
     //클라이언트에서 시간과 적(배열)을 받아서 다시 상대편으로 넘겨줘서 싱크를 맞춘다.
-    socket.on('client_drawscreen', function(client_time,client_enemy_idx) {    
+    //socket.on('client_drawscreen', function(client_time,client_enemy_idx) {    
+        socket.on('client_drawscreen', function(clientObject) {    
         //socket.on('sincdrawscreen', function(Jenemy_array) {    
           
-            console.log("client_time :", client_time);
-            console.log("client_enemy_idx :", client_enemy_idx);
+            // client_time = clientObject.time;
+            // client_enemy_idx = clientObject.id;
+
+             //console.log("client_time :", client_time);
+             //console.log("client_enemy_index :",  clientObject.enemy_index);
             socketList.forEach(function(item, i) {  
                     // if (item != socket) {
                     //     item.emit('server_drawscreen', client_time);
@@ -137,33 +143,67 @@ io.on('connection', function(socket) {
                     // }  
 
                     //console.log("i",i);
+                    //먼저접속한쪽 기준으로 싱크를 맞춘다.
                     if (i == 0){
-                        game_time1 = client_time;
-                        enemy_idx1 = client_enemy_idx;
-                    }else {
-                        game_time2 = client_time;      
-                        enemy_idx2 = client_enemy_idx;   
-                    }   
+                        // server_game_time = clientObject.time;
+                        // server_enemy_idx = clientObject.id;
+                        // servar_enemy_type = clientObject.enemy_type;
+                     
+                    
+                        //console.log("server_game_time :", clientObject.game_time);
+                        //console.log("server_enemy_idx :", clientObject.enemy_index);                    
+                        // console.log("servar_enemy_type :", clientObject.enemy_type);     
+                        
+                        //serverObjct = clientObject;
+                        //item.emit('server_drawscreen', clientObject);
+                    //}else {
+
+
+                        //item.emit('server_drawscreen', clientObject);
+
+                        serverObject = clientObject;
+
+                        return;
+                    }
+
+
+                    //console.log("servar_enemy_array_str :", serverObject.enemy_array_str);  
+                        
+                    if (i > 0){
+                        
+                        serverObject.multi_index = i;
+
+                        item.emit('server_drawscreen', serverObject);
+
+                        console.log("multi_index :", serverObject.multi_index);
+                        console.log("game_time :", serverObject.game_time);
+                        console.log("enemy_index :", serverObject.enemy_index);    
+                        console.log("enemy_cnt :", serverObject.enemy_cnt);     
+                        console.log("enemy_type :", serverObject.enemy_type);                          
+
+                    } 
             });  
 
-            //시간이 빠른쪽 기준으로 싱크를 맞춘다.
-            if(game_time1  > game_time2){
-                server_game_time = game_time1;
-                server_enemy_idx = enemy_idx1;
-            }else {
-                server_game_time = game_time2;
-                server_enemy_idx = enemy_idx2;
-            }
+            // //시간이 빠른쪽 기준으로 싱크를 맞춘다.
+            // if(game_time1  > game_time2){
+            //     server_game_time = game_time1;
+            //     server_enemy_idx = enemy_idx1;
+            // }else {
+            //     server_game_time = game_time2;
+            //     server_enemy_idx = enemy_idx2;
+            // }
             
             //console.log(game_time1,game_time2);
             //f_sRandoms();
-            socketList.forEach(function(item, i) {  
-                //if (item != socket) {
-                     item.emit('server_drawscreen', server_game_time, server_enemy_idx);
-                     console.log("server_game_time :", server_game_time);
-                     console.log("server_enemy_idx :", server_enemy_idx);
-                //}   
-            });  
+            // socketList.forEach(function(item, i) {  
+            //     //if (item != socket) {
+            //     if (i > 0){
+            //          console.log("server_game_time :", server_game_time);
+            //          console.log("server_enemy_idx :", server_enemy_idx);                    
+            //          item.emit('server_drawscreen', server_game_time, server_enemy_idx);
+            //     }
+            //     //}   
+            // });  
     });       
 
     //이러게 하니깐 부하많이걸림

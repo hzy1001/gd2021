@@ -179,7 +179,10 @@ io.on('connection', function(socket) {
                         console.log("game_time :", serverObject.game_time);
                         console.log("enemy_index :", serverObject.enemy_index);    
                         console.log("enemy_cnt :", serverObject.enemy_cnt);     
-                        console.log("enemy_type :", serverObject.enemy_type);                          
+                        console.log("enemy_type :", serverObject.enemy_type);   
+                      
+                        //console.log("enemy_array :", serverObject.enemy_array);  
+                        console.log("weapponArray :", serverObject.weapponArray);                                            
 
                     } 
             });  

@@ -1499,7 +1499,8 @@ function enemy_init(index){
         
     //     //send_multiObject(clientEnemyIdx);    
     //     //멀티 보내기
-    //     this.send_multiObject = send_multiObject;            
+         this.send_multiObject = send_multiObject;      
+         this.receive_multiObject = receive_multiObject;
     // }    
 
 }
@@ -3271,11 +3272,17 @@ function send_multiObject(clientEnemyIdx){
         //if (gameTime % 10 === 0){   
 
             //multiObject.game_time = this.game_time;
+            //공통
             multiObject.multi_index = multiIndex;
             multiObject.game_time = gameTime; 
             multiObject.enemy_cnt = enemy_cnt;
             multiObject.enemy_index = clientEnemyIdx;            
-            multiObject.enemy_type = enemy_type;
+            multiObject.enemy_type = this.enemy_type; 
+
+            //적  
+            //multiObject.enemy_array = this.enemy_array[0];   
+            //적 총알
+            multiObject.weapponArray = this.weapponArray;            
             //multiObject.enemy_array_str = JSON.stringify(enemy_init.enemy_array[multiObject.enemy_index]);
             //alert(multiObject.enemy_array_str)
             /*
@@ -3357,7 +3364,10 @@ function receive_multiObject(multiObject){
     console.log("server_enemy_cnt : ",multiObject.enemy_cnt); 
     console.log("server_enemyIdx : ",multiObject.enemy_index); 
     console.log("server_enemytype : ",multiObject.enemy_type); 
-
+ 
+      
+    //console.log("server_enemy_array : ",multiObject.enemy_array[0]);     
+    console.log("server_weapponArray : ",multiObject.weapponArray); 
 
 
     multiIndex = multiObject.multi_index;
@@ -3369,8 +3379,11 @@ function receive_multiObject(multiObject){
 
     gameTime = multiObject.game_time; 
     enemy_cnt = multiObject.enemy_cnt;
-    enemy_type = multiObject.enemy_type;
-    enemy_index = multiObject.enemy_index;
+    this.enemy_type = multiObject.enemy_type;
+    this.enemy_index = multiObject.enemy_index;
+
+    //this.enemy_array = multiObject.enemy_array[0];    
+    this.weapponArray = multiObject.weapponArray;        
     //alert(multiObject.enemy_array_str)
     //enemy_array = JSON.parse(multiObject.enemy_array_str);
 

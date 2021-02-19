@@ -148,7 +148,7 @@ button02.arc(maxX - 80, maxY - 180, 70, 0, 2*Math.PI, true);    //arc(x, y, radi
 //초기 게임 상태
 var init_status = 1;  //1:Start,   2:ing,  3:Pause
 //기본 게임 프래임
-var ini_gameFrame = 30;  //60프레임
+var ini_gameFrame = 30;  //60프레임 => 30으로 해도 플레이에 지장 없음. 기기 부하 방지.
 //진행시간(=거리)
 var init_gameTime = 0;
 var gameTime = 0;
@@ -190,10 +190,13 @@ var Edistance = init_Edistance;
 
 //좌우측 상하단선 백그라운드 거리
 var back_distance = 0;
-var back_distance2 = 0;
-
+var back_distance2 = 0; 
 
 /////////////////////////////멀티 게임 관련 설정///////////////////////////////////////////
+var multi_master_yn = 'N';                  //멀티 마스터 여부(마스터:요청을 수락한 플레이어)
+var multi_object = {};                      //멀티 동기화 오브젝트
+var multi_game_time = 0;                    //멀티 게임 시간
+
 //Socket.IO 사용 시 주석 해제
 //var gfwSocket =  new gfwSocket("http://127.0.0.1:3000"); 
 if (game_mode == 'M'){
@@ -215,40 +218,39 @@ if (game_mode == 'M'){
             //접속자가 없으면 계속 서버에 접속했는지 확인
             if (ready_cnt < 2) {
                 //다시 접속자 조회
-                gfwSocket.Emit("multi_request",function(ready_cnt){ 
+                gfwSocket.Emit("multi_request",function(){ 
                     return;
                 });     
             } 
                         
     });   
 
-    //화면 로드시
-    gfwSocket.On("multi_connect",function(id){ 
+    //화면 로드시 
+    gfwSocket.On("multi_connect",function(multi_request_id){ 
 
-        if(confirm("멀티 접속을 수락하시겠습니까?" + gameTime)){ 
-            //as_keycode = 13;
-            //gameStart(as_keycode)
-
-            //alert("test1")
-            console.log("gfwSocket>>>>>>>>>>>>>>>>",gfwSocket)
-
-            //var shareTime = gameTime;
-            gfwSocket.Emit("multi_allowed",gameTime);     
+        if(confirm(multi_request_id + "의 멀티 접속을 수락 하시겠습니까?")){  
+            
+            multi_master_yn = 'Y';  
+            
+            console.log("multi_master_yn : ",multi_master_yn) 
         
-            //게임상태가 진행중이었을경우는 계속 진행, 시작시점일경우는 시작. 
+            //게임 상태 진행시 멀티 요청을 받을 경우 게임 시간 이어서 계속 진행, 아직 시작 전일 경우는 처음부터 시작. 
             if (status != 2)
             {
                 as_keycode = 13;
                 gameStart(13);
-                //gameTime = shareTime;   
+                multi_game_time = gameTime;   
             }else {
-                //gameTime = 0; 
+                multi_game_time = 0; 
                 gameStart(13); 
-            }            
+            }  
+ 
+            //마스터의 게임타임(시작시간)을 도전자에게 넘겨준다.
+            gfwSocket.Emit("multi_allowed",multi_game_time);               
 
         }else {
 
-            //싱글모드로 시작
+            //수락하지 않으면 그냥 싱글모드로 시작
             alert("싱글모드로 시작합니다.");
             gfwSocket.Emit("gameDisconnect");  
             gameStart(13); 
@@ -258,13 +260,13 @@ if (game_mode == 'M'){
 
     });   
 
-    //멀티의 경우 시작시 서버로부터 랜던값을 받아온다.
+    //멀티의 경우 화면 동기화를 위해 서버로부터 랜던값을 받아온다.
     gfwSocket.On("multi_start",function(shareTime,sRandoms){  
         
             as_keycode = 13;
             gameStart(as_keycode);
        
-            gameTime = shareTime;
+            multi_game_time = shareTime;
 
             for(var i=0; i < sRandoms.length; i++){
                 //console.log(i,sRandoms[i]);
@@ -357,8 +359,7 @@ player_warp.addEventListener("load",drawscreen, false);
 
 var warp = new Image();
 warp.src = "./img/player_warp.png";
-warp.addEventListener("load",drawscreen, false);
-
+warp.addEventListener("load",drawscreen, false); 
 
 //폭파이미지01
 var explosionImage01 = new Image();
@@ -584,7 +585,6 @@ var enemy_collision_yn = 'N';
 //적 초기 출현 갯수
 var enemy_cnt = 1;
 var enemy_array = [];
-
 
 create_enemy();
 
@@ -1497,10 +1497,10 @@ function enemy_init(index){
     //     this.clientEnemyIdx = index;
         
         
-    //     //send_multiObject(clientEnemyIdx);    
+    //     //send_multi_object(clientEnemyIdx);    
     //     //멀티 보내기
-         this.send_multiObject = send_multiObject;      
-         this.receive_multiObject = receive_multiObject;
+         this.send_multi_object = send_multi_object;      
+         this.receive_multi_object = receive_multi_object;
     // }    
 
 }
@@ -1634,7 +1634,7 @@ function enemy_move(){
 
 // if (game_mode == 'M'){    
     
-//     send_multiObject(this.enemy_index);
+//     send_multi_object(this.enemy_index);
 
 // }  
 
@@ -3256,199 +3256,55 @@ var client_data = {};
 var clientEnemyIdx = 0;
 
 //주기적 타임 싱크 맞추기;
-gfwSocket.On("server_drawscreen",function(multiObject){  
+gfwSocket.On("server_drawscreen",function(multi_object){  
 
-    receive_multiObject(multiObject); 
+    receive_multi_object(multi_object); 
 
-})   
+})    
 
-
-var multiIndex = 0;
-var multiObject = {}
-
-function send_multiObject(clientEnemyIdx){
+function send_multi_object(){
 
         //0.5초 마다 서버로 전송.
         //if (gameTime % 10 === 0){   
 
-            //multiObject.game_time = this.game_time;
-            //공통
-            multiObject.multi_index = multiIndex;
-            multiObject.game_time = gameTime; 
-            multiObject.enemy_cnt = enemy_cnt;
-            multiObject.enemy_index = clientEnemyIdx;            
-            multiObject.enemy_type = this.enemy_type; 
+            //multi_object.game_time = this.game_time;
+            //공통 
+            multi_object.multi_game_time = gameTime; 
+            multi_object.enemy_cnt = enemy_cnt;
+            multi_object.enemy_index = clientEnemyIdx;            
+            multi_object.enemy_type = this.enemy_type; 
 
             //적  
-            //multiObject.enemy_array = this.enemy_array[0];   
+            //multi_object.enemy_array = this.enemy_array[0];   
             //적 총알
-            multiObject.weapponArray = this.weapponArray;            
-            //multiObject.enemy_array_str = JSON.stringify(enemy_init.enemy_array[multiObject.enemy_index]);
-            //alert(multiObject.enemy_array_str)
-            /*
-            multiObject.Edistance = this.Edistance;
-            multiObject.create_enemy = this.create_enemy;
-            multiObject.enemyGunImage = this.enemyGunImage;
-            multiObject.enemyImage = this.enemyImage;
+            multi_object.weapponArray = this.weapponArray;            
+            //multi_object.enemy_array_str = JSON.stringify(enemy_init.enemy_array[multi_object.enemy_index]);
+            //alert(multi_object.enemy_array_str) 
 
-            //multiObject.enemy_array = enemy_array;
-            multiObject.enemy_collision = this.enemy_collision;
-
-            multiObject.enemy_collision_yn = this.enemy_collision_yn;
-            multiObject.enemy_dealy_time = this.enemy_dealy_time;
-
-            multiObject.enemy_didtance = this.enemy_didtance;
-            multiObject.enemy_energe = this.enemy_energe;
-
-            //multiObject.enemy_index = this.enemy_index;
-
-
-            multiObject.enemy_life = this.enemy_life;
-
-            multiObject.enemy_move = this.enemy_move;
-
-            multiObject.enemy_size = this.enemy_size;
-            multiObject.enemy_speed = this.enemy_speed;
-            //multiObject.enemy_type = this.enemy_type;
-            
-            multiObject.enemyh = this.enemyh;
-            multiObject.enemyw = this.enemyw;
-            multiObject.enemyx = this.enemyx;
-            multiObject.enemyxx = this.enemyxx;
-            multiObject.enemyy = this.enemyy;
-            multiObject.enemyyy = this.enemyyy;
-            multiObject.energe_bar = this.energe_bar;
-            multiObject.enginImage = this.enginImage;
-            multiObject.explosionImage01 = this.explosionImage01;
-            multiObject.laser_move = this.laser_move;
-            multiObject.max_weappon_cnt = this.max_weappon_cnt;
-            multiObject.noneImage = this.noneImage;
-
-            multiObject.player_collision = this.player_collision;
-            multiObject.weapponArray = this.weapponArray;
-
-            multiObject.weapponImage = this.weapponImage;
-            multiObject.weapponX = this.weapponX;
-            multiObject.weapponY = this.weapponY;
-            multiObject.weappon_Randon = this.weappon_Randon;
-            multiObject.weappon_cnt = this.weappon_cnt;
-
-            multiObject.weappon_create = this.weappon_create;
-
-            multiObject.weappon_index = this.weappon_index;
-
-            multiObject.weappon_init = this.weappon_init;
-
-            multiObject.weappon_leftRight = this.weappon_leftRight;
-
-            multiObject.weappon_move = this.weappon_move;
-
-            multiObject.weappon_size = this.weappon_size;
-            multiObject.weappon_speed = this.weappon_speed;
-            multiObject.weappon_tmp_random = this.weappon_tmp_random;      
-            
-            //console.log("multiObject" + gameTime,multiObject)
-            //console.log("JSON.stringify(multiObject)",JSON.stringify(multiObject)) 
-
-            */
-
-            gfwSocket.Emit("client_drawscreen",multiObject);                
+            gfwSocket.Emit("client_drawscreen",multi_object);                
        // }  
 
-} 
+}  
 
-
-function receive_multiObject(multiObject){
+function receive_multi_object(multi_object){
  
-    console.log("server_game_time : ",multiObject.game_time);
-    console.log("server_enemy_cnt : ",multiObject.enemy_cnt); 
-    console.log("server_enemyIdx : ",multiObject.enemy_index); 
-    console.log("server_enemytype : ",multiObject.enemy_type); 
- 
-      
-    //console.log("server_enemy_array : ",multiObject.enemy_array[0]);     
-    console.log("server_weapponArray : ",multiObject.weapponArray); 
+    console.log("server_game_time : ",multi_object.multi_game_time);
+    console.log("server_enemy_cnt : ",multi_object.enemy_cnt); 
+    //console.log("server_enemyIdx : ",multi_object.enemy_index); 
+    console.log("server_enemytype : ",multi_object.enemy_type);   
+    //console.log("server_enemy_array : ",multi_object.enemy_array[0]);     
+    console.log("server_weapponArray : ",multi_object.weapponArray);   
 
+    gameTime = multi_object.multi_game_time; 
+    enemy_cnt = multi_object.enemy_cnt;
+    this.enemy_type = multi_object.enemy_type;
+    //this.enemy_index = multi_object.enemy_index;
 
-    multiIndex = multiObject.multi_index;
-
-    // if(multiIndex == 1){
-    //     return;
-    // }
-
-
-    gameTime = multiObject.game_time; 
-    enemy_cnt = multiObject.enemy_cnt;
-    this.enemy_type = multiObject.enemy_type;
-    this.enemy_index = multiObject.enemy_index;
-
-    //this.enemy_array = multiObject.enemy_array[0];    
-    this.weapponArray = multiObject.weapponArray;        
-    //alert(multiObject.enemy_array_str)
-    //enemy_array = JSON.parse(multiObject.enemy_array_str);
-
-    // enemy_init.game_time = multiObject.gameTime;
-    // enemy_init.Edistance = multiObject.Edistance;
-    // enemy_init.create_enemy = multiObject.create_enemy;
-    // enemy_init.enemyGunImage = multiObject.enemyGunImage;
-    // enemy_init.enemyImage = multiObject.enemyImage;
-    
-    // enemy_init.enemy_array = multiObject.enemy_array;
-    // enemy_init.enemy_collision = multiObject.enemy_collision;
-    
-    // enemy_init.enemy_collision_yn = multiObject.enemy_collision_yn;
-    // enemy_init.enemy_dealy_time = multiObject.enemy_dealy_time;
-    
-    // enemy_init.enemy_didtance = multiObject.enemy_didtance;
-    // enemy_init.enemy_energe = multiObject.enemy_energe;
-     
-    
-
-    // enemy_init.enemy_life = multiObject.enemy_life;
-
-    // enemy_init.enemy_move = multiObject.enemy_move;
-    // enemy_init.enemy_size = multiObject.enemy_size;
-    // enemy_init.enemy_speed = multiObject.enemy_speed;
-
-    // enemy_init.enemyh = multiObject.enemyh;
-    // enemy_init.enemyw = multiObject.enemyw;
-    // enemy_init.enemyx = multiObject.enemyx;
-    // enemy_init.enemyxx = multiObject.enemyxx;
-    // enemy_init.enemyy = multiObject.enemyy;
-    // enemy_init.enemyyy = multiObject.enemyyy;
-    // enemy_init.energe_bar = multiObject.energe_bar;
-    // enemy_init.enginImage = multiObject.enginImage;
-    // enemy_init.explosionImage01 = multiObject.explosionImage01;
-    // enemy_init.laser_move = multiObject.laser_move;
-    // enemy_init.max_weappon_cnt = multiObject.max_weappon_cnt;
-    // enemy_init.noneImage = multiObject.noneImage;
-
-    // enemy_init.player_collision = multiObject.player_collision;
-    // enemy_init.weapponArray = multiObject.weapponArray;
-
-    // enemy_init.weapponImage = multiObject.weapponImage;
-    // enemy_init.weapponX = multiObject.weapponX;
-    // enemy_init.weapponY = multiObject.weapponY;
-    // enemy_init.weappon_Randon = multiObject.weappon_Randon;
-    // enemy_init.weappon_cnt = multiObject.weappon_cnt;
-    
-    // enemy_init.weappon_create = multiObject.weappon_create;
-
-    // enemy_init.weappon_index = multiObject.weappon_index;
-
-    // enemy_init.weappon_init = multiObject.weappon_init;
-
-    // enemy_init.weappon_leftRight = multiObject.weappon_leftRight;
-
-    // enemy_init.weappon_move = multiObject.eappon_move;
-
-    // enemy_init.weappon_size = multiObject.weappon_size;
-    // enemy_init.weappon_speed = multiObject.weappon_speed;
-    // enemy_init.weappon_tmp_random = multiObject.weappon_tmp_random;   
-    
-}
-
-
+    //this.enemy_array = multi_object.enemy_array[0];    
+    this.weapponArray = multi_object.weapponArray;        
+    //alert(multi_object.enemy_array_str)
+    //enemy_array = JSON.parse(multi_object.enemy_array_str);  
+}  
 
 ////////////////// 화면 로드(게임 프래임 수 만큼)  
 function drawscreen(){  
@@ -3457,12 +3313,23 @@ function drawscreen(){
     //적배열객체도 넘겨준다.
     if (game_mode == 'M'){    
     
-        send_multiObject(clientEnemyIdx);
+        //멀티 마스터일경우만 시간 증가, 마스터가 아닌경우 서버로부터 시간을 가져온다.
+        if (multi_master_yn == 'N'){
+            gameTime++;         //시간 증가
+        }else {
+            gameTime = multi_game_time;
+        } 
 
+        send_multi_object();
+
+
+    }else {
+        gameTime++;         //시간 증가
     }
     
 
-    gameTime++;         //시간 증가
+
+
     gameScore++;        //스코어 증가    
     //console.log("gameTime :" + gameTime);
 
@@ -3538,7 +3405,7 @@ function drawscreen(){
             
             // if (game_mode == 'M'){    
             
-            //     send_multiObject(i); 
+            //     send_multi_object(i); 
         
             // }  
         

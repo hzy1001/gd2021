@@ -7,11 +7,13 @@ var socket = require('socket.io');   //소켓 IO
 var io = socket(server);             //웹서버를 탑제한 소켓 IO
 var i = 0;
 
-var client_time;
+var client_time = 0;
 var client_enemy_idx;
 
 var clientObject = {};
-var serverObject;
+var serverObject = {};
+var multi_master_yn = 'N';
+var multi_master_id = '';
 
 // app.use('/', function(req, resp) {   //익스프레스 라우팅
 //     resp.sendFile(__dirname + '/index.html');
@@ -45,8 +47,7 @@ function f_sRandoms(){
     for (var i=0;i<10;i++){
         sRandoms[i] = Math.floor(Math.random() * (i+1)) + 1; 
         //console.log(i,sRandoms[i])
-    } 
-
+    }  
 }
 
 //신규접속
@@ -66,121 +67,66 @@ io.on('connection', function(socket) {
         console.log('gameDisconnect id',socket.id);
         socket.disconnect();
     })       
-    
-    // //멀티 게임 요청
-    // socket.on('multi_want', function() {  
-    //     console.log("multi_want id : " + socket.id );    
-          
-    //     //socketList.push(socket); 
-    //     //socketIdList.push(socket.id);    
-
-    //     //intro시작
-    //     //if (socketList.length > 1){        
-    //     //    socketList.forEach(function(item, i) {  
-    //                 //if (item != socket) {
-                      
-    //                     socket.emit('start_intro',{ id: socket.id });    
-    //                     console.log('start_intro',socket.id);                  
-    //                 //} 
-    //     //    }); 
-    //     //}
-            
-    // });
-    //var serverTime = 0;    
-    
+     
     //멀티 요청 및 대기
     socket.on('multi_request', function() {   
+
         console.log("multi_request 접속인원",socketList.length);
 
-        //게임시작(1명이상 접속해야 멀티 가능)
-        if (socketList.length <= 1){   
+        //게임시작(1명 이상 접속해야 멀티 가능)
+        if (socketList.length <= 1){  
+
             console.log('multi_wait',socketList.length);
-            socket.emit('multi_wait', socketList.length); 
+            socket.emit('multi_wait',socketList.length); 
+
         }else {
+
+            //2명이상 접속이 되면 각 접속자에게 소켓id를 넘겨준다.
             socketList.forEach(function(item, i) {  
-                    //먼저 접속되어 있는쪽으로 수락 요청
+                  
                     if (item != socket) { 
                         item.emit('multi_connect', item.id);
                         console.log('multi_connect id',item.id);
                     } 
-            }); 
+            });  
         }  
     });    
 
-    //멀티 수락 및 시작(수락하면 수락한의 gameTime 공유)
-    socket.on('multi_allowed', function(game_time) {   
-        console.log("game_time",game_time);  
-        //serverTime = game_time;
+    //멀티 수락 및 시작(수락하면 수락한의 멀티마스터의 시간을 공유하고 서버랜덤값을 던져준다.)
+    socket.on('multi_allowed', function(multi_game_time) {    
+
+ 
+        console.log("multi_allowed : ",multi_game_time);   
 
             f_sRandoms();
 
             socketList.forEach(function(item, i) {  
+                    //서버 랜덤값은 모두에게 나누어준다.
                     //if (item != socket) { 
-                        item.emit('multi_start', game_time, sRandoms);
-                        console.log('multi_start id', item.id);
-                    //} 
-
-                    //이러게 하니깐 부하많이걸림
-                    //setInterval(serverFrame, 1000/10);
-                    //serverTime = 0;  
+                        item.emit('multi_start', multi_game_time, sRandoms);
+                        console.log(multi_game_time, sRandoms);
+                    //}  
             });   
     });   
 
     //클라이언트에서 시간과 적(배열)을 받아서 다시 상대편으로 넘겨줘서 싱크를 맞춘다.
     //socket.on('client_drawscreen', function(client_time,client_enemy_idx) {    
         socket.on('client_drawscreen', function(clientObject) {    
-        //socket.on('sincdrawscreen', function(Jenemy_array) {    
-          
-            // client_time = clientObject.time;
-            // client_enemy_idx = clientObject.id;
-
-             //console.log("client_time :", client_time);
-             //console.log("client_enemy_index :",  clientObject.enemy_index);
+        
             socketList.forEach(function(item, i) {  
-                    // if (item != socket) {
-                    //     item.emit('server_drawscreen', client_time);
-                    //     console.log("receive Jenemy_array :", Jenemy_array);
-                    // }  
-
-                    //console.log("i",i);
-                    //먼저접속한쪽 기준으로 싱크를 맞춘다.
-                    if (i == 0){
-                        // server_game_time = clientObject.time;
-                        // server_enemy_idx = clientObject.id;
-                        // servar_enemy_type = clientObject.enemy_type;
-                     
                     
-                        //console.log("server_game_time :", clientObject.game_time);
-                        //console.log("server_enemy_idx :", clientObject.enemy_index);                    
-                        // console.log("servar_enemy_type :", clientObject.enemy_type);     
-                        
-                        //serverObjct = clientObject;
-                        //item.emit('server_drawscreen', clientObject);
-                    //}else {
+                    //멀티 마스터 기준으로 싱크를 맞춘다. 
+                    if (clientObject.multi_master_yn == 'Y'){  
 
-
-                        //item.emit('server_drawscreen', clientObject);
-
-                        serverObject = clientObject;
-
-                        return;
-                    }
-
-
-                    //console.log("servar_enemy_array_str :", serverObject.enemy_array_str);  
-                        
-                    if (i > 0){
-                        
-                        serverObject.multi_index = i;
+                        serverObject = clientObject; 
 
                         item.emit('server_drawscreen', serverObject);
 
-                        console.log("multi_index :", serverObject.multi_index);
-                        console.log("game_time :", serverObject.game_time);
-                        console.log("enemy_index :", serverObject.enemy_index);    
+                        //console.log("multi_master_yn :", serverObject.multi_master_yn);
+                        console.log("multi_game_time :", serverObject.multi_game_time);
+                        //console.log("enemy_index :", serverObject.enemy_index);    
                         console.log("enemy_cnt :", serverObject.enemy_cnt);     
-                        console.log("enemy_type :", serverObject.enemy_type);   
-                      
+                        console.log("enemy_type :", serverObject.enemy_type);    
                         //console.log("enemy_array :", serverObject.enemy_array);  
                         console.log("weapponArray :", serverObject.weapponArray);                                            
 

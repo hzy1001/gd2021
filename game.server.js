@@ -33,9 +33,7 @@ server.listen(port, function() {
 var socketList = [];
 var socketIdList = [];
 //시간 맞추기
-var game_time1 = 0;
-var game_time2 = 0; 
-var server_game_time = 0;
+ var server_game_time = 0;
 var server_enemy_idx;
 var servar_enemy_type;
 
@@ -122,13 +120,13 @@ io.on('connection', function(socket) {
 
                         item.emit('server_drawscreen', serverObject);
 
-                        //console.log("multi_master_yn :", serverObject.multi_master_yn);
+                        console.log("multi_master_yn :", serverObject.multi_master_yn);
                         console.log("multi_game_time :", serverObject.multi_game_time);
                         //console.log("enemy_index :", serverObject.enemy_index);    
-                        console.log("enemy_cnt :", serverObject.enemy_cnt);     
-                        console.log("enemy_type :", serverObject.enemy_type);    
+                        //console.log("enemy_cnt :", serverObject.enemy_cnt);     
+                        //console.log("enemy_type :", serverObject.enemy_type);    
                         //console.log("enemy_array :", serverObject.enemy_array);  
-                        console.log("weapponArray :", serverObject.weapponArray);                                            
+                        //console.log("weapponArray :", serverObject.weapponArray);                                            
 
                     } 
             });  

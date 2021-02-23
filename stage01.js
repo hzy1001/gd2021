@@ -241,7 +241,7 @@ if (game_mode == 'M'){
                 gameStart(13);
                 multi_game_time = gameTime;   
             }else {
-                multi_game_time = 0; 
+                multi_game_time = gameTime; 
                 gameStart(13); 
             }  
  
@@ -267,6 +267,7 @@ if (game_mode == 'M'){
             gameStart(as_keycode);
        
             multi_game_time = shareTime;
+            gameTime = multi_game_time;
 
             for(var i=0; i < sRandoms.length; i++){
                 //console.log(i,sRandoms[i]);
@@ -3270,6 +3271,7 @@ function send_multi_object(){
             //multi_object.game_time = this.game_time;
             //공통 
             multi_object.multi_game_time = gameTime; 
+            multi_object.multi_master_yn = multi_master_yn;             
             multi_object.enemy_cnt = enemy_cnt;
             multi_object.enemy_index = clientEnemyIdx;            
             multi_object.enemy_type = this.enemy_type; 
@@ -3289,19 +3291,20 @@ function send_multi_object(){
 function receive_multi_object(multi_object){
  
     console.log("server_game_time : ",multi_object.multi_game_time);
-    console.log("server_enemy_cnt : ",multi_object.enemy_cnt); 
-    //console.log("server_enemyIdx : ",multi_object.enemy_index); 
-    console.log("server_enemytype : ",multi_object.enemy_type);   
-    //console.log("server_enemy_array : ",multi_object.enemy_array[0]);     
-    console.log("server_weapponArray : ",multi_object.weapponArray);   
+    // console.log("server_enemy_cnt : ",multi_object.enemy_cnt); 
+    // //console.log("server_enemyIdx : ",multi_object.enemy_index); 
+    // console.log("server_enemytype : ",multi_object.enemy_type);   
+    // //console.log("server_enemy_array : ",multi_object.enemy_array[0]);     
+    // console.log("server_weapponArray : ",multi_object.weapponArray);   
 
-    gameTime = multi_object.multi_game_time; 
-    enemy_cnt = multi_object.enemy_cnt;
-    this.enemy_type = multi_object.enemy_type;
+    multi_game_time = multi_object.multi_game_time;  
+    //gameTime = multi_object.multi_game_time; 
+    //enemy_cnt = multi_object.enemy_cnt;
+    //this.enemy_type = multi_object.enemy_type;
     //this.enemy_index = multi_object.enemy_index;
 
     //this.enemy_array = multi_object.enemy_array[0];    
-    this.weapponArray = multi_object.weapponArray;        
+    //this.weapponArray = multi_object.weapponArray;        
     //alert(multi_object.enemy_array_str)
     //enemy_array = JSON.parse(multi_object.enemy_array_str);  
 }  
@@ -3314,21 +3317,16 @@ function drawscreen(){
     if (game_mode == 'M'){    
     
         //멀티 마스터일경우만 시간 증가, 마스터가 아닌경우 서버로부터 시간을 가져온다.
-        if (multi_master_yn == 'N'){
+        if (multi_master_yn == 'Y'){
             gameTime++;         //시간 증가
+            send_multi_object();
         }else {
-            gameTime = multi_game_time;
+            gameTime = multi_game_time; 
         } 
-
-        send_multi_object();
-
 
     }else {
         gameTime++;         //시간 증가
     }
-    
-
-
 
     gameScore++;        //스코어 증가    
     //console.log("gameTime :" + gameTime);
@@ -3464,6 +3462,10 @@ function drawscreen(){
     Context.fillText("Score : " + (parseInt(gameScore - 50)<=0?0:gameScore),10,50);
     Context.fillText("Bonus: " + String((parseInt(player_cnt) - 1<=0?0:parseInt(player_cnt) - 1)),10,100);
     Context.fillText("Time  : " + (parseInt(gameTime - 50)<=0?0:gameTime),10,150);
+
+    Context.fillText("Master  : " + multi_master_yn,10,200);
+
+    
 
     if(gameTime<=50){
         Context2.font = '100px Arial';
